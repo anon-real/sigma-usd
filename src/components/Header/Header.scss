@@ -1,0 +1,260 @@
+$width-laptop: 975px;
+$width-tablet: 768px;
+$width-phone: 545px;
+
+$k-laptop: 1366 / 1920;
+$k-minilaptop: 976 / 1920;
+$k-tablet: 768 / 1920;
+$k-phone: 545 / 1920;
+
+header {
+    display: flex;
+    align-items: center;
+    background: linear-gradient(90deg, #610BFC 0%, #2F5EF6 100%);
+    color: #fff;
+    font-size: 20px;
+    height: 110px;
+
+    @media (max-width: $width-laptop) {
+        font-size: 27px * $k-laptop;
+        height: 110px * $k-laptop;
+    }
+
+    @media (max-width: $width-tablet) {
+        font-size: 27px * $k-tablet;
+        height: 70px;
+    }
+}
+
+.header-container {
+    display: flex;
+    justify-content: center;
+
+    & > div {
+        display: flex;
+        align-items: center;
+        width: 975px;
+
+        @media (max-width: $width-laptop) {
+            width: 728px;
+        }
+
+        @media (max-width: $width-tablet) {
+            justify-content: center;
+        }
+
+        @media (max-width: $width-phone) {
+            max-width: 100%;
+            width: 100%;
+            justify-content: space-between;
+        }
+    }
+
+    @media (max-width: $width-phone) {
+        padding: 15px 20px 15px 20px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    & .coins-wrapper {
+        display: flex;
+        align-items: center;
+    }
+
+    & .company-name {
+        font-family: IBM Plex Mono;
+        font-weight: 700;
+        font-size: 40px;
+        letter-spacing: .075rem;
+        max-width: 216px;
+        text-decoration: none;
+        color: white;
+
+        @media (max-width: $width-laptop) {
+            font-size: 40px * $k-laptop;
+            max-width: 216px * $k-laptop;
+        }
+
+        @media (max-width: $width-tablet) {
+            font-size: 40px * $k-tablet;
+            max-width: 216px * $k-tablet;
+        }
+
+        @media (max-width: $width-phone) {
+            letter-spacing: none;
+            margin-right: 39px;
+        }
+
+        & .company-name__br {
+            @media (min-width: $width-phone) {
+                display: none;
+            }
+        }
+    }
+
+    & .navigation {
+        margin-bottom: -2px;
+        margin: 0 auto;
+
+        @media (max-width: $width-laptop) {
+            margin: 0 auto;
+        }
+
+        @media (max-width: $width-tablet) {
+            margin: 0 (108px * $k-tablet) 0 (143px * $k-tablet);
+        }
+
+        @media (max-width: $width-phone) {
+            margin: 0;
+            display: none;
+        }
+
+        & .navigation__item {
+            color: var(--white);
+            text-decoration: none;
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+        }
+
+        & .navigation__item:hover,
+        & .navigation__item.active {
+            border-bottom: 2px solid #fff;
+        }
+
+        & .navigation__item:nth-child(n + 2) {
+            margin-left: 30px;
+
+            @media (max-width: $width-laptop) {
+                margin-left: 30px * $k-laptop;
+            }
+
+            @media (max-width: $width-tablet) {
+                margin-left: 30px * $k-tablet;
+            }
+        }
+    }
+
+    & .course-box {
+        font-size: 16px;
+        display: flex;
+        flex-direction: column;
+        width: 120px;
+
+        @media (max-width: $width-laptop) {
+            font-size: 20px * $k-laptop;
+        }
+
+        @media (max-width: $width-tablet) {
+            font-size: 20px * $k-tablet;
+        }
+
+        @media (max-width: $width-phone) {
+            font-size: 10px;
+        }
+
+        &__row:first-child {
+            margin-bottom: 13px;
+
+            @media (max-width: $width-laptop) {
+                margin-bottom: 13px * $k-laptop;
+            }
+
+            @media (max-width: $width-tablet) {
+                margin-bottom: 13px * $k-tablet;
+            }
+        }
+
+        &__key {
+            font-family: IBM Plex Mono;
+            font-weight: normal;
+
+            & .key_bold {
+                font-weight: 600;
+
+                @media (max-width: $width-phone) {
+                    font-weight: normal;
+                }
+            }
+        }
+
+        &__value {
+            font-family: "Inter";
+            margin-left: 27px;
+
+            @media (max-width: $width-laptop) {
+                margin-left: 27px * $k-laptop;
+            }
+
+            @media (max-width: $width-tablet) {
+                margin-left: 27px * $k-tablet;
+            }
+
+            @media (max-width: $width-phone) {
+                margin-left: 11px;
+            }
+        }
+    }
+
+    & .wallet-btn {
+        margin-left: 40px;
+        max-width: 200px;
+        padding: 13px 17px;
+        font-size: 16px;
+        border-radius: 10px;
+        background: #fff;
+        color: #000;
+        font-family: "Inter";
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        white-space: nowrap;
+        cursor: pointer;
+
+        @media (max-width: $width-laptop) {
+            margin-left: 40px * $k-laptop;
+            max-width: 200px * $k-laptop;
+            padding: (13px * $k-laptop) (17px * $k-laptop);
+            font-size: 20px * $k-laptop;
+            border-radius: 10px * $k-laptop;
+        }
+
+        @media (max-width: $width-tablet) {
+            margin-left: 40px * $k-tablet;
+            max-width: 200px * $k-tablet;
+            padding: (13px * $k-tablet) (17px * $k-tablet);
+            font-size: 20px * $k-tablet;
+            border-radius: 10px * $k-tablet;
+        }
+
+        @media (max-width: $width-phone) {
+            font-family: "Inter";
+            margin-left: 20px;
+            max-width: 130px;
+            padding: 8px 13px;
+            font-size: 12px;
+            border-radius: 6px;
+        }
+
+        &__icon {
+            margin-right: 13px;
+            width: 20px;
+
+            @media (max-width: $width-laptop) {
+                margin-right: 13px * $k-laptop;
+                width: 20px * $k-laptop;
+            }
+
+            @media (max-width: $width-tablet) {
+                margin-right: 13px * $k-tablet;
+                width: 20px * $k-tablet;
+            }
+
+            @media (max-width: $width-phone) {
+                margin-right: 9px;
+                width: 12px;
+                height: 12px;
+            }
+        }
+    }
+}

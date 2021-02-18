@@ -1,0 +1,69 @@
+$indents:  0, 5, 10, 15, 20, 25, 30, 40, 50, 45, 60;
+$directions: (
+  t: top,
+  b: bottom,
+  l: left,
+  r: right,
+);
+
+$props: (
+  m: margin,
+  p: padding
+);
+
+$axisX: 'x';
+$axisY: 'y';
+
+@each $p,$prop in $props {
+  @each $d, $direction in $directions {
+    @each $indent in $indents {
+      .#{$p}#{$d}-#{$indent} {
+        #{$prop}-#{$direction}: rem($indent) !important;
+      }
+    }
+  }
+}
+
+@each $p,$prop in $props {
+  @each $d, $direction in $directions {
+    @each $indent in $indents {
+      .#{$p}#{$d}-#{$indent} {
+        #{$prop}-#{$direction}: rem($indent) !important;
+      }
+    }
+  }
+}
+
+@each $p,$prop in $props {
+  @each $indent in $indents {
+    .#{$p}-#{$indent} {
+      #{$prop}: rem($indent) !important;
+    }
+  }
+}
+
+@each $breakPoint, $params in $breakPoints {
+  @each $p,$prop in $props {
+    @each $indent in $indents {
+      @include gridBreakPoint($params) {
+        .#{$p}-#{$breakPoint}-#{$indent} {
+          #{$prop}: rem($indent) !important;
+        }
+      }
+    }
+  }
+}
+
+@each $breakPoint, $params in $breakPoints {
+  @each $p,$prop in $props {
+    @each $d, $direction in $directions {
+      @each $indent in $indents {
+        @include gridBreakPoint($params) {
+          .#{$p}#{$d}-#{$breakPoint}-#{$indent} {
+            #{$prop}-#{$direction}: rem($indent) !important;
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,809 @@
+$width-laptop: 1366px;
+$width-minilaptop: 976px;
+$width-tablet: 768px;
+$width-phone: 545px;
+
+$k-laptop: 1366 / 1920;
+$k-minilaptop: 976 / 1920;
+$k-tablet: 768 / 1920;
+$k-phone: 545 / 1920;
+
+main {
+    background: #2D2D2D;
+    color: #fff;
+}
+
+.main-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 60px 0 143px 0;
+    margin: 0 auto;
+    max-width: 975px;
+
+    @media (max-width: $width-minilaptop) {
+        padding: (60px * $k-minilaptop) 0 (143px * $k-minilaptop) 0;
+        margin: 0 20px;
+    }
+
+    @media (max-width: $width-tablet) {
+        padding: (60px * $k-tablet) 0 (143px * $k-tablet) 0;
+        margin: 0 20px;
+    }
+
+    @media (max-width: $width-phone) {
+        padding: 0.55556rem 0 58px 0;
+        margin: 0 20px;
+    }
+}
+
+.main-navigation {
+    width: 100%;
+    margin-bottom: 30px;
+
+    @media (min-width: $width-phone) {
+        display: none;
+    }
+
+    &__list {
+        display: flex;
+        justify-content: flex-start;
+
+        & a:nth-child(n + 2) {
+            margin-left: 8px;
+        }
+
+        & a {
+            display: block;
+            font-size: 12px;
+            padding: 3px 8px;
+            border-radius: 10px;
+            background-color: #fff;
+            text-decoration: none;
+
+            & span {
+                font-family: "Inter";
+                font-weight: 500;
+                color: transparent;
+                background-clip: text;
+                background-image: linear-gradient(91.77deg, #610BFC 0.68%, #2F5EF6 99.4%);
+            }
+        }
+
+        & a.active {
+            background: linear-gradient(91.77deg, #610BFC 0.68%, #2F5EF6 99.4%);
+
+            & span {
+                color: #fff;
+            }
+        }
+    }
+}
+
+.finance-description {
+    display: flex;
+    max-width: 975px;
+
+    @media (max-width: $width-tablet) {
+        width: 100%
+    }
+
+    @media (max-width: $width-phone) {
+        flex-direction: column;
+        width: 100%
+    }
+
+    &__title {
+        margin-right: 69px;
+
+        @media (max-width: $width-laptop) {
+            margin-right: 69px * $k-laptop;
+            width: 754px * $k-laptop;
+        }
+
+        @media (max-width: $width-minilaptop) {
+            margin-right: 69px * $k-minilaptop;
+            width: 754px * $k-minilaptop;
+        }
+
+        @media (max-width: $width-tablet) {
+            margin-right: 69px * $k-tablet;
+            width: 754px * $k-tablet;
+        }
+
+        @media (max-width: $width-tablet) {
+            margin-right: 0;
+            width: 100%;
+        }
+
+        &_part1, &_part2, &_part3 {
+            font-family: "Inter";
+            font-weight: 900;
+            font-size: 105px;
+            line-height: 110px;
+
+            @media (max-width: $width-laptop) {
+                font-size: 105px * $k-laptop;
+                line-height: 110px * $k-laptop;
+            }
+
+            @media (max-width: $width-minilaptop) {
+                font-size: 105px * $k-minilaptop;
+                line-height: 110px * $k-minilaptop;
+            }
+
+            @media (max-width: $width-tablet) {
+                font-size: 105px * $k-tablet;
+                line-height: 110px * $k-tablet;
+            }
+
+            @media (max-width: $width-tablet) {
+                font-size: 48px;
+                line-height: 110%;
+            }
+        }
+
+        &_part3 {
+            color: transparent;
+            -webkit-background-clip: text;
+            background-clip: text;
+            background-image: linear-gradient(91.77deg, #610BFC 0.68%, #2F5EF6 99.4%);
+        }
+    }
+
+    &__text {
+        font-family: "Inter";
+        font-size: 17px;
+        margin-top: 15px;
+
+        a {
+            color: #2F5EF6;
+            text-decoration: none;
+
+            &:hover {
+                text-decoration: underline;
+            }
+        }
+
+        @media (max-width: $width-laptop) {
+            font-size: 17px * $k-laptop;
+            max-width: 400px;
+        }
+
+        @media (max-width: $width-minilaptop) {
+            font-size: 17px * $k-minilaptop;
+            max-width: 200px;
+        }
+
+        @media (max-width: $width-tablet) {
+        }
+
+        @media (max-width: $width-phone) {
+            width: 100%;
+            margin-top: 25px;
+            font-size: 12px;
+        }
+    }
+}
+
+.coins-info {
+    display: grid;
+    justify-content: space-between;
+    margin-top: 75px;
+    width: 100%;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 30px;
+
+    @media (max-width: $width-laptop) {
+        margin-top: 143px * $k-laptop;
+        grid-gap: 30px * $k-laptop;
+    }
+
+    @media (max-width: $width-minilaptop) {
+        margin-top: 143px * $k-minilaptop;
+        grid-gap: 30px * $k-minilaptop;
+    }
+
+    @media (max-width: $width-tablet) {
+        margin-top: 143px * $k-tablet;
+        grid-gap: 20px;
+    }
+
+    @media (max-width: $width-phone) {
+        grid-template-columns: 1fr;
+        width: 100%;
+        margin-top: 30px;
+        justify-content: flex-start;
+        align-items: center;
+        flex-direction: column;
+    }
+
+    & .coin-info {
+        box-sizing: border-box;
+
+        @media (max-width: $width-phone) {
+            width: 100%;
+            padding: 24px 22px;
+        }
+
+        &__title {
+            font-family: IBM Plex Mono;
+            font-weight: 500;
+            font-size: 28px;
+            margin-bottom: 50px;
+
+            @media (max-width: $width-laptop) {
+                font-size: 28px * $k-laptop;
+                margin-bottom: 50px * $k-laptop;
+            }
+
+            @media (max-width: $width-minilaptop) {
+                font-size: 28px * $k-minilaptop;
+                margin-bottom: 50px * $k-minilaptop;
+            }
+
+            @media (max-width: $width-tablet) {
+                font-size: 28px * $k-tablet;
+                margin-bottom: 50px * $k-tablet;
+            }
+
+            @media (max-width: $width-phone) {
+                font-size: 14px;
+                margin-bottom: 43px;
+            }
+        }
+
+        & .coin-prop {
+            &:last-child {
+                margin-top: 45px;
+
+                @media (max-width: $width-laptop) {
+                    margin-top: 45px * $k-laptop;
+                }
+
+                @media (max-width: $width-minilaptop) {
+                    margin-top: 45px * $k-minilaptop;
+                }
+
+                @media (max-width: $width-tablet) {
+                    margin-top: 45px * $k-tablet;
+                }
+
+                @media (max-width: $width-phone) {
+                    margin-top: 19px;
+                }
+            }
+
+            &__title {
+                font-family: "Inter";
+                font-size: 16px;
+                margin-bottom: 4px;
+
+                @media (max-width: $width-laptop) {
+                    font-size: 16px * $k-laptop;
+                }
+
+                @media (max-width: $width-minilaptop) {
+                    font-size: 16px * $k-minilaptop;
+                }
+
+                @media (max-width: $width-tablet) {
+                    font-size: 16px * $k-tablet;
+                }
+
+                @media (max-width: $width-phone) {
+                    font-size: 10px;
+                    letter-spacing: 0.015rem;
+                }
+            }
+
+            &__value {
+                position: relative;
+                white-space: nowrap;
+                font-weight: 600;
+                font-size: 37px;
+                width: fit-content;
+
+                @media (max-width: $width-laptop) {
+                    font-size: 50px * $k-laptop;
+                }
+
+                @media (max-width: $width-minilaptop) {
+                    font-size: 50px * $k-minilaptop;
+                }
+
+                @media (max-width: $width-tablet) {
+                    font-size: 50px * $k-tablet;
+                }
+
+                @media (max-width: $width-phone) {
+                    font-size: 22px;
+                }
+
+                & .tooltip {
+                    position: relative;
+
+                    & .tooltip__pin {
+                        position: absolute;
+                        background-color: #2F5EF6;
+                        color: #343435;
+                        font-weight: 900;
+                        border-radius: 50%;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        top: 0;
+                        right: -14px;
+                        width: 14px;
+                        height: 14px;
+                        font-size: 11px;
+                        cursor: pointer;
+
+                        @media (max-width: $width-tablet) {
+                            right: -12px;
+                            width: 11px;
+                            height: 11px;
+                            font-size: 9px;
+                        }
+                    }
+
+                    & .tooltip__pin:hover ~ .tooltip__popup {
+                        opacity: 1;
+                    }
+
+                    & .tooltip__popup {
+                        position: absolute;
+                        background: #DFDFDF;
+                        color: #000;
+                        font-family: "Inter";
+                        opacity: 0;
+                        transition-duration: .3s;
+                        max-width: 136px;
+                        border-radius: 10px;
+                        padding: 8px 10px;
+                        font-size: 10px;
+                        top: -65px;
+                        left: -60px;
+
+                        @media (max-width: $width-tablet) {
+                            border-radius: 9px;
+                            padding: 7px 9px;
+                            font-size: 8px;
+                            top: -55px;
+                            left: -48px;
+                        }
+
+                        & span {
+                            display: block;
+                            margin-top: 10px;
+
+                            @media (max-width: $width-tablet) {
+                                margin-top: 8px;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+.personal-info {
+    display: grid;
+    margin-top: 30px;
+    width: 100%;
+    justify-content: space-between;
+    grid-template-columns: 5fr 3fr;
+    grid-gap: 30px;
+
+    @media (max-width: $width-laptop) {
+        margin-top: 60px * $k-laptop;
+    }
+
+    @media (max-width: $width-minilaptop) {
+        margin-top: 60px * $k-minilaptop;
+    }
+
+    @media (max-width: $width-tablet) {
+        margin-top: 60px * $k-tablet;
+    }
+
+    @media (max-width: $width-phone) {
+        grid-template-columns: 1fr;
+        grid-gap: 20px;
+        margin-top: 20px;
+        flex-direction: column;
+        width: 100%;
+        align-items: center;
+    }
+
+    .balance {
+        padding: 30px;
+        box-sizing: border-box;
+
+        @media (max-width: $width-laptop) {
+            padding: (30px * $k-laptop) (30px * $k-laptop);
+        }
+
+        @media (max-width: $width-minilaptop) {
+            padding: (30px * $k-minilaptop) (30px * $k-minilaptop);
+        }
+
+        @media (max-width: $width-tablet) {
+            padding: (30px * $k-tablet) (30px * $k-tablet);
+        }
+
+        @media (max-width: $width-phone) {
+            margin-right: 0;
+            margin-bottom: 0;
+            width: 100%;
+            padding: 20px 20px 25px;
+        }
+
+        &__title {
+            font-family: IBM Plex Mono;
+            font-size: 30px;
+            margin-bottom: 45px;
+            font-weight: 500;
+
+            @media (max-width: $width-laptop) {
+                font-size: 30px * $k-laptop;
+                margin-bottom: 43px * $k-laptop;
+            }
+
+            @media (max-width: $width-minilaptop) {
+                font-size: 30px * $k-minilaptop;
+                margin-bottom: 43px * $k-minilaptop;
+            }
+
+            @media (max-width: $width-tablet) {
+                font-size: 30px * $k-tablet;
+                margin-bottom: 0;
+            }
+
+            @media (max-width: $width-phone) {
+                font-size: 18px;
+                margin-bottom: 25px;
+            }
+        }
+    }
+
+    .balance__info {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        @media (max-width: $width-phone) {
+            flex-direction: column;
+        }
+
+        & .balance__coins {
+            width: 250px;
+
+            @media (max-width: $width-laptop) {
+                max-width: 250px;
+            }
+
+            @media (max-width: $width-phone) {
+                margin-top: 20px;
+            }
+
+            & .balance__coin {
+                width: 100%;
+                display: flex;
+                justify-content: space-between;
+                font-family: "Inter";
+                font-weight: 600;
+                font-size: 16px;
+
+                @media (max-width: $width-laptop) {
+                    font-size: 28px * $k-laptop;
+                }
+
+                @media (max-width: $width-minilaptop) {
+                    font-size: 28px * $k-minilaptop;
+                }
+
+                @media (max-width: $width-tablet) {
+                    font-size: 28px * $k-tablet;
+                }
+
+                @media (max-width: $width-phone) {
+                    font-size: 12px;
+                }
+
+                &:nth-child(n + 2) {
+                    margin-top: 20px;
+
+                    @media (max-width: $width-laptop) {
+                        margin-top: 29px * $k-laptop;
+                    }
+
+                    @media (max-width: $width-minilaptop) {
+                        margin-top: 29px * $k-minilaptop;
+                    }
+
+                    @media (max-width: $width-tablet) {
+                        margin-top: 29px * $k-tablet;
+                    }
+
+                    @media (max-width: $width-phone) {
+                        margin-top: 8px;
+                    }
+                }
+
+                & .coin-title {
+                    &_rc {
+                        color: #2F5EF6;
+                    }
+
+                    &_rsh {
+                        color: #610BFC;
+                    }
+                }
+
+                & .coin-value {
+
+                }
+            }
+        }
+    }
+
+    .mint-history {
+        padding: 30px;
+        box-sizing: border-box;
+
+        @media (max-width: $width-laptop) {
+            padding: (30px * $k-laptop) (30px * $k-laptop);
+        }
+
+        @media (max-width: $width-minilaptop) {
+            padding: (30px * $k-minilaptop) (30px * $k-minilaptop);
+        }
+
+        @media (max-width: $width-tablet) {
+            padding: (30px * $k-tablet) (30px * $k-tablet);
+        }
+
+        @media (max-width: $width-phone) {
+            padding: 20px 20px 25px;
+            width: 100%;
+        }
+
+        &__title {
+            font-family: IBM Plex Mono;
+            white-space: nowrap;
+            font-size: 30px;
+            margin-bottom: 12px;
+            font-weight: 500;
+
+            @media (max-width: $width-laptop) {
+                font-size: 30px * $k-laptop;
+                margin-bottom: 20px * $k-laptop;
+            }
+
+            @media (max-width: $width-minilaptop) {
+                font-size: 30px * $k-minilaptop;
+                margin-bottom: 20px * $k-minilaptop;
+            }
+
+            @media (max-width: $width-tablet) {
+                font-size: 30px * $k-tablet;
+                margin-bottom: 20px * $k-tablet;
+            }
+
+            @media (max-width: $width-phone) {
+                font-size: 20px;
+                margin-bottom: 10px;
+            }
+        }
+
+        &__description {
+            font-size: 12px;
+            line-height: 14px;
+            margin-bottom: 20px;
+        }
+
+        & .history-empty {
+            font-family: Inter;
+            font-style: normal;
+            font-weight: 600;
+            font-size: 30px;
+            line-height: 36px;
+            color: #2F5EF6;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            height: 200px;
+
+            @media (max-width: $width-phone) {
+                font-size: 22px;
+                line-height: 28px;
+            }
+        }
+
+        & .history-list {
+            max-height: 260px;
+            overflow-y: auto;
+            & .history-item {
+                display: block;
+                color: #fff;
+                text-decoration: none;
+                font-size: 12px;
+                transition: all 0.2s ease-in;
+
+                &:hover {
+                    color: #2F5EF6;
+
+                    .history-item__divider {
+                        background-color: #2F5EF6;
+                    }
+                }
+
+                &.success {
+                    &:hover {
+                        color: #2EBD4D;
+                    }
+
+                    .history-item__divider {
+                        background-color: #2EBD4D;
+                    }
+
+                    .transaction-name {
+                        color: #2EBD4D;
+                    }
+                }
+
+                &.fail {
+                    &:hover {
+                        color: #F62F2F;
+                    }
+
+                    .history-item__divider {
+                        background-color: #F62F2F;
+                    }
+
+                    .transaction-name {
+                        color: #F62F2F;
+                    }
+                }
+
+                @media (max-width: $width-laptop) {
+                    font-size: 12px * $k-laptop;
+                }
+
+                @media (max-width: $width-minilaptop) {
+                    font-size: 12px * $k-minilaptop;
+                }
+
+                @media (max-width: $width-tablet) {
+                    font-size: 12px * $k-tablet;
+                }
+
+                @media (max-width: $width-phone) {
+                    max-width: 100%;
+                    font-size: 10px;
+                    font-family: "Inter";
+                }
+
+                &__title {
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+
+                    & .transaction-name {
+                        color: #2F5EF6;
+                        font-size: 16px;
+                        font-weight: 500;
+
+                        @media (max-width: $width-laptop) {
+                            font-size: 16px * $k-laptop;
+                        }
+
+
+                        @media (max-width: $width-phone) {
+                            font-family: "Inter";
+                            font-weight: 500;
+                            font-size: 12px;
+                        }
+                    }
+
+                    & .transaction-date {
+                      span {
+                        font-weight: 600;
+                      }
+                    }
+
+                    .transaction-left-side {
+                        display: flex;
+                        align-items: center;
+                    }
+
+                    .transaction-badge {
+                        border-radius: 15px;
+                        font-size: 8px;
+                        padding: 3px 5px;
+                        background: rgb(47, 93, 246);
+                        color: white;
+                        margin-left: 6px;
+                    }
+                }
+
+                &__divider {
+                    background-color: #C4C4C4;
+                    transition: all 0.2s ease-in;
+                    height: 1px;
+                    margin: 4px 0;
+
+                    @media (max-width: $width-laptop) {
+                        margin: (4px * $k-laptop) 0;
+                    }
+
+                    @media (max-width: $width-minilaptop) {
+                        margin: (4px * $k-minilaptop) 0;
+                    }
+
+                    @media (max-width: $width-tablet) {
+                        margin: (4px * $k-tablet) 0;
+                    }
+
+                    @media (max-width: $width-phone) {
+                        margin: 4px 0;
+                    }
+                }
+
+                &:nth-child(n + 2) {
+                    margin-top: 10px;
+
+                    @media (max-width: $width-laptop) {
+                        margin-top: 10px * $k-laptop;
+                    }
+
+                    @media (max-width: $width-minilaptop) {
+                        margin-top: 10px * $k-minilaptop;
+                    }
+
+                    @media (max-width: $width-tablet) {
+                        margin-top: 10px * $k-tablet;
+                    }
+
+                    @media (max-width: $width-phone) {
+                        margin-top: 10px;
+                    }
+                }
+            }
+        }
+    }
+}
+
+.tiles {
+    background: #343435;
+    box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.1);
+    border-radius: 15px;
+    padding: 30px;
+
+    @media (max-width: $width-laptop) {
+        box-shadow: 0px (10px * $k-laptop) (20px * $k-laptop) rgba(0, 0, 0, 0.1);
+        border-radius: 15px * $k-laptop;
+        padding: 50px * $k-laptop;
+    }
+
+    @media (max-width: $width-minilaptop) {
+        box-shadow: 0px (10px * $k-minilaptop) (20px * $k-minilaptop) rgba(0, 0, 0, 0.1);
+        border-radius: 15px * $k-minilaptop;
+        padding: 50px * $k-minilaptop;
+    }
+
+    @media (max-width: $width-tablet) {
+        box-shadow: 0px (10px * $k-tablet) (20px * $k-tablet) rgba(0, 0, 0, 0.1);
+        border-radius: 15px * $k-tablet;
+        padding: 50px * $k-tablet;
+    }
+
+    @media (max-width: $width-phone) {
+        box-shadow: 0px (10px * $k-phone) (20px * $k-phone) rgba(0, 0, 0, 0.1);
+        border-radius: 10px;
+        padding: 24px 22px;
+    }
+}

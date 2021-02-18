@@ -1,0 +1,130 @@
+.btn {
+  width: 100%;
+  background: var(--white);
+  border-radius: 10px;
+  border: 1px solid transparent;
+  color: var(--black);
+  font-family: Inter;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 26px;
+  line-height: 31px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 57px;
+  transition: all 0.2s ease-in;
+  outline: none;
+  cursor: pointer;
+
+  &:hover {
+    background: rgba(255, 255, 255,0.85);
+  }
+
+  &:active {
+    background: rgba(255, 255, 255,0.8);
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+    background: rgba(255, 255, 255,0.55);
+  }
+}
+
+.btn-blue {
+    font-family: Inter;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 19px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #FFFFFF;
+    height: 51px;
+    border-radius: 10px;
+    border: 1px solid transparent;
+    transition: all 0.2s ease-in;
+    outline: none;
+    cursor: pointer;
+    background: rgb(47, 94, 246);
+    padding: 0 16px;
+
+    &:hover {
+      background: rgba(47, 94, 246,0.95);
+    }
+
+    &:active {
+      background: rgba(47, 94, 246,0.75);
+    }
+
+    &:disabled {
+      cursor: not-allowed;
+      background: rgba(47, 94, 246,0.55);
+    }
+}
+
+.btn-black {
+    font-family: Inter;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 19px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #FFFFFF;
+    height: 51px;
+    border-radius: 10px;
+    border: 1px solid transparent;
+    transition: all 0.2s ease-in;
+    outline: none;
+    cursor: pointer;
+    background: rgb(0, 0, 0);
+    padding: 0 16px;
+
+    &:hover {
+      background: rgba(0, 0, 0, 0.9);
+    }
+
+    &:active {
+      background: rgba(0, 0, 0, 0.75);
+    }
+
+    &:disabled {
+      cursor: not-allowed;
+      background: rgba(0, 0, 0, 0.55);
+    }
+}
+
+@media (max-width: $xlBreakpoint) {
+  .btn {
+    height: 56px;
+    font-size: 26px;
+    line-height: 32px;
+    border-radius: 5px;
+  }
+}
+
+@media (max-width: $lgBreakpoint) {
+  .btn {
+    height: 40px;
+    font-size: 16px;
+    line-height: 19px;
+    border-radius: 5px;
+  }
+
+  .btn-blue {
+      height:40px;
+      font-size: 16px;
+      line-height: 19px;
+      border-radius: 5px;
+  }
+
+  .btn-black {
+      height:40px;
+      font-size: 14px;
+      line-height: 19px;
+      border-radius: 5px;
+  }
+}

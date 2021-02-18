@@ -1,0 +1,143 @@
+.wallet-modal {
+    margin-bottom: -15px;
+    .wallet-modal__tabs {
+        display: flex;
+        margin-bottom: 20px;
+    }
+
+    .wallet-modal__tab {
+        font-family: Inter;
+        font-style: normal;
+        font-weight: 500;
+        font-size: 20px;
+        line-height: 24px;
+        color: black;
+        background: #dddcdc;
+        border-radius: 20px;
+        min-width: 130px;
+        height: 44px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .wallet-modal__paragraph {
+        font-family: Inter;
+        font-style: normal;
+        font-weight: 400;
+        font-size: 16px;
+        line-height: 22px;
+        color: #000000;
+        margin: 0;
+        margin-bottom: 10px;
+
+        a {
+            color: #2F5EF6;
+        }
+    }
+
+    .wallet-modal__content {
+        margin: 15px 0 20px 0;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .wallet-modal__input-group {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .wallet-modal__input-label {
+        font-family: Inter;
+        font-style: normal;
+        font-weight: 600;
+        font-size: 16px;
+        line-height: 22px;
+        color: #000000;
+    }
+
+    .wallet-modal__input {
+        background: #FFFFFF;
+        border-radius: 5px;
+        color: black;
+        font-family: Inter;
+        font-style: normal;
+        font-weight: 500;
+        font-size: 16px;
+        line-height: 22px;
+        padding-left: 10px;
+        border: 1px solid #c4c4c4;
+        height: 35px;
+    }
+
+    .wallet-modal__input-subtext {
+        font-family: Inter;
+        font-style: normal;
+        font-weight: 600;
+        font-size: 12px;
+        line-height: 15px;
+        margin-top: 4px;
+    }
+
+    .wallet-modal__buttons {
+        display: flex;
+        justify-content: flex-end;
+    }
+}
+
+
+@media (max-width: $lgBreakpoint) {
+    .wallet-modal {
+        margin-bottom: 0;
+
+        .wallet-modal__buttons {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            grid-gap: 10px;
+        }
+
+        .wallet-modal__tabs {
+            display: flex;
+            margin-bottom: 10px;
+        }
+
+        .wallet-modal__tab {
+            font-weight: 500;
+            font-size: 14px;
+            line-height: 18px;
+            color: black;
+            background: #dddcdc;
+            border-radius: 20px;
+            min-width: 100px;
+            height: 30px;
+        }
+
+        .wallet-modal__paragraph {
+            font-size: 12px;
+            line-height: 14px;
+        }
+
+        .wallet-modal__input-subtext {
+            font-size: 10px;
+            line-height: 13px;
+        }
+
+        .wallet-modal__input-label {
+            font-size: 14px;
+        }
+
+        .wallet-modal__input {
+            background: #FFFFFF;
+            border-radius: 5px;
+            color: black;
+            font-family: Inter;
+            font-style: normal;
+            font-weight: 500;
+            font-size: 12px;
+            line-height: 22px;
+            padding-left: 10px;
+            border: 1px solid #c4c4c4;
+            height: 35px;
+        }
+    }
+}

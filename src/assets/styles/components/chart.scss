@@ -1,0 +1,28 @@
+@import 'assets/styles/_variables';
+
+.chart {
+    width: 200px;
+    height: 200px;
+
+    &__text {
+        font-size: 12px;
+        font-weight: 500;
+    }
+
+}
+
+.empty-chart {
+    font-family: Inter;
+    font-style: normal;
+    font-weight: 300;
+    font-size: 14px;
+    line-height: 22px;
+    width: 200px;
+    height: 200px;
+    border-radius: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    border: 30px solid #C4C4C4;
+}

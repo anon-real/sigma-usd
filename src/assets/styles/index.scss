@@ -1,0 +1,170 @@
+@import '~normalize.css';
+@import './fonts.scss';
+@import './variables.css';
+@import './_variables.scss';
+@import './utils.scss';
+@import './margins.scss';
+@import './components/top-section.scss';
+@import './components/card.scss';
+@import './components/switch.scss';
+@import './components/input.scss';
+@import './components/terms.scss';
+@import './components/btn.scss';
+@import './components/modal.scss';
+@import './components/infoModal.scss';
+@import './components/walletModal.scss';
+@import './components/chart.scss';
+
+* {
+  font-family: "Inter", sans-serif;
+  box-sizing: border-box;
+}
+
+html, body {
+  width: 100%;
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
+  min-width: 320px;
+}
+
+body {
+  background: var(--darkerBlack);
+  min-width: 100%;
+  min-height: 100%;
+}
+
+ul {
+  margin: 0;
+  padding: 0;
+}
+
+li {
+  list-style-type: none;
+}
+
+.main {
+  margin-bottom: 120px;
+}
+
+.a-container {
+  max-width: 975px;
+  margin: 0 auto;
+
+  @media (max-width: $xlBreakpoint) {
+    padding: 0 20px;
+  }
+
+  @media (max-width: $lgBreakpoint) {
+    padding: 0 20px;
+  }
+}
+
+.delimiter {
+  height: 2px;
+  width: 100%;
+  background: rgba(196, 196, 196, 0.5);
+}
+
+.Toastify__toast-container {
+    width: 300px;
+    height: 54px;
+}
+
+.Toastify__toast-body {
+    margin: 0;
+}
+
+.Toastify__toast {
+    min-height: 40px;
+    min-width: 300px;
+    border-radius: 10px;
+}
+
+.Toastify__toast--success {
+    font-family: Inter;
+    color: black;
+    font-size: 18px;
+    line-height: 24px;
+    padding: 8px 0;
+    padding-left: 45px;
+    padding-right: 20px;
+    background: white;
+
+    &:before {
+        content: '✅';
+        position: absolute;
+        left: 16px;
+        top: 9px;
+    }
+}
+
+.Toastify__toast--error {
+    font-family: Inter;
+    color: black;
+    font-size: 18px;
+    line-height: 24px;
+    padding: 8px 0;
+    padding-left: 45px;
+    padding-right: 20px;
+    background: white;
+
+    &:before {
+        content: '❌';
+        position: absolute;
+        left: 16px;
+        top: 9px;
+    }
+}
+
+.Toastify__toast--warning {
+    font-family: Inter;
+    color: black;
+    font-size: 18px;
+    line-height: 24px;
+    padding: 8px 0;
+    padding-left: 45px;
+    padding-right: 20px;
+    background: white;
+
+    &:before {
+        content: '⚠️';
+        position: absolute;
+        left: 16px;
+        top: 9px;
+    }
+}
+
+.Toastify__toast--default {
+    font-family: Inter;
+    color: black;
+    font-size: 18px;
+    line-height: 24px;
+    padding: 8px 0;
+    padding-left: 45px;
+    padding-right: 20px;
+    background: white;
+
+    &:before {
+        content: '🔔';
+        position: absolute;
+        left: 16px;
+        top: 9px;
+    }
+}
+
+.browser-support {
+    font-family: Inter;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: var(--darkerBlack);
+    color: white;
+    text-align: center;
+
+    @media (max-width: $xlBreakpoint) {
+        padding: 0 50px;
+    }
+}

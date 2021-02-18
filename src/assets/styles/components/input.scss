@@ -1,0 +1,74 @@
+.input {
+  .input-group {
+    display: flex;
+
+    input {
+      background: var(--darkerBlack);
+      border-radius: 7.5px;
+      color: var(--white);
+      font-family: Inter;
+      font-style: normal;
+      font-weight: 500;
+      font-size: 20px;
+      line-height: 26px;
+      padding-left: 14px;
+      height: 45px;
+      border: 0;
+      width: 100%;
+      outline: none;
+    }
+  }
+
+  .input__subtext {
+    font-family: Inter;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 11px;
+    line-height: 14.25px;
+    display: flex;
+    align-items: center;
+    margin-top: 10px;
+    color: var(--white);
+
+    &.error {
+      color: red;
+    }
+  }
+}
+
+@media (max-width: $xlBreakpoint) {
+  .input {
+    .input-group {
+      input {
+        border-radius: 5px;
+        height: 50px;
+        font-size: 22px;
+        line-height: 22px;
+      }
+    }
+
+    .input__subtext {
+      font-size: 13px;
+      line-height: 16px;
+    }
+  }
+}
+
+@media (max-width: $lgBreakpoint) {
+  .input {
+    .input-group {
+      input {
+        border-radius: 5px;
+        height: 30px;
+        padding-left: 6px;
+        font-size: 18px;
+        line-height: 22px;
+      }
+    }
+
+    .input__subtext {
+      font-size: 8px;
+      line-height: 8px;
+    }
+  }
+}

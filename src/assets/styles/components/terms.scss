@@ -1,0 +1,50 @@
+.terms {
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+  flex-wrap: wrap;
+  margin-top: 15px;
+
+  p {
+    font-family: Inter;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 16px;
+    line-height: 20px;
+    margin: 0;
+    color: var(--white);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+
+    & + p {
+      margin-top: 6px;
+    }
+  }
+}
+
+@media (max-width: $xlBreakpoint) {
+  .terms {
+    margin-top: 10px;
+
+    p {
+      font-size: 11px;
+      line-height: 19px;
+
+      &:first-child {
+        margin-bottom: 0px;
+      }
+    }
+  }
+}
+
+@media (max-width: $lgBreakpoint) {
+  .terms {
+    margin-top: 5px;
+
+    p {
+      font-size: 9px;
+      line-height: 12px;
+    }
+  }
+}

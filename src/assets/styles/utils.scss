@@ -1,0 +1,36 @@
+@import './_variables';
+
+// use for convertation 'px' to 'rem'
+// example: rem(24px) or rem(24)
+@function rem($size, $baseSize: $baseFontSize) {
+  @if (unitless($size)) {
+    $size: $size * 1px;
+  }
+
+  // Fix less then 1px problem
+  @if ($size == 1px or $size == -1px) {
+    @return $size;
+  }
+
+  @if (unitless($baseSize)) {
+    $baseSize: $baseSize * 1px;
+  }
+
+  @return $size / $baseSize * 1rem;
+}
+
+@mixin gridBreakPoint($size) {
+  @if (map-get($size, 'min') and map-get($size, 'max')) {
+    @media (min-width: map-get($size, 'min')) and (max-width: map-get($size, 'max')) {
+      @content;
+    }
+  } @else if (map-get($size, 'min')) {
+    @media (min-width: map-get($size, 'min')) {
+      @content;
+    }
+  } @else if (map-get($size, 'max')) {
+    @media (max-width: map-get($size, 'max')) {
+      @content;
+    }
+  }
+}

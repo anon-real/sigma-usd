@@ -1,0 +1,84 @@
+/* inter-regular - latin */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 400;
+  src: url('./fonts/inter-v2-latin-regular.eot'); /* IE9 Compat Modes */
+  src: local(''),
+       url('./fonts/inter-v2-latin-regular.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+       url('./fonts/inter-v2-latin-regular.woff2') format('woff2'), /* Super Modern Browsers */
+       url('./fonts/inter-v2-latin-regular.woff') format('woff'), /* Modern Browsers */
+       url('./fonts/inter-v2-latin-regular.ttf') format('truetype'), /* Safari, Android, iOS */
+       url('./fonts/inter-v2-latin-regular.svg#Inter') format('svg'); /* Legacy iOS */
+  font-display: swap;
+}
+/* inter-500 - latin */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 500;
+  src: url('./fonts/inter-v2-latin-500.eot'); /* IE9 Compat Modes */
+  src: local(''),
+       url('./fonts/inter-v2-latin-500.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+       url('./fonts/inter-v2-latin-500.woff2') format('woff2'), /* Super Modern Browsers */
+       url('./fonts/inter-v2-latin-500.woff') format('woff'), /* Modern Browsers */
+       url('./fonts/inter-v2-latin-500.ttf') format('truetype'), /* Safari, Android, iOS */
+       url('./fonts/inter-v2-latin-500.svg#Inter') format('svg'); /* Legacy iOS */
+  font-display: swap;
+}
+/* inter-600 - latin */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 600;
+  src: url('./fonts/inter-v2-latin-600.eot'); /* IE9 Compat Modes */
+  src: local(''),
+       url('./fonts/inter-v2-latin-600.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+       url('./fonts/inter-v2-latin-600.woff2') format('woff2'), /* Super Modern Browsers */
+       url('./fonts/inter-v2-latin-600.woff') format('woff'), /* Modern Browsers */
+       url('./fonts/inter-v2-latin-600.ttf') format('truetype'), /* Safari, Android, iOS */
+       url('./fonts/inter-v2-latin-600.svg#Inter') format('svg'); /* Legacy iOS */
+  font-display: swap;
+}
+/* inter-900 - latin */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 900;
+  src: url('./fonts/inter-v2-latin-900.eot'); /* IE9 Compat Modes */
+  src: local(''),
+       url('./fonts/inter-v2-latin-900.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+       url('./fonts/inter-v2-latin-900.woff2') format('woff2'), /* Super Modern Browsers */
+       url('./fonts/inter-v2-latin-900.woff') format('woff'), /* Modern Browsers */
+       url('./fonts/inter-v2-latin-900.ttf') format('truetype'), /* Safari, Android, iOS */
+       url('./fonts/inter-v2-latin-900.svg#Inter') format('svg'); /* Legacy iOS */
+  font-display: swap;
+}
+
+/* ibm-plex-mono-regular - latin */
+@font-face {
+  font-family: 'IBM Plex Mono';
+  font-style: normal;
+  font-weight: 400;
+  src:
+       url('./fonts/ibm-plex-mono-v6-latin-regular.woff2') format('woff2'), /* Chrome 26+, Opera 23+, Firefox 39+ */
+       url('./fonts/ibm-plex-mono-v6-latin-regular.woff') format('woff'); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+}
+/* ibm-plex-mono-500 - latin */
+@font-face {
+  font-family: 'IBM Plex Mono';
+  font-style: normal;
+  font-weight: 500;
+  src:
+       url('./fonts/ibm-plex-mono-v6-latin-500.woff2') format('woff2'), /* Chrome 26+, Opera 23+, Firefox 39+ */
+       url('./fonts/ibm-plex-mono-v6-latin-500.woff') format('woff'); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+}
+/* ibm-plex-mono-700 - latin */
+@font-face {
+  font-family: 'IBM Plex Mono';
+  font-style: normal;
+  font-weight: 700;
+  src:
+       url('./fonts/ibm-plex-mono-v6-latin-700.woff2') format('woff2'), /* Chrome 26+, Opera 23+, Firefox 39+ */
+       url('./fonts/ibm-plex-mono-v6-latin-700.woff') format('woff'); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+}

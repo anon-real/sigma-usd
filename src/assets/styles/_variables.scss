@@ -1,0 +1,21 @@
+$xlBreakpoint: 1319px;
+$lgBreakpoint: 767px;
+$smBreakpoint: 319px;
+
+$baseFontSize: 18px;
+
+$breakPoints: (
+  sm: (
+    min: $smBreakpoint + 1
+  ),
+  lg: (
+    min: $lgBreakpoint + 1,
+  ),
+  xl: (
+    min: $xlBreakpoint + 1,
+  ),
+);
+
+$xlContent: 1300px;
+$lgContent: 808px;
+$smContent: 280px;

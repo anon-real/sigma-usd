@@ -1,0 +1,8 @@
+/next-env.d.ts
+/**/*.d.ts
+next.config.js
+.eslintrc.js
+/**/*.scss
+/**/*.svg
+/**/*.png
+/**/*.js

@@ -1,0 +1,79 @@
+@import '../_variables';
+
+.top-section {
+  margin-bottom: 75px;
+  text-align: center;
+
+  .top-section__title {
+    font-style: normal;
+    font-weight: 900;
+    color: var(--white);
+    font-size: 98px;
+    line-height: 120px;
+    text-align: center;
+    margin: 0;
+
+    &--colored {
+      background-color: #610BFC;
+      background-image: conic-gradient(#610BFC, #2F5EF6);
+      background-image: linear-gradient(91.77deg, #610BFC 0.68%, #2F5EF6 99.4%);
+      background-clip: text;
+      background-size: 100%;
+      background-repeat: repeat;
+
+      /* Use the text as a mask for the background. */
+      /* This will show the gradient as a text color rather than element bg. */
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      -moz-background-clip: text;
+      -moz-text-fill-color: transparent;
+    }
+  }
+
+  .top-section__paragraph {
+    font-family: IBM Plex Mono;
+    font-size: 30px;
+    line-height: 36px;
+    color: var(--gray);
+    margin-top: 20px;
+    margin-bottom: 0;
+  }
+}
+
+@media (max-width: $xlBreakpoint) {
+  .top-section {
+    margin-bottom: 40px;
+    .top-section__title {
+      font-size: 70px;
+      line-height: 110%;
+    }
+
+    .top-section__paragraph {
+      margin-top: 12px;
+      font-size: 16px;
+      line-height: 20px;
+    }
+  }
+}
+
+@media (max-width: $lgBreakpoint) {
+  .top-section {
+    margin-bottom: 30px;
+    .top-section__title {
+      font-size: 44px;
+      line-height: 100%;
+      text-align: left;
+
+      &--ampersand {
+        display: block;
+      }
+    }
+
+    .top-section__paragraph {
+      margin-top: 12px;
+      font-size: 16px;
+      line-height: 20px;
+      text-align: left;
+    }
+  }
+}

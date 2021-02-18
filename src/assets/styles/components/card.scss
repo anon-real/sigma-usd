@@ -1,0 +1,46 @@
+.card {
+  background: var(--grayLight);
+  padding: 30px 37.5px;
+  background: #343435;
+  box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.1);
+  border-radius: 20px;
+
+  .card__title {
+    font-family: IBM Plex Mono;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 30px;
+    line-height: 36px;
+    display: flex;
+    align-items: center;
+    color: var(--white);
+    margin-bottom: 35px;
+    margin-top: 0;
+  }
+}
+
+@media (max-width: $xlBreakpoint)  {
+  .card {
+    padding: 30px;
+    border-radius: 15px;
+
+    .card__title {
+      font-size: 24px;
+      line-height: 32px;
+      margin-bottom: 15px;
+    }
+  }
+}
+
+@media (max-width: $lgBreakpoint)  {
+  .card {
+    padding: 20px;
+    border-radius: 10px;
+
+    .card__title {
+      font-size: 18px;
+      line-height: 22px;
+      margin-bottom: 15px;
+    }
+  }
+}

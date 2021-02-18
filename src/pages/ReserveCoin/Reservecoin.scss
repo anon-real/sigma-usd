@@ -1,0 +1,32 @@
+@import '../../assets/styles/variables';
+
+.reservecoin-cards {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(355px, 620px));
+  grid-gap: 30px;
+}
+
+@media (max-width: $xlBreakpoint) {
+  .reservecoin-cards {
+    grid-gap: 20px;
+    grid-template-columns: repeat(2, minmax(355px, 650px));
+  }
+}
+
+@media (max-width: $lgBreakpoint) {
+  .reservecoin-cards {
+    grid-gap: 20px;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  }
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  /* display: none; <- Crashes Chrome on hover */
+  -webkit-appearance: none;
+  margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
+}
+
+input[type=number] {
+  -moz-appearance:textfield; /* Firefox */
+}
