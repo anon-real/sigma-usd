@@ -19,4 +19,7 @@ npm run start
 npm build
 ```
 
-This project uses web-asembly. If you want to serve it using nginx, make sure nginx can serve WASM files - you can use the [mime.types](mime.types) file.
+This project uses web-assembly. If you want to serve it using nginx, make sure nginx can serve WASM files - you can use the [mime.types](mime.types) file.
+
+## Assembler service
+You have to set up your own [assembler service](https://github.com/anon-real/ergo-assembler) and set its url in the [const](src/utils/consts.js) file before deploying the UI.
