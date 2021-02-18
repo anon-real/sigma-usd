@@ -82,7 +82,9 @@ export class PersonalInfo extends Component<Props, State> {
                 >
                     <div className="history-item__title">
                         <div className="transaction-left-side">
-                            <span className="transaction-name">{item.name}</span>
+                            <span className="transaction-name">
+                                {item.name}
+                            </span>
                             <span
                                 className={cn('transaction-badge', {
                                     pending: item.miningStat === 'pending',
@@ -106,7 +108,9 @@ export class PersonalInfo extends Component<Props, State> {
     }
 
     async updateHistory() {
-        const raw = getForKey('operation').sort((a: any, b: any) => b.timestamp - a.timestamp);
+        const raw = getForKey('operation').sort(
+            (a: any, b: any) => b.timestamp - a.timestamp
+        );
         this.setState({
             history: raw.map((col: any, index: number) => {
                 const time = moment(col.timestamp);
@@ -161,7 +165,9 @@ export class PersonalInfo extends Component<Props, State> {
                                     >
                                         {name}
                                     </span>
-                                    <span className="coin-value">${value?.toFixed(6)}</span>
+                                    <span className="coin-value">
+                                        ${value?.toFixed(6)}
+                                    </span>
                                 </div>
                             ))}
                         </div>
@@ -169,13 +175,17 @@ export class PersonalInfo extends Component<Props, State> {
                 </div>
                 <div className="mint-history tiles">
                     <div className="mint-history__title">History</div>
-                    <div className="mint-history__description">
-                        If a operation succeeds, it will be highlighted in green. Otherwise, it will
-                        be highlighted in red and it means that your funds are being returned to
-                        you.
-                    </div>
                     {!!this.state.history.length && (
-                        <div className="history-list">{this.getHistoryElems()}</div>
+                        <div className="mint-history__description">
+                            If a operation succeeds, it will be highlighted in
+                            green. Otherwise, it will be highlighted in red and
+                            it means that your funds are being returned to you.
+                        </div>
+                    )}
+                    {!!this.state.history.length && (
+                        <div className="history-list">
+                            {this.getHistoryElems()}
+                        </div>
                     )}
                     {!this.state.history.length && (
                         <div className="history-empty">No history yet</div>
