@@ -59,7 +59,7 @@ export async function reqFollower() {
             info.txId = out.tx.id;
             info.id = req.id;
             let confNum = await txConfNum(info.txId)
-            info.miningStat = confNum ? 'mined' : 'pending'
+            let miningStatus = confNum ? 'mined' : 'pending'
             if (confNum >= 2) {
                 newReqs.pop()
             }
@@ -67,10 +67,10 @@ export async function reqFollower() {
             if (out.detail === 'success') {
                 info.status = 'success';
                 let prev = getForKey(req.key).filter(prev => prev.id === info.id)
-                console.log(prev.length)
                 if (prev.length === 0 || prev[0].status !== info.status) {
                     toast.success(`Your operation to "${info.type}" is done and pending mining - follow it in the History table.`)
                 }
+                info.miningStat = miningStatus
                 addReq(info, req.key, 'id');
 
             } else if (out.detail === 'returning') {
@@ -79,6 +79,7 @@ export async function reqFollower() {
                 if (prev.length === 0 || prev[0].status !== info.status) {
                     toast.error(`Your operation to "${info.type}" has failed. Your assets are being returned to you and is pending mining - follow it in the History table..`)
                 }
+                info.miningStat = `refund ${miningStatus}`
                 addReq(info, req.key, 'id');
             }
 

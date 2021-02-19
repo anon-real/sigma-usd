@@ -88,7 +88,6 @@ export async function getRcRedeemP2s(amount, oracleBoxId) {
     let rcTokenId64 = Buffer.from(await rcTokenId(), 'hex').toString('base64')
     let oracleBoxId64 = Buffer.from(oracleBoxId, 'hex').toString('base64')
 
-    console.log(oracleBoxId64)
     let script = template
         .replaceAll('$userAddress', userTree)
         .replaceAll('$redeemAmount', amount)
