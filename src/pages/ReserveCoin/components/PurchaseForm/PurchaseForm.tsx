@@ -34,7 +34,7 @@ export class PurchaseForm extends Component<any, any> {
         if (!this.state.curHeight) return '';
         const maxAllowed = await maxRcToMint(this.state.curHeight);
         if (maxAllowed < inp)
-            return `Can not mint more than ${maxAllowed} ${reserveName} based on current reserve status`;
+            return `Unable to mint more than ${maxAllowed} ${reserveName} based on the current reserve status`;
         return '';
     };
 

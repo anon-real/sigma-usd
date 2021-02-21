@@ -60,9 +60,11 @@ const Home = () => {
                     </div>
 
                     <div className="finance-description__text">
-                        No intermediaries, no middlemen, just pure Decentralized Finance. Experience
-                        the latest advancements in Ergo Stablecoins by buying and selling SigUSD and
-                        SigRSV directly with the smart contract itself. This project is based off of
+                        No intermediaries, no middlemen, <br/>just pure decentralized finance. 
+                        
+                        <br/><br/>
+                        Experience the latest advancements in Stablecoins by buying and selling SigUSD and
+                        SigRSV using Ergo and smart contracts.<br/><br/> This project is based on
                         the{' '}
                         <a
                             target="_blank"
@@ -71,7 +73,7 @@ const Home = () => {
                         >
                             AgeUSD Protocol
                         </a>
-                        .
+                        
                     </div>
                 </section>
                 <CoinsInfo />

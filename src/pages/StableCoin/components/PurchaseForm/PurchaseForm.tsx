@@ -36,9 +36,9 @@ export class PurchaseForm extends Component<any, any> {
     async isInputInvalid(inp: number) {
         const maxAllowed = await maxScToMint();
         if (maxAllowed < inp)
-            return `Can not mint more than ${(maxAllowed / 100).toFixed(
+            return `Unable to mint more than ${(maxAllowed / 100).toFixed(
                 2,
-            )} ${usdName} based on current reserve status`;
+            )} ${usdName} based on the current the reserve status`;
         return '';
     }
 
@@ -59,7 +59,7 @@ export class PurchaseForm extends Component<any, any> {
 
     startScMint() {
         if (!isWalletSaved()) {
-            toast.warn('Please set up your wallet first.');
+            toast.warn('Please configure your wallet first.');
             this.setState({ isWalletModalOpen: true });
             return;
         }
@@ -77,7 +77,7 @@ export class PurchaseForm extends Component<any, any> {
                 });
             })
             .catch((err) => {
-                toast.error(`Could not register the request.${err.message}`);
+                toast.error(`Unable to register the request.${err.message}`);
                 this.setState({ loading: false });
             });
     }
