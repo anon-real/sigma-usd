@@ -36,7 +36,7 @@ export class RedeemForm extends Component<any, any> {
     async isInputInvalid(inp: number) {
         const maxAllowed = await scNumCirc();
         if (maxAllowed < inp)
-            return `Can not redeem more than ${(maxAllowed / 100).toFixed(
+            return `Unable to redeem more than ${(maxAllowed / 100).toFixed(
                 2,
             )} ${usdName} based on current circulating supply`;
         return '';
