@@ -6,7 +6,7 @@ import './assets/styles/index.scss';
 
 if (!window.BigUint64Array) {
     const rootElement = document.getElementById('root');
-    ReactDOM.render(<div className="browser-support">Your browser doesn't support some core functionalities, please update your browser's version or use latest chrome/firefox/brave instead</div>, rootElement)
+    ReactDOM.render(<div className="browser-support">Safari browser doesn't support some core functionalities, please update your browser for a potential fix or use chrome/firefox/brave instead</div>, rootElement)
 } else {
     const { initApp } = require('./App');
     initApp();

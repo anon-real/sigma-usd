@@ -17,7 +17,7 @@ enum Wallets {
 }
 
 const TABS = {
-    [Wallets.ANY_WALLET]: 'Any Wallet',
+    [Wallets.ANY_WALLET]: 'Wallet',
 };
 
 const WalletModal = ({ open, onClose }: Props) => {
