@@ -29,12 +29,14 @@ export async function p2s(request) {
 }
 
 async function resolvePending() {
-    let reqs = getForKey('operation').filter(req => req.miningStat === 'pending');
+    let reqs = getForKey('operation').filter(req => req.miningStat.includes('pending'));
     for (let i = 0; i < reqs.length; i++) {
         let info = reqs[i]
         let confNum = await txConfNum(info.txId)
-        info.miningStat = confNum ? 'mined' : 'pending'
-        if (info.miningStat === 'mined') {
+        let miningStat = confNum ? 'mined' : 'pending'
+        if (miningStat === 'mined') {
+            if (info.miningStat.includes('refund')) info.miningStat = 'refund mined'
+            else info.miningStat = 'mined'
             addReq(info, 'operation', 'id');
         }
     }
