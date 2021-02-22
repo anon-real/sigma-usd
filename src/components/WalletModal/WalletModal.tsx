@@ -51,9 +51,7 @@ const WalletModal = ({ open, onClose }: Props) => {
                                 >
                                     here
                                 </a>
-                                . 
-                                
-                                Your funds will be safe using smart contracts
+                                . Your funds will be safe using smart contracts
                                 that prevent the service from cheating!
                             </p>
                             <div className="wallet-modal__input-group">
