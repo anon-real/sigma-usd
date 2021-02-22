@@ -19,6 +19,7 @@ if (!window.BigUint64Array) {
         initApp();
     }
 
+
 // if (module.hot) {
 //     module.hot.accept('./UtilPage/Main', () => {
 //         const NextApp = require('./UtilPage/Main').default;
