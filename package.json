@@ -78,7 +78,7 @@
     "rcolor": "^1.0.1",
     "react": "^16.7.0",
     "react-addons-css-transition-group": "^15.6.2",
-    "react-addons-shallow-compare": "^15.6.0",
+    "react-addons-shallow-compare": "^15.6.3",
     "react-animated-css": "^1.0.4",
     "react-anime": "^2.2.0",
     "react-bootstrap": "^0.32.4",
