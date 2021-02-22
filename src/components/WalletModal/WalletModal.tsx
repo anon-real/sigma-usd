@@ -17,7 +17,7 @@ enum Wallets {
 }
 
 const TABS = {
-    [Wallets.ANY_WALLET]: 'Wallet',
+    [Wallets.ANY_WALLET]: 'Set Wallet',
 };
 
 const WalletModal = ({ open, onClose }: Props) => {
@@ -42,10 +42,7 @@ const WalletModal = ({ open, onClose }: Props) => {
                     {currentTab === Wallets.ANY_WALLET && (
                         <>
                             <p className="wallet-modal__paragraph">
-                                This option is using the assembler service.
-                            </p>
-                            <p className="wallet-modal__paragraph">
-                                The assembler service is an intermediate step
+                                This option uses our assembler service, an intermediate step
                                 that you can find out more about{' '}
                                 <a
                                     href="https://www.ergoforum.org/t/tx-assembler-service-bypassing-node-requirement-for-dapps/443"
