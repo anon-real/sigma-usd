@@ -7,13 +7,13 @@ interface IPieChartProps {
     compact?: boolean;
 }
 export enum COLORSIDS {
-    REBELCASH = 'RebelCash',
-    REBELSHARE = 'RebelShare',
+    SIGMAUSD = 'SigmaUSD',
+    SIGMARSV = 'SigmaRSV',
     ERGO = 'Ergo',
 }
 export const COLORS = {
-    [COLORSIDS.REBELCASH]: '#2F5EF6',
-    [COLORSIDS.REBELSHARE]: '#610BFC',
+    [COLORSIDS.SIGMAUSD]: '#2F5EF6',
+    [COLORSIDS.SIGMARSV]: '#610BFC',
     [COLORSIDS.ERGO]: '#ffffff',
 };
 

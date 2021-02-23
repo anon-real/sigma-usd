@@ -31,7 +31,7 @@ const Reservecoin = () => {
                             & Redeem <span className="top-section__title--colored">SigmaRSV</span>
                         </span>
                     </h2>
-                    <p className="top-section__paragraph">Earn premiums upon redemption</p>
+                    <p className="top-section__paragraph">Provide liquidity and earn premiums upon redemption</p>
                 </div>
                 <div className="reservecoin-cards">
                     <PurchaseForm />
