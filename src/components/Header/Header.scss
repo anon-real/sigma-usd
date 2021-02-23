@@ -126,11 +126,11 @@ header {
             margin-left: 30px;
 
             @media (max-width: $width-laptop) {
-                margin-left: 30px * $k-laptop;
+                margin-left: 50px * $k-laptop;
             }
 
             @media (max-width: $width-tablet) {
-                margin-left: 30px * $k-tablet;
+                margin-left: 50px * $k-tablet;
             }
         }
     }

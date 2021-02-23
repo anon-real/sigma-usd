@@ -72,7 +72,7 @@ main {
 .finance-description {
     display: flex;
     max-width: 975px;
-    padding-left: 10px;
+    
     @media (max-width: $width-tablet) {
         width: 100%
     }
