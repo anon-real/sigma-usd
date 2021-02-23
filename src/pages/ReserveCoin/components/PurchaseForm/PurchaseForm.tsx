@@ -23,22 +23,43 @@ export class PurchaseForm extends Component<any, any> {
             address: '',
             dueTime: null,
             curHeight: NaN,
+            errMsg: '',
+            amount: '',
         };
     }
 
     componentDidMount() {
-        currentHeight().then(height => this.setState({curHeight: height}))
+        currentHeight().then((height) => this.setState({ curHeight: height }));
     }
 
     isInputInvalid = async (inp: number) => {
-        if (!this.state.curHeight) return '';
+        if (!this.state.curHeight) {
+            this.setState({
+                errMsg: '',
+            });
+            return;
+        }
         const maxAllowed = await maxRcToMint(this.state.curHeight);
-        if (maxAllowed < inp)
-            return `Unable to mint more than ${maxAllowed} ${reserveName} based on the current reserve status`;
-        return '';
+        if (maxAllowed < inp) {
+            this.setState({
+                errMsg: `Unable to mint more than ${maxAllowed} ${reserveName} based on the current reserve status`,
+            });
+            return;
+        }
+
+        this.setState({
+            errMsg: '',
+        });
     };
 
     async updateParams(amount: any) {
+        if (!amount || !amount.trim()) {
+            this.setState({
+                mintErgVal: 0,
+                mintErgFee: 0,
+            });
+            return;
+        }
         const tot = await priceToMintRc(amount);
         const fee = await feeToMintRc(amount);
         this.setState({
@@ -49,14 +70,10 @@ export class PurchaseForm extends Component<any, any> {
 
     async inputChange(inp: string) {
         if (!isNatural(inp) || inp.startsWith('-')) return;
-        const errMsg = await this.isInputInvalid(parseInt(inp));
-        this.setState({ amount: inp, errMsg });
-        if (!inp || !inp.trim())
-            this.setState({
-                mintErgVal: 0,
-                mintErgFee: 0,
-            });
-        else await this.updateParams(inp);
+        this.setState({ amount: inp });
+
+        await this.isInputInvalid(parseInt(inp));
+        await this.updateParams(inp);
     }
 
     startRcRedeem() {
@@ -95,9 +112,7 @@ export class PurchaseForm extends Component<any, any> {
                             value={this.state.amount}
                             step="1"
                             onChange={(e) => {
-                                this.inputChange(e.target.value).catch((err) =>
-                                    console.log('err when changing reserve amount', err),
-                                );
+                                this.inputChange(e.target.value);
                             }}
                             type="number"
                             placeholder="Amount"
