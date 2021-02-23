@@ -1,4 +1,4 @@
-export const assemblerUrl = 'https://url_to_assembler_service/'
+export const assemblerUrl = 'https://ergo-assm.phenotype.dev/'
 export const minErgVal = 33000
 
 export const reserveName = 'SigmaRSV'
