@@ -21,10 +21,19 @@ export class PurchaseForm extends Component<any, any> {
             isModalOpen: false,
             address: '',
             dueTime: null,
+            errMsg: '',
+            amount: '',
         };
     }
 
     async updateParams(amount: any) {
+        if (!amount || !amount.trim()) {
+            this.setState({
+                mintErgVal: 0,
+                mintErgFee: 0,
+            });
+            return;
+        }
         const tot = await priceToMintSc(amount);
         const fee = await feeToMintSc(amount);
         this.setState({
@@ -33,28 +42,31 @@ export class PurchaseForm extends Component<any, any> {
         });
     }
 
-    async isInputInvalid(inp: number) {
+    async isInputInvalid(inp: any) {
         const maxAllowed = await maxScToMint();
-        if (maxAllowed < inp)
-            return `Unable to mint more than ${(maxAllowed / 100).toFixed(
-                2,
-            )} ${usdName} based on the current the reserve status`;
-        return '';
+
+        if (maxAllowed < inp) {
+            this.setState({
+                errMsg: `Unable to mint more than ${(maxAllowed / 100).toFixed(
+                    2,
+                )} ${usdName} based on the current the reserve status`,
+            });
+            return;
+        }
+
+        this.setState({
+            errMsg: '',
+        });
     }
 
     async inputChange(inp: string) {
         const parts = inp.split('.');
         if (inp.startsWith('-') || (parts.length > 1 && parts[1].length > 2)) return;
 
-        const errMsg = await this.isInputInvalid(dollarToCent(inp));
-        this.setState({ amount: inp, errMsg });
+        this.setState({ amount: inp });
 
-        if (!inp || !inp.trim())
-            this.setState({
-                mintErgVal: 0,
-                mintErgFee: 0,
-            });
-        else await this.updateParams(inp);
+        await this.isInputInvalid(dollarToCent(inp));
+        await this.updateParams(inp);
     }
 
     startScMint() {
@@ -92,9 +104,7 @@ export class PurchaseForm extends Component<any, any> {
                         <input
                             value={this.state.amount}
                             onChange={(e) => {
-                                this.inputChange(e.target.value).catch((err) =>
-                                    console.log('err when changing reserve amount', err),
-                                );
+                                this.inputChange(e.target.value);
                             }}
                             type="number"
                             placeholder="Amount"
