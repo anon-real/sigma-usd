@@ -308,3 +308,6 @@ export async function ergBalance(bal) {
     return bal['erg'] || 0;
 }
 
+export function currentReserveRatio() {
+    return Number(bankBox.current_reserve_ratio(oracleBox));
+}
