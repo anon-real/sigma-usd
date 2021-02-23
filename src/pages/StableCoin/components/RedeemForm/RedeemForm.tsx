@@ -27,11 +27,12 @@ export class RedeemForm extends Component<any, any> {
     }
 
     async updateParams(amount: any) {
-        if (!amount || !amount.trim())
+        if (!amount || !amount.trim()) {
             this.setState({
                 redeemErgVal: 0,
                 redeemErgFee: 0,
             });
+        }
         const tot = await amountFromRedeemingSc(amount);
         const fee = await feeFromRedeemingSc(amount);
         this.setState({
