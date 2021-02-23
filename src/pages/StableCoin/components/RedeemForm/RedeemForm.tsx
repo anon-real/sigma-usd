@@ -21,10 +21,17 @@ export class RedeemForm extends Component<any, any> {
             isModalOpen: false,
             address: '',
             dueTime: null,
+            errMsg: '',
+            amount: '',
         };
     }
 
     async updateParams(amount: any) {
+        if (!amount || !amount.trim())
+            this.setState({
+                redeemErgVal: 0,
+                redeemErgFee: 0,
+            });
         const tot = await amountFromRedeemingSc(amount);
         const fee = await feeFromRedeemingSc(amount);
         this.setState({
@@ -33,28 +40,31 @@ export class RedeemForm extends Component<any, any> {
         });
     }
 
-    async isInputInvalid(inp: number) {
+    async isInputInvalid(inp: any) {
         const maxAllowed = await scNumCirc();
-        if (maxAllowed < inp)
-            return `Unable to redeem more than ${(maxAllowed / 100).toFixed(
-                2,
-            )} ${usdName} based on current circulating supply`;
-        return '';
+
+        if (maxAllowed < inp) {
+            this.setState({
+                errMsg: `Unable to redeem more than ${(maxAllowed / 100).toFixed(
+                    2,
+                )} ${usdName} based on current circulating supply`,
+            });
+            return;
+        }
+
+        this.setState({
+            errMsg: '',
+        });
     }
 
     async inputChange(inp: string) {
         const parts = inp.split('.');
         if (inp.startsWith('-') || (parts.length > 1 && parts[1].length > 2)) return;
 
-        const errMsg = await this.isInputInvalid(dollarToCent(inp));
-        this.setState({ amount: inp, errMsg });
+        this.setState({ amount: inp });
 
-        if (!inp || !inp.trim())
-            this.setState({
-                redeemErgVal: 0,
-                redeemErgFee: 0,
-            });
-        else await this.updateParams(inp);
+        await this.isInputInvalid(dollarToCent(inp));
+        await this.updateParams(inp);
     }
 
     startScRedeem() {
@@ -92,9 +102,7 @@ export class RedeemForm extends Component<any, any> {
                         <input
                             value={this.state.amount}
                             onChange={(e) => {
-                                this.inputChange(e.target.value).catch((err) =>
-                                    console.log('err when changing reserve amount', err),
-                                );
+                                this.inputChange(e.target.value);
                             }}
                             type="number"
                             placeholder="Amount"
