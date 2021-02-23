@@ -8,7 +8,7 @@ import { currentHeight, getBalanceFor, getUnconfirmedTxsFor } from './explorer';
 
 let ageusd = import('ageusd');
 
-const implementor = '9ho3quMB1Vs6ejycB4t3tNw5oTkiu2ZSGT9VfBFshxb21baT3ex';
+const implementor = '9hFmeUHVttZmgtq4DEosEzJb3bTjx9HMJVptmMgfaHH9tYyGYTE';
 const considerUnconfirmed = true;
 let explorerEndpoint = 'https://api.ergoplatform.com/api';
 let bankBox = undefined;
