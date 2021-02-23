@@ -64,6 +64,13 @@ export class CoinsInfo extends Component<any, any> {
                             {numberWithCommas(this.state.scCirc)}
                         </div>
                     </div>
+
+                    <div className="coin-prop-right">
+                        <div className="coin-prop__title">Current Ratio</div>
+                        <div className="coin-prop-right__value">
+                        <span>1 ERG ≈ {(1 / this.state.scPrice).toFixed(5)} {usdAcronym}</span>
+                        </div>
+                    </div>
                 </div>
 
                 <div className="coin-info tiles">
@@ -92,6 +99,13 @@ export class CoinsInfo extends Component<any, any> {
 
                         <div className="coin-prop__value">
                             {numberWithCommas(this.state.rcCirc)}
+                        </div>
+                    </div>
+
+                    <div className="coin-prop-right">
+                        <div className="coin-prop__title">Current Ratio</div>
+                        <div className="coin-prop-right__value">
+                        <span>1 ERG ≈ {(1 / this.state.rcPrice).toFixed(0)} {reserveAcronym}</span>
                         </div>
                     </div>
                 </div>
