@@ -13,7 +13,7 @@ export enum COLORSIDS {
 }
 export const COLORS = {
     [COLORSIDS.SIGMAUSD]: '#2F5EF6',
-    [COLORSIDS.SIGMARSV]: '#610BFC',
+    [COLORSIDS.SIGMARSV]: '#0bfcae',
     [COLORSIDS.ERGO]: '#ffffff',
 };
 
