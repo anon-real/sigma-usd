@@ -13,7 +13,7 @@ const Reservecoin = () => {
                 <section className="main-navigation">
                     <nav className="main-navigation__list">
                         <NavLink exact to="/">
-                            <span>Home</span>
+                            <span>Dashboard</span>
                         </NavLink>
                         <NavLink to="/stablecoin">
                             <span>StableCoin</span>
