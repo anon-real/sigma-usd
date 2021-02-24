@@ -32,7 +32,7 @@ const Stablecoin = () => {
                             & Redeem <span className="top-section__title--colored">SigmaUSD</span>
                         </span>
                     </h2>
-                    <p className="top-section__paragraph">Earn all the benefits of stability</p>
+                    <p className="top-section__paragraph">Welcome to decentralized stability</p>
                 </div>
                 <div className="reservecoin-cards">
                     <PurchaseForm />

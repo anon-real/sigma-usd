@@ -16,7 +16,7 @@ npm run start
 
 ## build
 ```bash
-npm build
+npm run-script build
 ```
 
 This project uses web-assembly. If you want to serve it using nginx, make sure nginx can serve WASM files - you can use the [mime.types](mime.types) file.

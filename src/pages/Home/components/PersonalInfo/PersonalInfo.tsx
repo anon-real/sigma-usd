@@ -132,12 +132,12 @@ export class PersonalInfo extends Component<Props, State> {
         const chartData = [
             {
                 name: usdAcronym,
-                key: 'RebelCash',
+                key: 'SigmaUSD',
                 value: this.state.stableVal,
             },
             {
                 name: reserveAcronym,
-                key: 'RebelShare',
+                key: 'SigmaRSV',
                 value: this.state.reserveVal,
             },
             {
@@ -175,6 +175,7 @@ export class PersonalInfo extends Component<Props, State> {
                 </div>
                 <div className="mint-history tiles">
                     <div className="mint-history__title">History</div>
+                    
                     {!!this.state.history.length && (
                         <div className="mint-history__description">
                             If a operation succeeds, it will be highlighted in

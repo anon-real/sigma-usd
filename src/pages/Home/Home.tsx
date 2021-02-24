@@ -60,7 +60,7 @@ const Home = () => {
                     </div>
 
                     <div className="finance-description__text">
-                        No intermediaries, no middlemen, <br/>just pure decentralized finance. 
+                        No intermediaries, no middlemen, <br/>just pure, decentralized finance. 
                         
                         <br/><br/>
                         Experience the latest advancements in Stablecoins by buying and selling SigUSD and
