@@ -17,26 +17,6 @@ export const COLORS = {
     [COLORSIDS.ERGO]: '#ffffff',
 };
 
-const RADIAN = Math.PI / 180;
-
-const renderCustomizedLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, percent }: any) => {
-    const radius = innerRadius + (outerRadius - innerRadius) * 0.15;
-    const x = cx + radius * Math.cos(-midAngle * RADIAN);
-    const y = cy + radius * Math.sin(-midAngle * RADIAN);
-
-    return (
-        <text
-            x={x}
-            y={y}
-            textAnchor={x > cx ? 'start' : 'end'}
-            dominantBaseline="central"
-            className="chart__text"
-        >
-            {`${(percent * 100).toFixed(0)}%`}
-        </text>
-    );
-};
-
 export class PieChartComponent extends React.PureComponent<IPieChartProps> {
     // eslint-disable-next-line react/state-in-constructor
     state = {
@@ -69,7 +49,7 @@ export class PieChartComponent extends React.PureComponent<IPieChartProps> {
                             fill="#8884d8"
                             dataKey="value"
                             blendStroke
-                            label={renderCustomizedLabel}
+                            label={false}
                             labelLine={false}
                         >
                             {filteredData.map((entry: any) => (
