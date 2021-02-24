@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { reserveAcronym, reserveName, usdAcronym } from 'utils/consts';
-import { rcNumCirc, rcPrice, scNumCirc, scPrice } from '../../../../utils/ageHelper';
+import { reserveAcronym, usdAcronym } from 'utils/consts';
+import { currentReserveRatio, rcNumCirc, rcPrice, scNumCirc, scPrice } from '../../../../utils/ageHelper';
 import { numberWithCommas } from '../../../../utils/serializer';
 
 export class CoinsInfo extends Component<any, any> {
@@ -11,6 +11,7 @@ export class CoinsInfo extends Component<any, any> {
             rcPrice: NaN,
             scCirc: NaN,
             rcCirc: NaN,
+            reserveRatio: NaN,
         };
     }
 
@@ -23,6 +24,7 @@ export class CoinsInfo extends Component<any, any> {
             scPrice: (sc / 1e7).toFixed(8),
             rcPrice: (rc / 1e9).toFixed(8),
             scCirc: (scCirc / 100).toFixed(2),
+            reserveRatio: currentReserveRatio(),
             rcCirc,
         });
     }
@@ -124,7 +126,7 @@ export class CoinsInfo extends Component<any, any> {
                         <div className="coin-prop-right">
                             <div className="coin-prop-right__title">Reserve Ratio</div>
                             <div className="coin-prop-right__value">
-                                <span>570%</span>
+                                <span>{this.state.reserveRatio}%</span>
                             </div>
                         </div>
                     </div>
