@@ -115,7 +115,7 @@ export class PurchaseForm extends Component<any, any> {
                                 this.inputChange(e.target.value);
                             }}
                             type="number"
-                            placeholder="Amount"
+                            placeholder="Amount (SigRSV)"
                         />
                     </div>
                     <span
