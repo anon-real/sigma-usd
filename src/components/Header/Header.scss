@@ -82,8 +82,8 @@ header {
         }
 
         @media (max-width: $width-phone) {
-            letter-spacing: none;
-            margin-right: 39px;
+            letter-spacing: 0;
+            margin-right: 16px;
         }
 
         & .company-name__br {
@@ -136,10 +136,10 @@ header {
     }
 
     & .course-box {
-        font-size: 16px;
+        font-size: 14px;
         display: flex;
         flex-direction: column;
-        width: 120px;
+        min-width: 150px;
 
         @media (max-width: $width-laptop) {
             font-size: 20px * $k-laptop;
@@ -151,10 +151,11 @@ header {
 
         @media (max-width: $width-phone) {
             font-size: 10px;
+            width: initial;
         }
 
         &__row:first-child {
-            margin-bottom: 13px;
+            margin-bottom: 10px;
 
             @media (max-width: $width-laptop) {
                 margin-bottom: 13px * $k-laptop;
@@ -180,14 +181,15 @@ header {
 
         &__value {
             font-family: "Inter";
-            margin-left: 27px;
+            margin-left: 16px;
+            white-space: nowrap;
 
             @media (max-width: $width-laptop) {
-                margin-left: 27px * $k-laptop;
+                margin-left: 20px * $k-laptop;
             }
 
             @media (max-width: $width-tablet) {
-                margin-left: 27px * $k-tablet;
+                margin-left: 20px * $k-tablet;
             }
 
             @media (max-width: $width-phone) {
@@ -197,7 +199,7 @@ header {
     }
 
     & .wallet-btn {
-        margin-left: 40px;
+        margin-left: 20px;
         max-width: 200px;
         padding: 13px 17px;
         font-size: 16px;

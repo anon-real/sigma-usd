@@ -52,7 +52,9 @@ export class CoinsInfo extends Component<any, any> {
                                     <br />
                                     much ERG is in 1 {usdAcronym}.
                                     <br />
-                                    <span>ERG 1 ≈ {(1 / this.state.scPrice).toFixed(5)} {usdAcronym}</span>
+                                    <span>
+                                        ERG 1 ≈ {(1 / this.state.scPrice).toFixed(5)} {usdAcronym}
+                                    </span>
                                 </div>
                             </span>
                         </div>
@@ -65,10 +67,14 @@ export class CoinsInfo extends Component<any, any> {
                         </div>
                     </div>
 
-                    <div className="coin-prop-right">
-                        <div className="coin-prop__title">Current Ratio</div>
-                        <div className="coin-prop-right__value">
-                        <span>1 ERG ≈ {(1 / this.state.scPrice).toFixed(2)} {usdAcronym}</span>
+                    <div className="coin-prop-footer">
+                        <div className="coin-prop-right">
+                            <div className="coin-prop__title">Current Ratio</div>
+                            <div className="coin-prop-right__value">
+                                <span>
+                                    1 ERG ≈ {(1 / this.state.scPrice).toFixed(2)} {usdAcronym}
+                                </span>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -88,7 +94,10 @@ export class CoinsInfo extends Component<any, any> {
                                     <br />
                                     much ERG is in 1 {reserveAcronym}.
                                     <br />
-                                    <span>ERG 1 ≈ {(1 / this.state.rcPrice).toFixed(0)} {reserveAcronym}</span>
+                                    <span>
+                                        ERG 1 ≈ {(1 / this.state.rcPrice).toFixed(0)}{' '}
+                                        {reserveAcronym}
+                                    </span>
                                 </div>
                             </span>
                         </div>
@@ -102,10 +111,21 @@ export class CoinsInfo extends Component<any, any> {
                         </div>
                     </div>
 
-                    <div className="coin-prop-right">
-                        <div className="coin-prop__title">Current Ratio</div>
-                        <div className="coin-prop-right__value">
-                        <span>1 ERG ≈ {(1 / this.state.rcPrice).toFixed(0)} {reserveAcronym}</span>
+                    <div className="coin-prop-footer">
+                        <div className="coin-prop-right">
+                            <div className="coin-prop__title">Current Ratio</div>
+                            <div className="coin-prop-right__value">
+                                <span>
+                                    1 ERG ≈ {(1 / this.state.rcPrice).toFixed(0)} {reserveAcronym}
+                                </span>
+                            </div>
+                        </div>
+
+                        <div className="coin-prop-right">
+                            <div className="coin-prop-right__title">Reserve Ratio</div>
+                            <div className="coin-prop-right__value">
+                                <span>570%</span>
+                            </div>
                         </div>
                     </div>
                 </div>
