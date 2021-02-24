@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { NavLink } from 'react-router-dom';
 import './Header.scss';
+import format from 'format-number';
 import { rcBalance, scBalance } from '../../utils/ageHelper';
 import { friendlyAddress, getWalletAddress, isWalletSaved } from '../../utils/helpers';
 import WalletModal from '../WalletModal/WalletModal';
@@ -58,14 +59,16 @@ export class HeaderComponent extends Component<any, any> {
                                     <span className="course-box__key">
                                         Sig<span className="key_bold">USD</span>
                                     </span>
-                                    <span className="course-box__value">{this.state.ageBal}</span>
+                                    <span className="course-box__value">
+                                        {format({ integerSeparator: ' ' })(this.state.ageBal)}
+                                    </span>
                                 </div>
                                 <div className="course-box__row">
                                     <span className="course-box__key">
                                         Sig<span className="key_bold">RSV</span>
                                     </span>
                                     <span className="course-box__value">
-                                        {this.state.reserveBal}
+                                        {format({ integerSeparator: ' ' })(this.state.reserveBal)}
                                     </span>
                                 </div>
                             </div>

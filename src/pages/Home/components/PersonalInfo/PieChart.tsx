@@ -20,7 +20,7 @@ export const COLORS = {
 const RADIAN = Math.PI / 180;
 
 const renderCustomizedLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, percent }: any) => {
-    const radius = innerRadius + (outerRadius - innerRadius) * 0.01;
+    const radius = innerRadius + (outerRadius - innerRadius) * 0.15;
     const x = cx + radius * Math.cos(-midAngle * RADIAN);
     const y = cy + radius * Math.sin(-midAngle * RADIAN);
 
@@ -65,7 +65,7 @@ export class PieChartComponent extends React.PureComponent<IPieChartProps> {
                             activeIndex={this.state.activeIndex}
                             data={filteredData}
                             innerRadius={60}
-                            outerRadius={90}
+                            outerRadius={100}
                             fill="#8884d8"
                             dataKey="value"
                             blendStroke
