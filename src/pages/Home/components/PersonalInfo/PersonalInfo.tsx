@@ -166,7 +166,7 @@ export class PersonalInfo extends Component<Props, State> {
                                         {name}
                                     </span>
                                     <span className="coin-value">
-                                        ${value?.toFixed(6)}
+                                        ${value?.toFixed(3)}
                                     </span>
                                 </div>
                             ))}
@@ -175,7 +175,7 @@ export class PersonalInfo extends Component<Props, State> {
                 </div>
                 <div className="mint-history tiles">
                     <div className="mint-history__title">History</div>
-                    
+
                     {!!this.state.history.length && (
                         <div className="mint-history__description">
                             If a operation succeeds, it will be highlighted in
