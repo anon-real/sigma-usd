@@ -90,7 +90,9 @@ export class RedeemForm extends Component<any, any> {
                 });
             })
             .catch((err) => {
-                toast.error(`Could not register the request.${err.message}`);
+                let message = err.message;
+                if (!message) message = err;
+                toast.error(`Could not register the request.\n${message}`);
                 this.setState({ loading: false });
             });
     }
