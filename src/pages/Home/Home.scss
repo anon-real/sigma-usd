@@ -10,7 +10,32 @@ main {
     background: #2D2D2D;
     color: #fff;
 }
+.container {
+    width: auto;
+    max-width: 680px;
+    padding: 0 20px;
+    
+}
 
+.footer a {
+    background-image: linear-gradient(to right, rgba(247, 6, 186, 0) 50%, rgb(175, 9, 161) 50%);
+    background-position: -0% 0;
+    background-size: 200% auto;
+    color: #FFF;
+    font-size: 1em;
+    line-height: 1.15em;
+    text-decoration: none;
+    transition: background-position 0.5s ease-out;
+    }
+/* Gradient animation */
+.footer a:hover {
+background-position: -99.99% 0;
+}
+/* Space between elements and footer */
+.footer {
+    margin-top: 40px;
+}
+  
 .main-container {
     display: flex;
     flex-direction: column;
