@@ -357,7 +357,7 @@ background-position: -99.99% 0;
         & .coin-prop-footer {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            grid-gap: 20px;
+            grid-gap: 100px;
             margin-top: 25px;
 
             @media (max-width: $width-laptop) {
@@ -530,7 +530,7 @@ background-position: -99.99% 0;
             }
             @media (max-width: $width-tablet) {
                 font-size: 30px * $k-tablet;
-                margin-bottom: 0;
+                margin-bottom: 15px;
             }
             @media (max-width: $width-phone) {
                 font-size: 18px;
@@ -546,7 +546,7 @@ background-position: -99.99% 0;
             flex-direction: column;
         }
         & .balance__coins {
-            width: 250px;
+            width: 180px;
             @media (max-width: $width-laptop) {
                 max-width: 250px;
             }

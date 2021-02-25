@@ -37,6 +37,12 @@ const Reservecoin = () => {
                     <PurchaseForm />
                     <RedeemForm />
                 </div>
+
+                <footer className="footer mt-auto py-3">
+                
+                <span className="text-muted"><a href="https://ergoplatform.org/" target="_blank">ergoplatform.org</a>  |  <a href="https://sigmaverse.io/" target="_blank">sigmaverse.io</a> | <a href="https://ergonaut.space/" target="_blank">ergonaut.space</a> </span>
+            
+            </footer>
             </div>
         </div>
     );
