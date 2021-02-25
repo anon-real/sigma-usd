@@ -23,7 +23,7 @@ main {
     background-size: 200% auto;
     color: #FFF;
     font-size: 1em;
-    line-height: 1.15em;
+    line-height: 1em;
     text-decoration: none;
     transition: background-position 0.5s ease-out;
     }
@@ -34,6 +34,8 @@ background-position: -99.99% 0;
 /* Space between elements and footer */
 .footer {
     margin-top: 40px;
+    text-align: center;
+    width: 100%;
 }
   
 .main-container {
@@ -546,7 +548,7 @@ background-position: -99.99% 0;
             flex-direction: column;
         }
         & .balance__coins {
-            width: 180px;
+            
             @media (max-width: $width-laptop) {
                 max-width: 250px;
             }
@@ -555,6 +557,7 @@ background-position: -99.99% 0;
             }
             & .balance__coin {
                 width: 100%;
+                width: 250px;
                 display: flex;
                 justify-content: space-between;
                 font-family: "Inter";
@@ -562,15 +565,19 @@ background-position: -99.99% 0;
                 font-size: 18px;
                 @media (max-width: $width-laptop) {
                     font-size: 28px * $k-laptop;
+                   
                 }
                 @media (max-width: $width-minilaptop) {
                     font-size: 28px * $k-minilaptop;
+                    width: 180px;
                 }
                 @media (max-width: $width-tablet) {
                     font-size: 28px * $k-tablet;
+                    width: 180px;
                 }
                 @media (max-width: $width-phone) {
                     font-size: 12px;
+                    width: 180px;
                 }
                 &:nth-child(n + 2) {
                     margin-top: 20px;

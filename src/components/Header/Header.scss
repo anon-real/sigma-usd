@@ -140,7 +140,6 @@ header {
         display: flex;
         flex-direction: column;
         min-width: 150px;
-       
 
         @media (max-width: $width-laptop) {
             font-size: 20px * $k-laptop;
@@ -148,13 +147,11 @@ header {
 
         @media (max-width: $width-tablet) {
             font-size: 20px * $k-tablet;
-            padding-left: 40px;
         }
 
         @media (max-width: $width-phone) {
             font-size: 10px;
             width: initial;
-            padding-left: 40px;
         }
 
         &__row:first-child {
