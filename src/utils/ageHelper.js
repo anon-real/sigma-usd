@@ -51,7 +51,12 @@ export async function forceUpdateState() {
             body = {
                 items: [notSpent[0]],
             };
-        } else console.error('bank boxes length is ' + notSpent.length);
+        } else if (notSpent.length > 1) {
+            body = {
+                items: [notSpent[0]],
+            };
+            console.error('bank boxes length is ' + notSpent.length, notSpent);
+        }
     }
     bankBox = age.BankBox.w_process_explorer_response(JSON.stringify(body))[0];
 
