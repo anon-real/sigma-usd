@@ -906,6 +906,20 @@ export class BankBox {
         }
     }
     /**
+    * the requested amount results in a new reserve ratio within the limits
+    * @param {ErgUsdOraclePoolBox} oracle_box
+    * @param {BigInt} amount
+    * @returns {boolean}
+    */
+    able_to_mint_stablecoin_amount(oracle_box, amount) {
+        _assertClass(oracle_box, ErgUsdOraclePoolBox);
+        uint64CvtShim[0] = amount;
+        const low0 = u32CvtShim[0];
+        const high0 = u32CvtShim[1];
+        var ret = wasm.bankbox_able_to_mint_stablecoin_amount(this.ptr, oracle_box.ptr, low0, high0);
+        return ret !== 0;
+    }
+    /**
     * Number of StableCoins possible to be minted based off of current Reserve Ratio
     * @param {ErgUsdOraclePoolBox} oracle_box
     * @returns {BigInt}
@@ -924,6 +938,48 @@ export class BankBox {
         } finally {
             wasm.__wbindgen_add_to_stack_pointer(16);
         }
+    }
+    /**
+    * Acquire the new reserve ratio after minting `num_to_mint` Stablecoins
+    * @param {ErgUsdOraclePoolBox} oracle_box
+    * @param {BigInt} num_to_mint
+    * @returns {BigInt}
+    */
+    mint_stablecoin_reserve_ratio(oracle_box, num_to_mint) {
+        try {
+            const retptr = wasm.__wbindgen_add_to_stack_pointer(-16);
+            _assertClass(oracle_box, ErgUsdOraclePoolBox);
+            uint64CvtShim[0] = num_to_mint;
+            const low0 = u32CvtShim[0];
+            const high0 = u32CvtShim[1];
+            wasm.bankbox_mint_stablecoin_reserve_ratio(retptr, this.ptr, oracle_box.ptr, low0, high0);
+            var r0 = getInt32Memory0()[retptr / 4 + 0];
+            var r1 = getInt32Memory0()[retptr / 4 + 1];
+            u32CvtShim[0] = r0;
+            u32CvtShim[1] = r1;
+            const n1 = uint64CvtShim[0];
+            return n1;
+        } finally {
+            wasm.__wbindgen_add_to_stack_pointer(16);
+        }
+    }
+    /**
+    * The requested amount results in a new reserve ratio within the limits
+    * @param {ErgUsdOraclePoolBox} oracle_box
+    * @param {BigInt} amount
+    * @param {BigInt} current_height
+    * @returns {boolean}
+    */
+    able_to_mint_reservecoin_amount(oracle_box, amount, current_height) {
+        _assertClass(oracle_box, ErgUsdOraclePoolBox);
+        uint64CvtShim[0] = amount;
+        const low0 = u32CvtShim[0];
+        const high0 = u32CvtShim[1];
+        uint64CvtShim[0] = current_height;
+        const low1 = u32CvtShim[0];
+        const high1 = u32CvtShim[1];
+        var ret = wasm.bankbox_able_to_mint_reservecoin_amount(this.ptr, oracle_box.ptr, low0, high0, low1, high1);
+        return ret !== 0;
     }
     /**
     * Number of ReserveCoins possible to be minted based off of current Reserve Ratio
@@ -950,6 +1006,44 @@ export class BankBox {
         }
     }
     /**
+    * Acquire the new reserve ratio after minting `num_to_mint` Reservecoins
+    * @param {ErgUsdOraclePoolBox} oracle_box
+    * @param {BigInt} num_to_mint
+    * @returns {BigInt}
+    */
+    mint_reservecoin_reserve_ratio(oracle_box, num_to_mint) {
+        try {
+            const retptr = wasm.__wbindgen_add_to_stack_pointer(-16);
+            _assertClass(oracle_box, ErgUsdOraclePoolBox);
+            uint64CvtShim[0] = num_to_mint;
+            const low0 = u32CvtShim[0];
+            const high0 = u32CvtShim[1];
+            wasm.bankbox_mint_reservecoin_reserve_ratio(retptr, this.ptr, oracle_box.ptr, low0, high0);
+            var r0 = getInt32Memory0()[retptr / 4 + 0];
+            var r1 = getInt32Memory0()[retptr / 4 + 1];
+            u32CvtShim[0] = r0;
+            u32CvtShim[1] = r1;
+            const n1 = uint64CvtShim[0];
+            return n1;
+        } finally {
+            wasm.__wbindgen_add_to_stack_pointer(16);
+        }
+    }
+    /**
+    * The requested amount results in a new reserve ratio within the limits
+    * @param {ErgUsdOraclePoolBox} oracle_box
+    * @param {BigInt} amount
+    * @returns {boolean}
+    */
+    able_to_redeem_reservecoin_amount(oracle_box, amount) {
+        _assertClass(oracle_box, ErgUsdOraclePoolBox);
+        uint64CvtShim[0] = amount;
+        const low0 = u32CvtShim[0];
+        const high0 = u32CvtShim[1];
+        var ret = wasm.bankbox_able_to_redeem_reservecoin_amount(this.ptr, oracle_box.ptr, low0, high0);
+        return ret !== 0;
+    }
+    /**
     * Number of ReserveCoins possible to be redeemed based off of current Reserve Ratio.
     * Checks if the provided `current_height` is before the COOLING_OFF_HEIGHT to verify
     * as well.
@@ -967,6 +1061,30 @@ export class BankBox {
             u32CvtShim[1] = r1;
             const n0 = uint64CvtShim[0];
             return n0;
+        } finally {
+            wasm.__wbindgen_add_to_stack_pointer(16);
+        }
+    }
+    /**
+    * Acquire the new reserve ratio after minting `num_to_redeem` Reservecoins
+    * @param {ErgUsdOraclePoolBox} oracle_box
+    * @param {BigInt} num_to_redeem
+    * @returns {BigInt}
+    */
+    redeem_reservecoin_reserve_ratio(oracle_box, num_to_redeem) {
+        try {
+            const retptr = wasm.__wbindgen_add_to_stack_pointer(-16);
+            _assertClass(oracle_box, ErgUsdOraclePoolBox);
+            uint64CvtShim[0] = num_to_redeem;
+            const low0 = u32CvtShim[0];
+            const high0 = u32CvtShim[1];
+            wasm.bankbox_redeem_reservecoin_reserve_ratio(retptr, this.ptr, oracle_box.ptr, low0, high0);
+            var r0 = getInt32Memory0()[retptr / 4 + 0];
+            var r1 = getInt32Memory0()[retptr / 4 + 1];
+            u32CvtShim[0] = r0;
+            u32CvtShim[1] = r1;
+            const n1 = uint64CvtShim[0];
+            return n1;
         } finally {
             wasm.__wbindgen_add_to_stack_pointer(16);
         }

@@ -276,6 +276,22 @@ export async function maxRcToMint(height) {
     return Number(bankBox.num_able_to_mint_reservecoin(oracleBox, BigInt(height)));
 }
 
+export async function ableRcToRedeem(amount) {
+    if (!bankBox || !oracleBox) await forceUpdateState();
+    console.log(amount, BigInt(bankBox.redeem_reservecoin_reserve_ratio(oracleBox, BigInt(amount))))
+    return Number(bankBox.able_to_redeem_reservecoin_amount(oracleBox, BigInt(amount)));
+}
+
+export async function ableScToMint(amount) {
+    if (!bankBox || !oracleBox) await forceUpdateState();
+    return Number(bankBox.able_to_mint_stablecoin_amount(oracleBox, BigInt(amount)));
+}
+
+export async function ableRcToMint(height, amount) {
+    if (!bankBox || !oracleBox) await forceUpdateState();
+    return Number(bankBox.able_to_mint_reservecoin_amount(oracleBox, BigInt(amount), BigInt(height)));
+}
+
 export async function scPrice() {
     if (!bankBox || !oracleBox) await forceUpdateState();
     return Number(bankBox.stablecoin_nominal_price(oracleBox));

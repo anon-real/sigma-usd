@@ -310,11 +310,33 @@ export class BankBox {
 */
   reservecoin_nominal_price(oracle_box: ErgUsdOraclePoolBox): BigInt;
 /**
+* the requested amount results in a new reserve ratio within the limits
+* @param {ErgUsdOraclePoolBox} oracle_box
+* @param {BigInt} amount
+* @returns {boolean}
+*/
+  able_to_mint_stablecoin_amount(oracle_box: ErgUsdOraclePoolBox, amount: BigInt): boolean;
+/**
 * Number of StableCoins possible to be minted based off of current Reserve Ratio
 * @param {ErgUsdOraclePoolBox} oracle_box
 * @returns {BigInt}
 */
   num_able_to_mint_stablecoin(oracle_box: ErgUsdOraclePoolBox): BigInt;
+/**
+* Acquire the new reserve ratio after minting `num_to_mint` Stablecoins
+* @param {ErgUsdOraclePoolBox} oracle_box
+* @param {BigInt} num_to_mint
+* @returns {BigInt}
+*/
+  mint_stablecoin_reserve_ratio(oracle_box: ErgUsdOraclePoolBox, num_to_mint: BigInt): BigInt;
+/**
+* The requested amount results in a new reserve ratio within the limits
+* @param {ErgUsdOraclePoolBox} oracle_box
+* @param {BigInt} amount
+* @param {BigInt} current_height
+* @returns {boolean}
+*/
+  able_to_mint_reservecoin_amount(oracle_box: ErgUsdOraclePoolBox, amount: BigInt, current_height: BigInt): boolean;
 /**
 * Number of ReserveCoins possible to be minted based off of current Reserve Ratio
 * @param {ErgUsdOraclePoolBox} oracle_box
@@ -323,6 +345,20 @@ export class BankBox {
 */
   num_able_to_mint_reservecoin(oracle_box: ErgUsdOraclePoolBox, current_height: BigInt): BigInt;
 /**
+* Acquire the new reserve ratio after minting `num_to_mint` Reservecoins
+* @param {ErgUsdOraclePoolBox} oracle_box
+* @param {BigInt} num_to_mint
+* @returns {BigInt}
+*/
+  mint_reservecoin_reserve_ratio(oracle_box: ErgUsdOraclePoolBox, num_to_mint: BigInt): BigInt;
+/**
+* The requested amount results in a new reserve ratio within the limits
+* @param {ErgUsdOraclePoolBox} oracle_box
+* @param {BigInt} amount
+* @returns {boolean}
+*/
+  able_to_redeem_reservecoin_amount(oracle_box: ErgUsdOraclePoolBox, amount: BigInt): boolean;
+/**
 * Number of ReserveCoins possible to be redeemed based off of current Reserve Ratio.
 * Checks if the provided `current_height` is before the COOLING_OFF_HEIGHT to verify
 * as well.
@@ -330,6 +366,13 @@ export class BankBox {
 * @returns {BigInt}
 */
   num_able_to_redeem_reservecoin(oracle_box: ErgUsdOraclePoolBox): BigInt;
+/**
+* Acquire the new reserve ratio after minting `num_to_redeem` Reservecoins
+* @param {ErgUsdOraclePoolBox} oracle_box
+* @param {BigInt} num_to_redeem
+* @returns {BigInt}
+*/
+  redeem_reservecoin_reserve_ratio(oracle_box: ErgUsdOraclePoolBox, num_to_redeem: BigInt): BigInt;
 /**
 * The total amount of nanoErgs which is needed to cover minting
 * the provided number of ReserveCoins, cover tx fees, implementor
