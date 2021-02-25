@@ -51,7 +51,12 @@ export async function forceUpdateState() {
             body = {
                 items: [notSpent[0]],
             };
-        } else console.error('bank boxes length is ' + notSpent.length);
+        } else if (notSpent.length > 1) {
+            body = {
+                items: [notSpent[0]],
+            };
+            console.error('bank boxes length is ' + notSpent.length, notSpent);
+        }
     }
     bankBox = age.BankBox.w_process_explorer_response(JSON.stringify(body))[0];
 
@@ -274,6 +279,22 @@ export async function maxScToMint() {
 export async function maxRcToMint(height) {
     if (!bankBox || !oracleBox) await forceUpdateState();
     return Number(bankBox.num_able_to_mint_reservecoin(oracleBox, BigInt(height)));
+}
+
+export async function ableRcToRedeem(amount) {
+    if (!bankBox || !oracleBox) await forceUpdateState();
+    console.log(amount, BigInt(bankBox.redeem_reservecoin_reserve_ratio(oracleBox, BigInt(amount))))
+    return Number(bankBox.able_to_redeem_reservecoin_amount(oracleBox, BigInt(amount)));
+}
+
+export async function ableScToMint(amount) {
+    if (!bankBox || !oracleBox) await forceUpdateState();
+    return Number(bankBox.able_to_mint_stablecoin_amount(oracleBox, BigInt(amount)));
+}
+
+export async function ableRcToMint(height, amount) {
+    if (!bankBox || !oracleBox) await forceUpdateState();
+    return Number(bankBox.able_to_mint_reservecoin_amount(oracleBox, BigInt(amount), BigInt(height)));
 }
 
 export async function scPrice() {

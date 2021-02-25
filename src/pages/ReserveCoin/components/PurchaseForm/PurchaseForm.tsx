@@ -3,6 +3,7 @@ import cn from 'classnames';
 import InfoModal from 'components/InfoModal/InfoModal';
 import WalletModal from 'components/WalletModal/WalletModal';
 import { toast } from 'react-toastify';
+import { generateUniqueId } from 'utils/utils';
 import Card from '../../../../components/Card/Card';
 import Switch from '../../../../components/Switch/Switch';
 import { ergCoin, reserveAcronym, reserveName, usdName } from '../../../../utils/consts';
@@ -25,6 +26,8 @@ export class PurchaseForm extends Component<any, any> {
             curHeight: NaN,
             errMsg: '',
             amount: '',
+            inputChangeTimerId: null,
+            requestId: null,
         };
     }
 
@@ -32,27 +35,37 @@ export class PurchaseForm extends Component<any, any> {
         currentHeight().then((height) => this.setState({ curHeight: height }));
     }
 
-    isInputInvalid = async (inp: number) => {
+    componentWillUnmount() {
+        clearTimeout(this.state.inputChangeTimerId);
+    }
+
+    isInputInvalid(inp: number, requestId: string) {
         if (!this.state.curHeight) {
             this.setState({
                 errMsg: '',
             });
             return;
         }
-        const maxAllowed = await maxRcToMint(this.state.curHeight);
-        if (maxAllowed < inp) {
+
+        maxRcToMint(this.state.curHeight).then((maxAllowed) => {
+            if (this.state.requestId !== requestId) {
+                return;
+            }
+
+            if (maxAllowed < inp) {
+                this.setState({
+                    errMsg: `Unable to mint more than ${maxAllowed} ${reserveName} based on the current reserve status`,
+                });
+                return;
+            }
+
             this.setState({
-                errMsg: `Unable to mint more than ${maxAllowed} ${reserveName} based on the current reserve status`,
+                errMsg: '',
             });
-            return;
-        }
-
-        this.setState({
-            errMsg: '',
         });
-    };
+    }
 
-    async updateParams(amount: any) {
+    updateParams(amount: any, requestId: string) {
         if (!amount || !amount.trim()) {
             this.setState({
                 mintErgVal: 0,
@@ -60,20 +73,29 @@ export class PurchaseForm extends Component<any, any> {
             });
             return;
         }
-        const tot = await priceToMintRc(amount);
-        const fee = await feeToMintRc(amount);
-        this.setState({
-            mintErgFee: fee / 1e9,
-            mintErgVal: (tot - fee) / 1e9,
+
+        Promise.all([priceToMintRc(amount), feeToMintRc(amount)]).then(([tot, fee]) => {
+            if (this.state.requestId === requestId) {
+                this.setState({
+                    mintErgFee: fee / 1e9,
+                    mintErgVal: (tot - fee) / 1e9,
+                });
+            }
         });
     }
 
-    async inputChange(inp: string) {
+    inputChange(inp: string) {
+        clearTimeout(this.state.inputChangeTimerId);
         if (!isNatural(inp) || inp.startsWith('-')) return;
-        this.setState({ amount: inp });
 
-        await this.isInputInvalid(parseInt(inp));
-        await this.updateParams(inp);
+        const timerId = setTimeout(() => {
+            const requestId = generateUniqueId();
+            this.setState({ requestId });
+            this.isInputInvalid(parseInt(inp), requestId);
+            this.updateParams(inp, requestId);
+        }, 200);
+
+        this.setState({ amount: inp, inputChangeTimerId: timerId });
     }
 
     startRcRedeem() {
