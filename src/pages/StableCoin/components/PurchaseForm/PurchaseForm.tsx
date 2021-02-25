@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import cn from 'classnames';
 import { toast } from 'react-toastify';
+import { generateUniqueId } from 'utils/utils';
 import Card from '../../../../components/Card/Card';
 import Switch from '../../../../components/Switch/Switch';
 import { ergCoin, reserveName, usdAcronym, usdName } from '../../../../utils/consts';
@@ -23,10 +24,16 @@ export class PurchaseForm extends Component<any, any> {
             dueTime: null,
             errMsg: '',
             amount: '',
+            inputChangeTimerId: null,
+            requestId: null,
         };
     }
 
-    async updateParams(amount: any) {
+    componentWillUnmount() {
+        clearTimeout(this.state.inputChangeTimerId);
+    }
+
+    updateParams(amount: any, requestId: string) {
         if (!amount || !amount.trim()) {
             this.setState({
                 mintErgVal: 0,
@@ -34,39 +41,50 @@ export class PurchaseForm extends Component<any, any> {
             });
             return;
         }
-        const tot = await priceToMintSc(amount);
-        const fee = await feeToMintSc(amount);
-        this.setState({
-            mintErgFee: fee / 1e9,
-            mintErgVal: (tot - fee) / 1e9,
+        Promise.all([priceToMintSc(amount), feeToMintSc(amount)]).then(([tot, fee]) => {
+            if (this.state.requestId === requestId) {
+                this.setState({
+                    mintErgFee: fee / 1e9,
+                    mintErgVal: (tot - fee) / 1e9,
+                });
+            }
         });
     }
 
-    async isInputInvalid(inp: any) {
-        const maxAllowed = await maxScToMint();
+    isInputInvalid(inp: any, requestId: string) {
+        maxScToMint().then((maxAllowed) => {
+            if (this.state.requestId !== requestId) {
+                return;
+            }
 
-        if (maxAllowed < inp) {
+            if (maxAllowed < inp) {
+                this.setState({
+                    errMsg: `Unable to mint more than ${(maxAllowed / 100).toFixed(
+                        2,
+                    )} ${usdName} based on the current the reserve status`,
+                });
+                return;
+            }
+
             this.setState({
-                errMsg: `Unable to mint more than ${(maxAllowed / 100).toFixed(
-                    2,
-                )} ${usdName} based on the current the reserve status`,
+                errMsg: '',
             });
-            return;
-        }
-
-        this.setState({
-            errMsg: '',
         });
     }
 
     async inputChange(inp: string) {
+        clearTimeout(this.state.inputChangeTimerId);
         const parts = inp.split('.');
         if (inp.startsWith('-') || (parts.length > 1 && parts[1].length > 2)) return;
 
-        this.setState({ amount: inp });
+        const timerId = setTimeout(() => {
+            const requestId = generateUniqueId();
+            this.setState({ requestId });
+            this.isInputInvalid(dollarToCent(inp), requestId);
+            this.updateParams(inp, requestId);
+        }, 200);
 
-        await this.isInputInvalid(dollarToCent(inp));
-        await this.updateParams(inp);
+        this.setState({ amount: inp, inputChangeTimerId: timerId });
     }
 
     startScMint() {
