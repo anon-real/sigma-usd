@@ -195,6 +195,8 @@ export async function mintScTx(amount) {
     );
     res = JSON.parse(res);
     res.requests.splice(3, 1);
+    res.requests[1].value += res.requests[2].value
+    res.requests.splice(2, 1);
     res.inputs[1] = '$userIns';
     return res;
 }
@@ -219,6 +221,8 @@ export async function mintRcTx(amount) {
     );
     res = JSON.parse(res);
     res.requests.splice(3, 1);
+    res.requests[1].value += res.requests[2].value
+    res.requests.splice(2, 1);
     res.inputs[1] = '$userIns';
     return res;
 }
