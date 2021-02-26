@@ -38,7 +38,8 @@ export async function forceUpdateState() {
             if (
                 tx.outputs[0].assets
                     .map((asset) => asset.tokenId)
-                    .includes(bankNFT)
+                    .includes(bankNFT) &&
+                tx.inputs[0].address === tx.outputs[0].address
             ) {
                 outBanks = outBanks.concat([tx.outputs[0]]);
                 inIds = inIds.concat([tx.inputs[0].id]);
@@ -49,11 +50,11 @@ export async function forceUpdateState() {
         );
         if (notSpent.length === 1) {
             body = {
-                items: [notSpent[0]],
+                items: [notSpent[0]]
             };
         } else if (notSpent.length > 1) {
             body = {
-                items: [notSpent[0]],
+                items: [notSpent[0]]
             };
             console.error('bank boxes length is ' + notSpent.length, notSpent);
         }
@@ -283,7 +284,7 @@ export async function maxRcToMint(height) {
 
 export async function ableRcToRedeem(amount) {
     if (!bankBox || !oracleBox) await forceUpdateState();
-    console.log(amount, BigInt(bankBox.redeem_reservecoin_reserve_ratio(oracleBox, BigInt(amount))))
+    console.log(amount, BigInt(bankBox.redeem_reservecoin_reserve_ratio(oracleBox, BigInt(amount))));
     return Number(bankBox.able_to_redeem_reservecoin_amount(oracleBox, BigInt(amount)));
 }
 
