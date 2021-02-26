@@ -45,6 +45,7 @@ export async function forceUpdateState() {
                 inIds = inIds.concat([tx.inputs[0].id]);
             }
         });
+        console.log(inIds, outBanks)
         let notSpent = outBanks.filter(
             (bank) => !inIds.includes(bank.boxId) && !inIds.includes(bank.id)
         );
@@ -273,6 +274,8 @@ export async function redeemRcTx(amount) {
 
 export async function maxRcToRedeem() {
     if (!bankBox || !oracleBox) await forceUpdateState();
+    console.log(bankBox.current_reserve_ratio(oracleBox))
+    if (bankBox.current_reserve_ratio(oracleBox) <= 400n) return 0
     return Number(bankBox.num_able_to_redeem_reservecoin(oracleBox));
 }
 
