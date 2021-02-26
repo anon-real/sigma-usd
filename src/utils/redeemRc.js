@@ -42,7 +42,6 @@ export async function redeemRc(amount) {
     for (let i = 0; i < tx.requests.length; i++) {
         if (tx.requests[i].value < minErgVal) throw new Error("Too little value!")
     }
-
     let addr = (await getRcRedeemP2s(tx.requests[1].value, tx.dataInputs[0])).address
     let request = {
         address: addr,
