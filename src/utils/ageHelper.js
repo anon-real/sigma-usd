@@ -274,18 +274,19 @@ export async function redeemRcTx(amount) {
 
 export async function maxRcToRedeem() {
     if (!bankBox || !oracleBox) await forceUpdateState();
-    console.log(bankBox.current_reserve_ratio(oracleBox))
     if (bankBox.current_reserve_ratio(oracleBox) <= 400n) return 0
     return Number(bankBox.num_able_to_redeem_reservecoin(oracleBox));
 }
 
 export async function maxScToMint() {
     if (!bankBox || !oracleBox) await forceUpdateState();
+    if (bankBox.current_reserve_ratio(oracleBox) <= 400n) return 0
     return Number(bankBox.num_able_to_mint_stablecoin(oracleBox));
 }
 
 export async function maxRcToMint(height) {
     if (!bankBox || !oracleBox) await forceUpdateState();
+    if (bankBox.current_reserve_ratio(oracleBox) >= 800n) return 0
     return Number(bankBox.num_able_to_mint_reservecoin(oracleBox, BigInt(height)));
 }
 
