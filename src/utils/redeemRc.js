@@ -40,7 +40,7 @@ export async function redeemRc(amount) {
     let ergGet = (await amountFromRedeemingRc(amount) / 1e9)
     let tx = await redeemRcTx(amount)
     for (let i = 0; i < tx.requests.length; i++) {
-        if (tx.requests[i].value < minErgVal) throw new Error("The amount you're trying to mint is too small!")
+        if (tx.requests[i].value < minErgVal) throw new Error("The amount you're trying to redeem is too small!")
     }
     let addr = (await getRcRedeemP2s(tx.requests[1].value, tx.dataInputs[0])).address
     let request = {
