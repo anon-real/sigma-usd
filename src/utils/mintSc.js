@@ -31,7 +31,7 @@ export async function mintSc(amount) {
     if (price < befPrice) price += 10 ** (9 - ergSendPrecision)
     let tx = await mintScTx(amount)
     for (let i = 0; i < tx.requests.length; i++) {
-        if (tx.requests[i].value < minErgVal) throw new Error("Too little value!")
+        if (tx.requests[i].value < minErgVal) throw new Error("The amount you're trying to mint is too small!")
     }
     tx.requests[1].value += (price - befPrice)
 

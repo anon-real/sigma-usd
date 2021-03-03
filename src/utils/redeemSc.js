@@ -42,7 +42,7 @@ export async function redeemSc(amount) {
     let ergGet = (await amountFromRedeemingSc(amount) / 1e9)
     let tx = await redeemScTx(amount)
     for (let i = 0; i < tx.requests.length; i++) {
-        if (tx.requests[i].value < minErgVal) throw new Error("Too little value!")
+        if (tx.requests[i].value < minErgVal) throw new Error(" The amount you're trying to redeem is too small!")
     }
 
     let addr = (await getScRedeemP2s(tx.requests[1].value, tx.dataInputs[0])).address
