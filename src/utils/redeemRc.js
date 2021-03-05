@@ -54,6 +54,7 @@ export async function redeemRc(amount) {
     amount = parseInt(amount)
     request.startWhen[await rcTokenId()] = amount
     request.startWhen[await scTokenId()] = 0
+    console.log('fock', request)
     return follow(request).then(res => {
         if (res.id !== undefined) {
             let toFollow = {
