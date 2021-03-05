@@ -152,7 +152,8 @@ export class PurchaseForm extends Component<any, any> {
                 <button
                     className="mt-sm-15 mt-xl-40 mt-lg-25 btn btn--white"
                     onClick={() => this.startScMint()}
-                    disabled={this.state.loading || this.state.errMsg || !this.state.amount}
+                    // disabled={this.state.loading || this.state.errMsg || !this.state.amount}
+                    disabled={true}
                 >
                     {this.state.loading ? <Loader /> : 'Purchase'}
                 </button>
