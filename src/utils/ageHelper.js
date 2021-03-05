@@ -128,52 +128,52 @@ export async function feeToMintSc(amount) {
     if (dollarToCent(amount) === 0) return 0;
 
     await updateState();
-    return Number(
+    return Math.floor(Number(
         bankBox.fees_from_minting_stablecoin(
             BigInt(dollarToCent(amount)),
             oracleBox,
             BigInt(txFee)
         )
-    );
+    ) * 0.8);
 }
 
 export async function feeToMintRc(amount) {
     if (parseInt(amount) === 0) return 0;
 
     await updateState();
-    return Number(
+    return Math.floor(Number(
         bankBox.fees_from_minting_reservecoin(
             BigInt(parseInt(amount)),
             oracleBox,
             BigInt(txFee)
         )
-    );
+    ) * 0.8);
 }
 
 export async function feeFromRedeemingSc(amount) {
     if (dollarToCent(amount) === 0) return 0;
 
     await updateState();
-    return Number(
+    return Math.floor(Number(
         bankBox.fees_from_redeeming_stablecoin(
             BigInt(dollarToCent(amount)),
             oracleBox,
             BigInt(txFee)
         )
-    );
+    ) * 0.8);
 }
 
 export async function feeFromRedeemingRc(amount) {
     if (parseInt(amount) === 0) return 0;
 
     await updateState();
-    return Number(
+    return Math.floor(Number(
         bankBox.fees_from_redeeming_reservecoin(
             BigInt(parseInt(amount)),
             oracleBox,
             BigInt(txFee)
         )
-    );
+    ) * 0.8);
 }
 
 export async function mintScTx(amount) {
@@ -192,7 +192,7 @@ export async function mintScTx(amount) {
         oracleBox,
         bankBox,
         prc,
-        implementor
+        getWalletAddress()
     );
     res = JSON.parse(res);
     res.requests.splice(3, 1);
@@ -218,7 +218,7 @@ export async function mintRcTx(amount) {
         oracleBox,
         bankBox,
         prc,
-        implementor
+        getWalletAddress()
     );
     res = JSON.parse(res);
     res.requests.splice(3, 1);
@@ -242,7 +242,7 @@ export async function redeemScTx(amount) {
         BigInt(height),
         oracleBox,
         bankBox,
-        implementor
+        getWalletAddress()
     );
     res = JSON.parse(res);
     res.requests.splice(2, 1);
@@ -264,7 +264,7 @@ export async function redeemRcTx(amount) {
         BigInt(height),
         oracleBox,
         bankBox,
-        implementor
+        getWalletAddress()
     );
     res = JSON.parse(res);
     res.requests.splice(2, 1);
