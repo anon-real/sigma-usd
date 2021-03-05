@@ -22,7 +22,7 @@ export class PurchaseForm extends Component<any, any> {
             isModalOpen: false,
             address: '',
             dueTime: null,
-            errMsg: '',
+            errMsg: 'Purchasing is disabled - see https://ergoplatform.org/en/blog/2021_03_04-finding-right-balance/',
             amount: '',
             inputChangeTimerId: null,
             requestId: null,
