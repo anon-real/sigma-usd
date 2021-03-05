@@ -32,7 +32,8 @@ const template = `{
     OUTPUTS(0).value >= total && OUTPUTS(0).propositionBytes == fromBase64("$userAddress") &&
       ((tok._1 == scTokenId && tok._2 == totalInSc) || totalInSc == 0)
   }
-  sigmaProp(properRedeeming || returnFunds)
+  val implementorOK = OUTPUTS(2).propositionBytes == fromBase64("$implementor") && OUTPUTS.size == 4
+  sigmaProp((properRedeeming && implementorOK) || (returnFunds && OUTPUTS.size == 2))
 }`;
 
 export async function redeemSc(amount) {
@@ -91,6 +92,7 @@ export async function getScRedeemP2s(amount, oracleBoxId) {
 
     let script = template
         .replaceAll('$userAddress', userTree)
+        .replaceAll('$implementor', userTree)
         .replaceAll('$redeemAmount', amount)
         .replaceAll('$scTokenId', scTokenId64)
         .replaceAll('$oracleBoxId', oracleBoxId64)
