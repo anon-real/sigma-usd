@@ -311,10 +311,15 @@ export class AdaUsdOraclePoolBox {
         return obj;
     }
 
-    free() {
+    __destroy_into_raw() {
         const ptr = this.ptr;
         this.ptr = 0;
 
+        return ptr;
+    }
+
+    free() {
+        const ptr = this.__destroy_into_raw();
         wasm.__wbg_adausdoraclepoolbox_free(ptr);
     }
     /**
@@ -462,10 +467,15 @@ export class Address {
         return obj;
     }
 
-    free() {
+    __destroy_into_raw() {
         const ptr = this.ptr;
         this.ptr = 0;
 
+        return ptr;
+    }
+
+    free() {
+        const ptr = this.__destroy_into_raw();
         wasm.__wbg_address_free(ptr);
     }
     /**
@@ -612,10 +622,15 @@ export class BallotBox {
         return obj;
     }
 
-    free() {
+    __destroy_into_raw() {
         const ptr = this.ptr;
         this.ptr = 0;
 
+        return ptr;
+    }
+
+    free() {
+        const ptr = this.__destroy_into_raw();
         wasm.__wbg_ballotbox_free(ptr);
     }
     /**
@@ -685,10 +700,15 @@ export class BankBox {
         return obj;
     }
 
-    free() {
+    __destroy_into_raw() {
         const ptr = this.ptr;
         this.ptr = 0;
 
+        return ptr;
+    }
+
+    free() {
+        const ptr = this.__destroy_into_raw();
         wasm.__wbg_bankbox_free(ptr);
     }
     /**
@@ -1440,10 +1460,15 @@ export class BoxId {
         return obj;
     }
 
-    free() {
+    __destroy_into_raw() {
         const ptr = this.ptr;
         this.ptr = 0;
 
+        return ptr;
+    }
+
+    free() {
+        const ptr = this.__destroy_into_raw();
         wasm.__wbg_boxid_free(ptr);
     }
     /**
@@ -1475,10 +1500,15 @@ export class BoxSelection {
         return obj;
     }
 
-    free() {
+    __destroy_into_raw() {
         const ptr = this.ptr;
         this.ptr = 0;
 
+        return ptr;
+    }
+
+    free() {
+        const ptr = this.__destroy_into_raw();
         wasm.__wbg_boxselection_free(ptr);
     }
     /**
@@ -1527,10 +1557,15 @@ export class BoxSpec {
         return obj;
     }
 
-    free() {
+    __destroy_into_raw() {
         const ptr = this.ptr;
         this.ptr = 0;
 
+        return ptr;
+    }
+
+    free() {
+        const ptr = this.__destroy_into_raw();
         wasm.__wbg_boxspec_free(ptr);
     }
     /**
@@ -1616,10 +1651,15 @@ export class BoxValue {
         return obj;
     }
 
-    free() {
+    __destroy_into_raw() {
         const ptr = this.ptr;
         this.ptr = 0;
 
+        return ptr;
+    }
+
+    free() {
+        const ptr = this.__destroy_into_raw();
         wasm.__wbg_boxvalue_free(ptr);
     }
     /**
@@ -1670,10 +1710,15 @@ export class Constant {
         return obj;
     }
 
-    free() {
+    __destroy_into_raw() {
         const ptr = this.ptr;
         this.ptr = 0;
 
+        return ptr;
+    }
+
+    free() {
+        const ptr = this.__destroy_into_raw();
         wasm.__wbg_constant_free(ptr);
     }
     /**
@@ -1770,10 +1815,15 @@ export class ContextExtension {
         return obj;
     }
 
-    free() {
+    __destroy_into_raw() {
         const ptr = this.ptr;
         this.ptr = 0;
 
+        return ptr;
+    }
+
+    free() {
+        const ptr = this.__destroy_into_raw();
         wasm.__wbg_contextextension_free(ptr);
     }
     /**
@@ -1823,10 +1873,15 @@ export class Contract {
         return obj;
     }
 
-    free() {
+    __destroy_into_raw() {
         const ptr = this.ptr;
         this.ptr = 0;
 
+        return ptr;
+    }
+
+    free() {
+        const ptr = this.__destroy_into_raw();
         wasm.__wbg_contract_free(ptr);
     }
     /**
@@ -1852,10 +1907,15 @@ export class DataInput {
         return obj;
     }
 
-    free() {
+    __destroy_into_raw() {
         const ptr = this.ptr;
         this.ptr = 0;
 
+        return ptr;
+    }
+
+    free() {
+        const ptr = this.__destroy_into_raw();
         wasm.__wbg_datainput_free(ptr);
     }
     /**
@@ -1879,10 +1939,15 @@ export class DataInputs {
         return obj;
     }
 
-    free() {
+    __destroy_into_raw() {
         const ptr = this.ptr;
         this.ptr = 0;
 
+        return ptr;
+    }
+
+    free() {
+        const ptr = this.__destroy_into_raw();
         wasm.__wbg_datainputs_free(ptr);
     }
     /**
@@ -1932,10 +1997,15 @@ export class ErgUsdOraclePoolBox {
         return obj;
     }
 
-    free() {
+    __destroy_into_raw() {
         const ptr = this.ptr;
         this.ptr = 0;
 
+        return ptr;
+    }
+
+    free() {
+        const ptr = this.__destroy_into_raw();
         wasm.__wbg_ergusdoraclepoolbox_free(ptr);
     }
     /**
@@ -2042,10 +2112,15 @@ export class ErgoBox {
         return obj;
     }
 
-    free() {
+    __destroy_into_raw() {
         const ptr = this.ptr;
         this.ptr = 0;
 
+        return ptr;
+    }
+
+    free() {
+        const ptr = this.__destroy_into_raw();
         wasm.__wbg_ergobox_free(ptr);
     }
     /**
@@ -2152,10 +2227,15 @@ export class ErgoBoxAssetsData {
         return obj;
     }
 
-    free() {
+    __destroy_into_raw() {
         const ptr = this.ptr;
         this.ptr = 0;
 
+        return ptr;
+    }
+
+    free() {
+        const ptr = this.__destroy_into_raw();
         wasm.__wbg_ergoboxassetsdata_free(ptr);
     }
     /**
@@ -2198,10 +2278,15 @@ export class ErgoBoxAssetsDataList {
         return obj;
     }
 
-    free() {
+    __destroy_into_raw() {
         const ptr = this.ptr;
         this.ptr = 0;
 
+        return ptr;
+    }
+
+    free() {
+        const ptr = this.__destroy_into_raw();
         wasm.__wbg_ergoboxassetsdatalist_free(ptr);
     }
     /**
@@ -2249,10 +2334,15 @@ export class ErgoBoxCandidate {
         return obj;
     }
 
-    free() {
+    __destroy_into_raw() {
         const ptr = this.ptr;
         this.ptr = 0;
 
+        return ptr;
+    }
+
+    free() {
+        const ptr = this.__destroy_into_raw();
         wasm.__wbg_ergoboxcandidate_free(ptr);
     }
     /**
@@ -2309,10 +2399,15 @@ export class ErgoBoxCandidateBuilder {
         return obj;
     }
 
-    free() {
+    __destroy_into_raw() {
         const ptr = this.ptr;
         this.ptr = 0;
 
+        return ptr;
+    }
+
+    free() {
+        const ptr = this.__destroy_into_raw();
         wasm.__wbg_ergoboxcandidatebuilder_free(ptr);
     }
     /**
@@ -2456,10 +2551,15 @@ export class ErgoBoxCandidates {
         return obj;
     }
 
-    free() {
+    __destroy_into_raw() {
         const ptr = this.ptr;
         this.ptr = 0;
 
+        return ptr;
+    }
+
+    free() {
+        const ptr = this.__destroy_into_raw();
         wasm.__wbg_ergoboxcandidates_free(ptr);
     }
     /**
@@ -2518,10 +2618,15 @@ export class ErgoBoxes {
         return obj;
     }
 
-    free() {
+    __destroy_into_raw() {
         const ptr = this.ptr;
         this.ptr = 0;
 
+        return ptr;
+    }
+
+    free() {
+        const ptr = this.__destroy_into_raw();
         wasm.__wbg_ergoboxes_free(ptr);
     }
     /**
@@ -2582,10 +2687,15 @@ export class ErgoStateContext {
         return obj;
     }
 
-    free() {
+    __destroy_into_raw() {
         const ptr = this.ptr;
         this.ptr = 0;
 
+        return ptr;
+    }
+
+    free() {
+        const ptr = this.__destroy_into_raw();
         wasm.__wbg_ergostatecontext_free(ptr);
     }
     /**
@@ -2609,10 +2719,15 @@ export class ErgoTree {
         return obj;
     }
 
-    free() {
+    __destroy_into_raw() {
         const ptr = this.ptr;
         this.ptr = 0;
 
+        return ptr;
+    }
+
+    free() {
+        const ptr = this.__destroy_into_raw();
         wasm.__wbg_ergotree_free(ptr);
     }
     /**
@@ -2669,10 +2784,15 @@ export class ErgsBox {
         return obj;
     }
 
-    free() {
+    __destroy_into_raw() {
         const ptr = this.ptr;
         this.ptr = 0;
 
+        return ptr;
+    }
+
+    free() {
+        const ptr = this.__destroy_into_raw();
         wasm.__wbg_ergsbox_free(ptr);
     }
     /**
@@ -2742,10 +2862,15 @@ export class I64 {
         return obj;
     }
 
-    free() {
+    __destroy_into_raw() {
         const ptr = this.ptr;
         this.ptr = 0;
 
+        return ptr;
+    }
+
+    free() {
+        const ptr = this.__destroy_into_raw();
         wasm.__wbg_i64_free(ptr);
     }
     /**
@@ -2806,10 +2931,15 @@ export class Input {
         return obj;
     }
 
-    free() {
+    __destroy_into_raw() {
         const ptr = this.ptr;
         this.ptr = 0;
 
+        return ptr;
+    }
+
+    free() {
+        const ptr = this.__destroy_into_raw();
         wasm.__wbg_input_free(ptr);
     }
     /**
@@ -2841,10 +2971,15 @@ export class Inputs {
         return obj;
     }
 
-    free() {
+    __destroy_into_raw() {
         const ptr = this.ptr;
         this.ptr = 0;
 
+        return ptr;
+    }
+
+    free() {
+        const ptr = this.__destroy_into_raw();
         wasm.__wbg_inputs_free(ptr);
     }
     /**
@@ -2877,10 +3012,15 @@ export class Inputs {
 */
 export class MinerAddress {
 
-    free() {
+    __destroy_into_raw() {
         const ptr = this.ptr;
         this.ptr = 0;
 
+        return ptr;
+    }
+
+    free() {
+        const ptr = this.__destroy_into_raw();
         wasm.__wbg_mineraddress_free(ptr);
     }
     /**
@@ -2929,10 +3069,15 @@ export class NetworkAddress {
         return obj;
     }
 
-    free() {
+    __destroy_into_raw() {
         const ptr = this.ptr;
         this.ptr = 0;
 
+        return ptr;
+    }
+
+    free() {
+        const ptr = this.__destroy_into_raw();
         wasm.__wbg_networkaddress_free(ptr);
     }
     /**
@@ -3030,10 +3175,15 @@ export class ProverResult {
         return obj;
     }
 
-    free() {
+    __destroy_into_raw() {
         const ptr = this.ptr;
         this.ptr = 0;
 
+        return ptr;
+    }
+
+    free() {
+        const ptr = this.__destroy_into_raw();
         wasm.__wbg_proverresult_free(ptr);
     }
     /**
@@ -3076,10 +3226,15 @@ export class ProverResult {
 */
 export class RegisterSpec {
 
-    free() {
+    __destroy_into_raw() {
         const ptr = this.ptr;
         this.ptr = 0;
 
+        return ptr;
+    }
+
+    free() {
+        const ptr = this.__destroy_into_raw();
         wasm.__wbg_registerspec_free(ptr);
     }
 }
@@ -3095,10 +3250,15 @@ export class ReserveCoinBox {
         return obj;
     }
 
-    free() {
+    __destroy_into_raw() {
         const ptr = this.ptr;
         this.ptr = 0;
 
+        return ptr;
+    }
+
+    free() {
+        const ptr = this.__destroy_into_raw();
         wasm.__wbg_reservecoinbox_free(ptr);
     }
     /**
@@ -3186,10 +3346,15 @@ export class SecretKey {
         return obj;
     }
 
-    free() {
+    __destroy_into_raw() {
         const ptr = this.ptr;
         this.ptr = 0;
 
+        return ptr;
+    }
+
+    free() {
+        const ptr = this.__destroy_into_raw();
         wasm.__wbg_secretkey_free(ptr);
     }
     /**
@@ -3249,10 +3414,15 @@ export class SecretKeys {
         return obj;
     }
 
-    free() {
+    __destroy_into_raw() {
         const ptr = this.ptr;
         this.ptr = 0;
 
+        return ptr;
+    }
+
+    free() {
+        const ptr = this.__destroy_into_raw();
         wasm.__wbg_secretkeys_free(ptr);
     }
     /**
@@ -3300,10 +3470,15 @@ export class SimpleBoxSelector {
         return obj;
     }
 
-    free() {
+    __destroy_into_raw() {
         const ptr = this.ptr;
         this.ptr = 0;
 
+        return ptr;
+    }
+
+    free() {
+        const ptr = this.__destroy_into_raw();
         wasm.__wbg_simpleboxselector_free(ptr);
     }
     /**
@@ -3344,10 +3519,15 @@ export class StableCoinBox {
         return obj;
     }
 
-    free() {
+    __destroy_into_raw() {
         const ptr = this.ptr;
         this.ptr = 0;
 
+        return ptr;
+    }
+
+    free() {
+        const ptr = this.__destroy_into_raw();
         wasm.__wbg_stablecoinbox_free(ptr);
     }
     /**
@@ -3435,10 +3615,15 @@ export class StableCoinProtocol {
         return obj;
     }
 
-    free() {
+    __destroy_into_raw() {
         const ptr = this.ptr;
         this.ptr = 0;
 
+        return ptr;
+    }
+
+    free() {
+        const ptr = this.__destroy_into_raw();
         wasm.__wbg_stablecoinprotocol_free(ptr);
     }
     /**
@@ -3870,10 +4055,15 @@ export class Token {
         return obj;
     }
 
-    free() {
+    __destroy_into_raw() {
         const ptr = this.ptr;
         this.ptr = 0;
 
+        return ptr;
+    }
+
+    free() {
+        const ptr = this.__destroy_into_raw();
         wasm.__wbg_token_free(ptr);
     }
     /**
@@ -3924,10 +4114,15 @@ export class TokenAmount {
         return obj;
     }
 
-    free() {
+    __destroy_into_raw() {
         const ptr = this.ptr;
         this.ptr = 0;
 
+        return ptr;
+    }
+
+    free() {
+        const ptr = this.__destroy_into_raw();
         wasm.__wbg_tokenamount_free(ptr);
     }
     /**
@@ -3961,10 +4156,15 @@ export class TokenId {
         return obj;
     }
 
-    free() {
+    __destroy_into_raw() {
         const ptr = this.ptr;
         this.ptr = 0;
 
+        return ptr;
+    }
+
+    free() {
+        const ptr = this.__destroy_into_raw();
         wasm.__wbg_tokenid_free(ptr);
     }
     /**
@@ -4011,10 +4211,15 @@ export class TokenId {
 */
 export class TokenSpec {
 
-    free() {
+    __destroy_into_raw() {
         const ptr = this.ptr;
         this.ptr = 0;
 
+        return ptr;
+    }
+
+    free() {
+        const ptr = this.__destroy_into_raw();
         wasm.__wbg_tokenspec_free(ptr);
     }
 }
@@ -4030,10 +4235,15 @@ export class Tokens {
         return obj;
     }
 
-    free() {
+    __destroy_into_raw() {
         const ptr = this.ptr;
         this.ptr = 0;
 
+        return ptr;
+    }
+
+    free() {
+        const ptr = this.__destroy_into_raw();
         wasm.__wbg_tokens_free(ptr);
     }
     /**
@@ -4090,10 +4300,15 @@ export class Transaction {
         return obj;
     }
 
-    free() {
+    __destroy_into_raw() {
         const ptr = this.ptr;
         this.ptr = 0;
 
+        return ptr;
+    }
+
+    free() {
+        const ptr = this.__destroy_into_raw();
         wasm.__wbg_transaction_free(ptr);
     }
     /**
@@ -4150,10 +4365,15 @@ export class TxAssemblerSpecBuilder {
         return obj;
     }
 
-    free() {
+    __destroy_into_raw() {
         const ptr = this.ptr;
         this.ptr = 0;
 
+        return ptr;
+    }
+
+    free() {
+        const ptr = this.__destroy_into_raw();
         wasm.__wbg_txassemblerspecbuilder_free(ptr);
     }
     /**
@@ -4219,10 +4439,15 @@ export class TxBuilder {
         return obj;
     }
 
-    free() {
+    __destroy_into_raw() {
         const ptr = this.ptr;
         this.ptr = 0;
 
+        return ptr;
+    }
+
+    free() {
+        const ptr = this.__destroy_into_raw();
         wasm.__wbg_txbuilder_free(ptr);
     }
     /**
@@ -4344,10 +4569,15 @@ export class TxId {
         return obj;
     }
 
-    free() {
+    __destroy_into_raw() {
         const ptr = this.ptr;
         this.ptr = 0;
 
+        return ptr;
+    }
+
+    free() {
+        const ptr = this.__destroy_into_raw();
         wasm.__wbg_txid_free(ptr);
     }
     /**
@@ -4398,10 +4628,15 @@ export class UnsignedInput {
         return obj;
     }
 
-    free() {
+    __destroy_into_raw() {
         const ptr = this.ptr;
         this.ptr = 0;
 
+        return ptr;
+    }
+
+    free() {
+        const ptr = this.__destroy_into_raw();
         wasm.__wbg_unsignedinput_free(ptr);
     }
     /**
@@ -4433,10 +4668,15 @@ export class UnsignedInputs {
         return obj;
     }
 
-    free() {
+    __destroy_into_raw() {
         const ptr = this.ptr;
         this.ptr = 0;
 
+        return ptr;
+    }
+
+    free() {
+        const ptr = this.__destroy_into_raw();
         wasm.__wbg_unsignedinputs_free(ptr);
     }
     /**
@@ -4476,10 +4716,15 @@ export class UnsignedTransaction {
         return obj;
     }
 
-    free() {
+    __destroy_into_raw() {
         const ptr = this.ptr;
         this.ptr = 0;
 
+        return ptr;
+    }
+
+    free() {
+        const ptr = this.__destroy_into_raw();
         wasm.__wbg_unsignedtransaction_free(ptr);
     }
     /**
@@ -4547,10 +4792,15 @@ export class UpdateBox {
         return obj;
     }
 
-    free() {
+    __destroy_into_raw() {
         const ptr = this.ptr;
         this.ptr = 0;
 
+        return ptr;
+    }
+
+    free() {
+        const ptr = this.__destroy_into_raw();
         wasm.__wbg_updatebox_free(ptr);
     }
     /**
@@ -4620,10 +4870,15 @@ export class Wallet {
         return obj;
     }
 
-    free() {
+    __destroy_into_raw() {
         const ptr = this.ptr;
         this.ptr = 0;
 
+        return ptr;
+    }
+
+    free() {
+        const ptr = this.__destroy_into_raw();
         wasm.__wbg_wallet_free(ptr);
     }
     /**
@@ -4782,36 +5037,36 @@ export const __wbg_randomFillSync_d2ba53160aec6aba = function(arg0, arg1, arg2) 
     getObject(arg0).randomFillSync(getArrayU8FromWasm0(arg1, arg2));
 };
 
-export const __wbg_buffer_bc64154385c04ac4 = function(arg0) {
+export const __wbg_buffer_0be9fb426f2dd82b = function(arg0) {
     var ret = getObject(arg0).buffer;
     return addHeapObject(ret);
 };
 
-export const __wbg_newwithbyteoffsetandlength_3c8748473807c7cf = function(arg0, arg1, arg2) {
+export const __wbg_newwithbyteoffsetandlength_85b7ce82b001ea08 = function(arg0, arg1, arg2) {
     var ret = new Uint8Array(getObject(arg0), arg1 >>> 0, arg2 >>> 0);
     return addHeapObject(ret);
 };
 
-export const __wbg_length_e9f6f145de2fede5 = function(arg0) {
+export const __wbg_length_3a5138f465b971ad = function(arg0) {
     var ret = getObject(arg0).length;
     return ret;
 };
 
-export const __wbg_new_22a33711cf65b661 = function(arg0) {
+export const __wbg_new_4e8d18dbf9cd5240 = function(arg0) {
     var ret = new Uint8Array(getObject(arg0));
     return addHeapObject(ret);
 };
 
-export const __wbg_set_b29de3f25280c6ec = function(arg0, arg1, arg2) {
+export const __wbg_set_4769de301eb521d7 = function(arg0, arg1, arg2) {
     getObject(arg0).set(getObject(arg1), arg2 >>> 0);
 };
 
-export const __wbg_newwithlength_48451d71403bfede = function(arg0) {
+export const __wbg_newwithlength_19241666d161c55f = function(arg0) {
     var ret = new Uint8Array(arg0 >>> 0);
     return addHeapObject(ret);
 };
 
-export const __wbg_subarray_6b2dd31c84ee881f = function(arg0, arg1, arg2) {
+export const __wbg_subarray_b07d46fd5261d77f = function(arg0, arg1, arg2) {
     var ret = getObject(arg0).subarray(arg1 >>> 0, arg2 >>> 0);
     return addHeapObject(ret);
 };
