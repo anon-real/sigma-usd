@@ -286,7 +286,7 @@ export async function maxScToMint() {
 
 export async function maxRcToMint(height) {
     if (!bankBox || !oracleBox) await forceUpdateState();
-    if (bankBox.current_reserve_ratio(oracleBox) >= 800n) return 0
+    // if (bankBox.current_reserve_ratio(oracleBox) >= 800n) return 0
     return Number(bankBox.num_able_to_mint_reservecoin(oracleBox, BigInt(height)));
 }
 
@@ -341,3 +341,4 @@ export async function ergBalance(bal) {
 export function currentReserveRatio() {
     return Number(bankBox.current_reserve_ratio(oracleBox));
 }
+
