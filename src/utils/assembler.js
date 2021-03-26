@@ -1,6 +1,6 @@
 import { get, post } from './rest';
 import { addReq, getForKey, getUrl, setForKey, showStickyMsg } from './helpers';
-import { txConfNum } from './explorer';
+import { boxesByAddress, txById, txConfNum } from './explorer';
 import { toast } from 'react-toastify';
 import { assemblerUrl } from './consts';
 
@@ -29,15 +29,32 @@ export async function p2s(request) {
 }
 
 async function resolvePending() {
-    let reqs = getForKey('operation').filter(req => req.miningStat.includes('pending'));
+    let key = 'operation'
+    let reqs = getForKey(key).filter(req => req.miningStat.includes('pending'));
     for (let i = 0; i < reqs.length; i++) {
-        let info = reqs[i];
+        let info = JSON.parse(JSON.stringify(reqs[i]))
         let confNum = await txConfNum(info.txId);
         let miningStat = confNum ? 'mined' : 'pending';
         if (miningStat === 'mined') {
             if (info.miningStat.includes('refund')) info.miningStat = 'refund mined';
             else info.miningStat = 'mined';
-            addReq(info, 'operation', 'id');
+            addReq(info, key, 'id');
+
+        } else {
+            let boxes = await boxesByAddress(info.address)
+            if (boxes.length > 0 && boxes[0].spentTransactionId) {
+                let tx = await txById(boxes[0].spentTransactionId)
+                if (tx.outputs[0].address === info.returnTo) {
+                    info.status = 'fail';
+                    info.txId = boxes[0].spentTransactionId
+                    let prev = getForKey(key).filter(prev => prev.id === info.id);
+                    if (prev.length === 0 || prev[0].status !== info.status) {
+                        toast.error(`Your operation to "${info.type}" has failed. Your assets are being returned to you and is pending mining - follow it in the History table..`);
+                    }
+                    info.miningStat = `refund mined`;
+                    addReq(info, key, 'id');
+                }
+            }
         }
     }
 }
