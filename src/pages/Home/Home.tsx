@@ -73,6 +73,8 @@ const Home = () => {
                         >
                             AgeUSD Protocol
                         </a>
+
+                        <p style={{color: "grey", fontSize: "14px"}}>Looking for <a href="https://old.sigmausd.io/" target="_blank">v1</a>?</p>
                         
                     </div>
 
@@ -92,7 +94,13 @@ const Home = () => {
                     </span>
 
                     <span className="text-muted">
-                        <p style={{color: "grey"}}>This project is based on the AgeUSD Protocol</p>
+                        <p style={{color: "grey"}}>This project is based on the <a
+                            target="_blank"
+                            href="https://ergoplatform.org/en/blog/2021-02-05-building-ergo-how-the-ageusd-stablecoin-works/"
+                            rel="noreferrer noopener"
+                        >
+                            AgeUSD Protocol
+                        </a> </p>
                     </span>
                 </footer>
                 

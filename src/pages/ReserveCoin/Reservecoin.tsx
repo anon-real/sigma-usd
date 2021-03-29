@@ -48,7 +48,13 @@ const Reservecoin = () => {
                     </span>
 
                     <span className="text-muted">
-                        <p style={{color: "grey"}}>This project is based on the AgeUSD Protocol</p>
+                        <p style={{color: "grey"}}>This project is based on the <a
+                            target="_blank"
+                            href="https://ergoplatform.org/en/blog/2021-02-05-building-ergo-how-the-ageusd-stablecoin-works/"
+                            rel="noreferrer noopener"
+                        >
+                            AgeUSD Protocol
+                        </a></p>
                     </span>
                 </footer>
 
