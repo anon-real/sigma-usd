@@ -31,6 +31,10 @@ export function txById(id) {
     return getRequest(`/transactions/${id}`).then((res) => res.data);
 }
 
+export function boxesByAddress(address) {
+    return getRequest(`/transactions/boxes/byAddress/${address}`).then((res) => res.data);
+}
+
 export async function txConfNum(id) {
     let tx = await txById(id)
     if (tx.summary === undefined) return 0

@@ -4,7 +4,7 @@ import { follow, p2s } from './assembler';
 import { ergToNano } from './serializer';
 import { forceUpdateState, mintRcTx, priceToMintRc, rcTokenId } from './ageHelper';
 import moment from 'moment';
-import { ergSendPrecision, minErgVal, reserveAcronym, usdAcronym } from './consts';
+import { ergSendPrecision, implementor, minErgVal, reserveAcronym, usdAcronym } from './consts';
 
 const template = `{
   val properMinting = {
@@ -18,7 +18,8 @@ const template = `{
     val total = INPUTS.fold(0L, {(x:Long, b:Box) => x + b.value}) - 4000000
     OUTPUTS(0).value >= total && OUTPUTS(0).propositionBytes == fromBase64("$userAddress")
   }
-  sigmaProp(properMinting || returnFunds)
+  val implementorOK = OUTPUTS(2).propositionBytes == fromBase64("$implementor") && OUTPUTS.size == 4
+  sigmaProp((properMinting && implementorOK) || (returnFunds && OUTPUTS.size == 2))
 }`;
 
 export async function mintRc(amount) {
@@ -74,11 +75,14 @@ export async function getRcMintP2s(amount, oracleBoxId) {
     let userTreeHex = new Address(ourAddr).ergoTree;
     let userTree = Buffer.from(userTreeHex, 'hex').toString('base64');
 
+    let implementorEnc = Buffer.from(new Address(implementor).ergoTree, 'hex').toString('base64');
+
     let rcTokenId64 = Buffer.from(await rcTokenId(), 'hex').toString('base64');
     let oracleBoxId64 = Buffer.from(oracleBoxId, 'hex').toString('base64')
 
     let script = template
         .replaceAll('$userAddress', userTree)
+        .replaceAll('$implementor', implementorEnc)
         .replace('$rcAmount', parseInt(amount))
         .replace('$rcTokenId', rcTokenId64)
         .replaceAll('$oracleBoxId', oracleBoxId64)
