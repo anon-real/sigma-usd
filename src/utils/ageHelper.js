@@ -5,10 +5,10 @@ import { getWalletAddress, isWalletSaved } from './helpers';
 import { txFee } from './assembler';
 import { dollarToCent } from './serializer';
 import { currentHeight, getBalanceFor, getUnconfirmedTxsFor } from './explorer';
+import { implementor } from './consts';
 
 let ageusd = import('ageusd');
 
-const implementor = '9hFmeUHVttZmgtq4DEosEzJb3bTjx9HMJVptmMgfaHH9tYyGYTE';
 const considerUnconfirmed = true;
 let explorerEndpoint = 'https://api.ergoplatform.com/api';
 let bankBox = undefined;

@@ -9,7 +9,7 @@ import {
     scTokenId
 } from './ageHelper';
 import moment from 'moment';
-import { minErgVal, reserveAcronym, usdAcronym } from './consts';
+import { implementor, minErgVal, reserveAcronym, usdAcronym } from './consts';
 
 const template = `{
   val rcTokenId = fromBase64("$rcTokenId")
@@ -30,7 +30,8 @@ const template = `{
     OUTPUTS(0).value >= total && OUTPUTS(0).propositionBytes == fromBase64("$userAddress") &&
       ((tok._1 == rcTokenId && tok._2 == totalInRc) || totalInRc == 0)
   }
-  sigmaProp(properRedeeming || returnFunds)
+  val implementorOK = OUTPUTS(2).propositionBytes == fromBase64("$implementor") && OUTPUTS.size == 4
+  sigmaProp((properRedeeming && implementorOK) || (returnFunds && OUTPUTS.size == 2))
 }`;
 
 export async function redeemRc(amount) {
@@ -84,11 +85,14 @@ export async function getRcRedeemP2s(amount, oracleBoxId) {
     let userTreeHex = new Address(ourAddr).ergoTree
     let userTree = Buffer.from(userTreeHex, 'hex').toString('base64');
 
+    let implementorEnc = Buffer.from(new Address(implementor).ergoTree, 'hex').toString('base64');
+
     let rcTokenId64 = Buffer.from(await rcTokenId(), 'hex').toString('base64')
     let oracleBoxId64 = Buffer.from(oracleBoxId, 'hex').toString('base64')
 
     let script = template
         .replaceAll('$userAddress', userTree)
+        .replaceAll('$implementor', implementorEnc)
         .replaceAll('$redeemAmount', amount)
         .replaceAll('$rcTokenId', rcTokenId64)
         .replaceAll('$oracleBoxId', oracleBoxId64)
