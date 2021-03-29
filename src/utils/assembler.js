@@ -4,7 +4,7 @@ import { boxesByAddress, txById, txConfNum } from './explorer';
 import { toast } from 'react-toastify';
 import { assemblerUrl } from './consts';
 
-export const txFee = 2000000;
+export const txFee = 3000000;
 
 export async function follow(request) {
     return await post(getUrl(assemblerUrl) + '/follow', request).then((res) =>
