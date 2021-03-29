@@ -104,15 +104,9 @@ const Home = () => {
                     </span>
 
                     <div className="switch-site-button">
-                        {window.location.href.match('old') ? (
-                            <a href="https://old.sigmausd.io" rel="noopener noreferer">
-                                View SigmaUSD V1
-                            </a>
-                        ) : (
-                            <a href="https://sigmausd.io" rel="noopener noreferer">
-                                View SigmaUSD V2
-                            </a>
-                        )}
+                        <a href="https://old.sigmausd.io" rel="noopener noreferer">
+                            View SigmaUSD V1
+                        </a>
                     </div>
                 </footer>
             </main>
