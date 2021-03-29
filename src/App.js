@@ -44,7 +44,6 @@ export const initApp = () => {
                 </Switch>
                 </HashRouter>
             </Provider>
-
             <ToastContainer closeButton={false} autoClose={10000} />
         </>,
         rootElement
