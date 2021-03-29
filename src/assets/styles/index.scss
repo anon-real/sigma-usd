@@ -168,3 +168,17 @@ li {
         padding: 0 50px;
     }
 }
+
+.switch-site-button {
+    background: #610BFC;
+    width: 200px;
+    margin: 0 auto;
+    margin-top: 20px;
+    padding: 8px;
+    border-radius: 5px;
+
+    a {
+        transition: none !important;
+        background: none !important;
+    }
+}
