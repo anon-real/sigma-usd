@@ -41,10 +41,15 @@ const Stablecoin = () => {
                 </div>
                 <footer className="footer mt-auto py-3">
                     <span className="text-muted">
+                        <a href="https://old.sigmausd.io/" target="_blank">v1</a> <a>|</a>  
                         <a href="https://ergoplatform.org/" target="_blank">ergoplatform.org</a> <a>|</a>  
                         <a href="https://sigmaverse.io/" target="_blank"> sigmaverse.io</a> <a>|</a> 
                         <a href="https://ergonaut.space/" target="_blank"> ergonaut.space</a> <a>|</a> 
-                        <a href="https://github.com/anon-real/sigma-usd" target="_blank"> github</a>
+                        <a href="https://github.com/anon-real/sigma-usd" target="_blank"> GitHub</a>
+                    </span>
+
+                    <span className="text-muted">
+                        <p style={{color: "grey"}}>This project is based on the AgeUSD Protocol</p>
                     </span>
                 </footer>
             </div>
