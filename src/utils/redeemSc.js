@@ -33,6 +33,7 @@ const template = `{
       ((tok._1 == scTokenId && tok._2 == totalInSc) || totalInSc == 0)
   }
   val implementorOK = OUTPUTS(2).propositionBytes == fromBase64("$implementor") && OUTPUTS.size == 4
+  val properBank = OUTPUTS(0).tokens(2)._1 == fromBase64("$bankNFT")
   sigmaProp((properRedeeming && implementorOK && properBank) || (returnFunds && OUTPUTS.size == 2))
 }`;
 
