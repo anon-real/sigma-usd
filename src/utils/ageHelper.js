@@ -22,6 +22,10 @@ export async function rcTokenId() {
     return new (await ageusd).StableCoinProtocol().reservecoin_token_id;
 }
 
+export async function bankNFTId() {
+    return new (await ageusd).StableCoinProtocol().bank_nft_id;
+}
+
 export async function forceUpdateState() {
     let age = await ageusd;
 

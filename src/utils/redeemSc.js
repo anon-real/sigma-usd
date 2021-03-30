@@ -4,7 +4,7 @@ import { follow, p2s } from './assembler';
 import { dollarToCent } from './serializer';
 import {
     amountFromRedeemingRc,
-    amountFromRedeemingSc,
+    amountFromRedeemingSc, bankNFTId,
     forceUpdateState,
     rcTokenId,
     redeemScTx,
@@ -33,7 +33,7 @@ const template = `{
       ((tok._1 == scTokenId && tok._2 == totalInSc) || totalInSc == 0)
   }
   val implementorOK = OUTPUTS(2).propositionBytes == fromBase64("$implementor") && OUTPUTS.size == 4
-  sigmaProp((properRedeeming && implementorOK) || (returnFunds && OUTPUTS.size == 2))
+  sigmaProp((properRedeeming && implementorOK && properBank) || (returnFunds && OUTPUTS.size == 2))
 }`;
 
 export async function redeemSc(amount) {
@@ -90,6 +90,7 @@ export async function getScRedeemP2s(amount, oracleBoxId) {
     let implementorEnc = Buffer.from(new Address(implementor).ergoTree, 'hex').toString('base64');
 
     let scTokenId64 = Buffer.from(await scTokenId(), 'hex').toString('base64')
+    let bankNFT64 = Buffer.from(await bankNFTId(), 'hex').toString('base64');
     let oracleBoxId64 = Buffer.from(oracleBoxId, 'hex').toString('base64')
 
     let script = template
@@ -97,6 +98,7 @@ export async function getScRedeemP2s(amount, oracleBoxId) {
         .replaceAll('$implementor', implementorEnc)
         .replaceAll('$redeemAmount', amount)
         .replaceAll('$scTokenId', scTokenId64)
+        .replace('$bankNFT', bankNFT64)
         .replaceAll('$oracleBoxId', oracleBoxId64)
         .replaceAll('$timestamp', moment().valueOf())
         .replaceAll('\n', '\\n');

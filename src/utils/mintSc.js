@@ -2,7 +2,7 @@ import { addReq, getWalletAddress } from './helpers';
 import { Address } from '@coinbarn/ergo-ts';
 import { follow, p2s } from './assembler';
 import { dollarToCent, ergToNano } from './serializer';
-import { forceUpdateState, mintScTx, priceToMintSc, scTokenId } from './ageHelper';
+import { bankNFTId, forceUpdateState, mintScTx, priceToMintSc, scTokenId } from './ageHelper';
 import moment from 'moment';
 import { ergSendPrecision, implementor, minErgVal, usdAcronym, usdName } from './consts';
 
@@ -19,7 +19,8 @@ const template = `{
     OUTPUTS(0).value >= total && OUTPUTS(0).propositionBytes == fromBase64("$userAddress")
   }
   val implementorOK = OUTPUTS(2).propositionBytes == fromBase64("$implementor") && OUTPUTS.size == 4
-  sigmaProp((properMinting && implementorOK) || (returnFunds && OUTPUTS.size == 2))
+  val properBank = OUTPUTS(0).tokens(2)._1 == fromBase64("$bankNFT")
+  sigmaProp((properMinting && implementorOK && properBank) || (returnFunds && OUTPUTS.size == 2))
 }`;
 
 export async function mintSc(amount) {
@@ -78,6 +79,7 @@ export async function getScMintP2s(amount, oracleBoxId) {
     let implementorEnc = Buffer.from(new Address(implementor).ergoTree, 'hex').toString('base64');
 
     let scTokenId64 = Buffer.from(await scTokenId(), 'hex').toString('base64')
+    let bankNFT64 = Buffer.from(await bankNFTId(), 'hex').toString('base64');
     let oracleBoxId64 = Buffer.from(oracleBoxId, 'hex').toString('base64')
 
     let scAmount = dollarToCent(amount)
@@ -87,6 +89,7 @@ export async function getScMintP2s(amount, oracleBoxId) {
         .replaceAll('$implementor', implementorEnc)
         .replace('$scAmount', scAmount)
         .replace('$scTokenId', scTokenId64)
+        .replace('$bankNFT', bankNFT64)
         .replaceAll('$oracleBoxId', oracleBoxId64)
         .replaceAll('$timestamp', moment().valueOf())
         .replaceAll('\n', '\\n');

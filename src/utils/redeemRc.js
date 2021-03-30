@@ -2,7 +2,7 @@ import { addReq, getWalletAddress } from './helpers';
 import { Address } from '@coinbarn/ergo-ts';
 import { follow, p2s } from './assembler';
 import {
-    amountFromRedeemingRc,
+    amountFromRedeemingRc, bankNFTId,
     forceUpdateState,
     rcTokenId,
     redeemRcTx,
@@ -31,7 +31,8 @@ const template = `{
       ((tok._1 == rcTokenId && tok._2 == totalInRc) || totalInRc == 0)
   }
   val implementorOK = OUTPUTS(2).propositionBytes == fromBase64("$implementor") && OUTPUTS.size == 4
-  sigmaProp((properRedeeming && implementorOK) || (returnFunds && OUTPUTS.size == 2))
+  val properBank = OUTPUTS(0).tokens(2)._1 == fromBase64("$bankNFT")
+  sigmaProp((properRedeeming && implementorOK && properBank) || (returnFunds && OUTPUTS.size == 2))
 }`;
 
 export async function redeemRc(amount) {
@@ -88,6 +89,7 @@ export async function getRcRedeemP2s(amount, oracleBoxId) {
     let implementorEnc = Buffer.from(new Address(implementor).ergoTree, 'hex').toString('base64');
 
     let rcTokenId64 = Buffer.from(await rcTokenId(), 'hex').toString('base64')
+    let bankNFT64 = Buffer.from(await bankNFTId(), 'hex').toString('base64');
     let oracleBoxId64 = Buffer.from(oracleBoxId, 'hex').toString('base64')
 
     let script = template
@@ -95,6 +97,7 @@ export async function getRcRedeemP2s(amount, oracleBoxId) {
         .replaceAll('$implementor', implementorEnc)
         .replaceAll('$redeemAmount', amount)
         .replaceAll('$rcTokenId', rcTokenId64)
+        .replace('$bankNFT', bankNFT64)
         .replaceAll('$oracleBoxId', oracleBoxId64)
         .replaceAll('$timestamp', moment().valueOf())
         .replaceAll('\n', '\\n');
