@@ -178,7 +178,7 @@ export class PersonalInfo extends Component<Props, State> {
 
                     {!!this.state.history.length && (
                         <div className="mint-history__description">
-                            If a operation succeeds, it will be highlighted in
+                            If an operation succeeds, it will be highlighted in
                             green. Otherwise, it will be highlighted in red and
                             it means that your funds are being returned to you.
                         </div>
