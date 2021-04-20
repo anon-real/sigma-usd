@@ -1,6 +1,6 @@
 import { addReq, getWalletAddress } from './helpers';
 import { Address } from '@coinbarn/ergo-ts';
-import { follow, p2s } from './assembler';
+import { follow, p2s, returnFee } from './assembler';
 import {
     amountFromRedeemingRc, bankNFTId,
     forceUpdateState,
@@ -20,7 +20,7 @@ const template = `{
       CONTEXT.dataInputs(0).id == fromBase64("$oracleBoxId")
   }
   val returnFunds = {
-    val total = INPUTS.fold(0L, {(x:Long, b:Box) => x + b.value}) - 4000000
+    val total = INPUTS.fold(0L, {(x:Long, b:Box) => x + b.value}) - ${returnFee}
     val totalInRc = INPUTS.fold(0L, {(x:Long, b:Box) => {
       val tok = b.tokens.getOrElse(0, (rcTokenId, 0L))
       if (tok._1 == rcTokenId) tok._2

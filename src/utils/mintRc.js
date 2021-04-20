@@ -1,6 +1,6 @@
 import { addReq, getWalletAddress } from './helpers';
 import { Address } from '@coinbarn/ergo-ts';
-import { follow, p2s } from './assembler';
+import { follow, p2s, returnFee } from './assembler';
 import { ergToNano } from './serializer';
 import { bankNFTId, forceUpdateState, mintRcTx, priceToMintRc, rcTokenId } from './ageHelper';
 import moment from 'moment';
@@ -15,7 +15,7 @@ const template = `{
       CONTEXT.dataInputs(0).id == fromBase64("$oracleBoxId")
   }
   val returnFunds = {
-    val total = INPUTS.fold(0L, {(x:Long, b:Box) => x + b.value}) - 4000000
+    val total = INPUTS.fold(0L, {(x:Long, b:Box) => x + b.value}) - ${returnFee}
     OUTPUTS(0).value >= total && OUTPUTS(0).propositionBytes == fromBase64("$userAddress")
   }
   val implementorOK = OUTPUTS(2).propositionBytes == fromBase64("$implementor") && OUTPUTS.size == 4

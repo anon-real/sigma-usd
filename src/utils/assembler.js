@@ -5,6 +5,7 @@ import { toast } from 'react-toastify';
 import { assemblerUrl } from './consts';
 
 export const txFee = 3000000;
+export const returnFee = 1200000;
 
 export async function follow(request) {
     return await post(getUrl(assemblerUrl) + '/follow', request).then((res) =>
