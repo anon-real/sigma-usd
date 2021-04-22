@@ -13,9 +13,13 @@ import Loader from '../../../../components/Loader/Loader';
 import { isWalletSaved } from '../../../../utils/helpers';
 import { mintRc } from '../../../../utils/mintRc';
 import { currentHeight } from '../../../../utils/explorer';
+import { Trans, withTranslation } from 'react-i18next';
+import { WithT } from 'i18next';
 
-export class PurchaseForm extends Component<any, any> {
-    constructor(props: any) {
+type PurchaseFormProps = WithT;
+
+class PurchaseForm extends Component<PurchaseFormProps, any> {
+    constructor(props: PurchaseFormProps) {
         super(props);
         this.state = {
             mintErgVal: 0,
@@ -48,13 +52,14 @@ export class PurchaseForm extends Component<any, any> {
         }
 
         maxRcToMint(this.state.curHeight).then((maxAllowed) => {
+            const { t } = this.props;
             if (this.state.requestId !== requestId) {
                 return;
             }
 
             if (maxAllowed < inp) {
                 this.setState({
-                    errMsg: `Unable to mint more than ${maxAllowed} ${reserveName} based on the current reserve status`,
+                    errMsg: t('errorCannotMintOverReserve', { maxAllowed, name: reserveName }),
                 });
                 return;
             }
@@ -99,8 +104,9 @@ export class PurchaseForm extends Component<any, any> {
     }
 
     startRcRedeem() {
+        const { t } = this.props;
         if (!isWalletSaved()) {
-            toast.warn('Please set up your wallet first.');
+            toast.warn(t('warnSetWallet'));
             this.setState({ isWalletModalOpen: true });
             return;
         }
@@ -118,14 +124,15 @@ export class PurchaseForm extends Component<any, any> {
                 });
             })
             .catch((err) => {
-                toast.error(`Could not register the request.${err.message}`);
+                toast.error(t('errorCannotRegisterRequest', { error: err.message }));
                 this.setState({ loading: false });
             });
     }
 
     render() {
+        const { t } = this.props;
         return (
-            <Card title={`Purchase ${reserveName}`}>
+            <Card title={`${t('purchase')} ${reserveName}`}>
                 <Switch leftSide={ergCoin} rightSide={reserveAcronym} />
                 <div className="delimiter" />
                 <div className="input mt-xl-20 mb-xl-20 mt-15 mb-15 mt-lg-20 mb-lg-20">
@@ -137,7 +144,7 @@ export class PurchaseForm extends Component<any, any> {
                                 this.inputChange(e.target.value);
                             }}
                             type="number"
-                            placeholder="Amount (SigRSV)"
+                            placeholder={`${t('amount')} (${reserveAcronym})`}
                         />
                     </div>
                     <span
@@ -147,7 +154,7 @@ export class PurchaseForm extends Component<any, any> {
                     >
                         {this.state.errMsg
                             ? this.state.errMsg
-                            : 'A fee is charged for currency conversion'}
+                            : <Trans i18nKey="feeNote"/>}
                     </span>
                 </div>
                 <div className="delimiter" />
@@ -155,9 +162,9 @@ export class PurchaseForm extends Component<any, any> {
                     <p>
                         {this.state.amount} {reserveName} ≈ {this.state.mintErgVal.toFixed(3)} ERG
                     </p>
-                    <p>Fee ≈ {this.state.mintErgFee.toFixed(3)} ERG </p>
+                    <p><Trans i18nKey="fee"/> ≈ {this.state.mintErgFee.toFixed(3)} ERG </p>
                     <p>
-                        You will pay ≈ {(this.state.mintErgVal + this.state.mintErgFee).toFixed(3)}{' '}
+                        <Trans i18nKey="youPay"/> ≈ {(this.state.mintErgVal + this.state.mintErgFee).toFixed(3)}{' '}
                         ERG{' '}
                     </p>
                 </div>
@@ -166,7 +173,7 @@ export class PurchaseForm extends Component<any, any> {
                     onClick={() => this.startRcRedeem()}
                     disabled={this.state.loading || this.state.errMsg || !this.state.amount}
                 >
-                    {this.state.loading ? <Loader /> : 'Purchase'}
+                    {this.state.loading ? <Loader /> : <Trans i18nKey="purchase"/>}
                 </button>
                 <InfoModal
                     coin={this.state.coin}
@@ -184,4 +191,4 @@ export class PurchaseForm extends Component<any, any> {
         );
     }
 }
-export default PurchaseForm;
+export default withTranslation()(PurchaseForm);

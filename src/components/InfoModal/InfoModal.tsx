@@ -2,6 +2,7 @@ import ModalContainer from 'components/ModalContainer/ModalContainer';
 import React from 'react';
 import { CountdownCircleTimer } from 'react-countdown-circle-timer';
 import { copyToClipboard, friendlyAddress } from '../../utils/helpers';
+import { Trans } from 'react-i18next';
 
 interface Props {
     coin: string;
@@ -14,14 +15,18 @@ interface Props {
 
 const renderTime = ({ remainingTime }: any) => {
     if (remainingTime === 0) {
-        return <div className="info-modal__timer info-modal__timer-text">The time is over</div>;
+        return <div className="info-modal__timer info-modal__timer-text"><Trans i18nKey="timeOver"/></div>;
     }
 
     return (
         <div className="info-modal__timer">
-            <div className="info-modal__timer-text">Remaining</div>
-            <div className="info-modal__timer-value">{remainingTime}</div>
-            <div className="info-modal__timer-text">seconds</div>
+            <Trans i18nKey="remainingTime" values={{remainingTime}}
+               components={[
+                   <div className="info-modal__timer-text" />,
+                   <div className="info-modal__timer-value" />,
+                   <div className="info-modal__timer-text" />  ,
+               ]}
+            />
         </div>
     );
 };
@@ -36,7 +41,7 @@ const InfoModal = ({ open, coin, value, address, onClose, dueTime }: Props) => {
                     <span role="img" aria-label="Warning icon">
                         ⚠️
                     </span>
-                    Click on the amount and the address to copy them!
+                    <Trans i18nKey="clickToCopy"/>
                 </div>
                 <div className="info-modal__countdown-timer">
                     <CountdownCircleTimer
@@ -54,26 +59,21 @@ const InfoModal = ({ open, coin, value, address, onClose, dueTime }: Props) => {
                 </div>
                 <div className="info-modal__content">
                     <p className="info-modal__text">
-                        Send exactly{' '}
-                        <span
-                            onClick={() => copyToClipboard(value)}
-                            className="info-modal__text--bold info-modal__text--pointer"
-                        >
-                            {value} {coin}
-                        </span>{' '}
-                        to{' '}
-                        <span
-                            onClick={() => copyToClipboard(address)}
-                            className="info-modal__text--bold info-modal__text--pointer"
-                        >
-                            {formattedAddress}
-                        </span>
-                        ;<br /> the operation will be done automatically
-                        afterward.
+                        <Trans i18nKey="infoContent1"
+                               values={{amount: `${value} ${coin}`, address:formattedAddress}}
+                               components={[
+                                   <span
+                                        onClick={() => copyToClipboard(value)}
+                                        className="info-modal__text--bold info-modal__text--pointer"
+                                    />,
+                                    <span
+                                        onClick={() => copyToClipboard(address)}
+                                        className="info-modal__text--bold info-modal__text--pointer"
+                                    />,
+                                ]}/>
                     </p>
                     <p className="info-modal__text">
-                        Your funds will be sent back to you in case of any failure. Smart contracts are being used
-                        to prevent the intermediate service from cheating!
+                        <Trans i18nKey="infoContent2" />
                     </p>
                 </div>
             </div>

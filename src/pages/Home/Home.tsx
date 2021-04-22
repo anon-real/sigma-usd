@@ -8,6 +8,7 @@ import { getBalanceFor } from '../../utils/explorer';
 import { getWalletAddress, isWalletSaved } from '../../utils/helpers';
 import { ergBalance, rcBalance, rcPrice, scBalance, scPrice } from '../../utils/ageHelper';
 import { usdName } from 'utils/consts';
+import { Trans, useTranslation } from 'react-i18next';
 
 const Home = () => {
     const [ergVal, setErgVal] = useState(0);
@@ -35,6 +36,8 @@ const Home = () => {
     }, 30000);
     updateParams();
 
+    useTranslation();
+
     return (
         <>
             <Header />
@@ -42,13 +45,19 @@ const Home = () => {
                 <section className="main-navigation">
                     <nav className="main-navigation__list">
                         <NavLink exact to="/">
-                            <span>Dashboard</span>
+                            <span>
+                                <Trans i18nKey="menuDash" />
+                            </span>
                         </NavLink>
                         <NavLink exact to="/stablecoin">
-                            <span>StableCoin</span>
+                            <span>
+                                <Trans i18nKey="menuStableCoin" />
+                            </span>
                         </NavLink>
                         <NavLink exact to="/reservecoin">
-                            <span>ReserveCoin</span>
+                            <span>
+                                <Trans i18nKey="menuReserveCoin" />
+                            </span>
                         </NavLink>
                     </nav>
                 </section>
@@ -60,14 +69,13 @@ const Home = () => {
                     </div>
 
                     <div className="finance-description__text">
-                        No intermediaries, no middlemen, <br />
-                        just pure, decentralized finance.
+                        <Trans i18nKey="financeDescriptionText1" components={{ br: <br /> }} />
                         <br />
                         <br />
-                        Experience the latest advancements in Stablecoins by buying and selling
-                        SigUSD and SigRSV using Ergo and smart contracts.
+                        <Trans i18nKey="financeDescriptionText2" />
                         <br />
-                        <br /> This project is based on the{' '}
+                        <br />
+                        <Trans i18nKey="financeDescriptionText3" />{' '}
                         <a
                             target="_blank"
                             href="https://ergoplatform.org/en/blog/2021-02-05-building-ergo-how-the-ageusd-stablecoin-works/"

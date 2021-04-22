@@ -4,6 +4,7 @@ import moment from 'moment';
 import PieChartComponent, { COLORS, COLORSIDS } from './PieChart';
 import { reserveAcronym, usdAcronym } from '../../../../utils/consts';
 import { getForKey } from '../../../../utils/helpers';
+import { Trans, withTranslation } from 'react-i18next';
 
 interface Props {
     ergVal?: number;
@@ -150,7 +151,7 @@ export class PersonalInfo extends Component<Props, State> {
         return (
             <section className="personal-info">
                 <div className="balance tiles">
-                    <div className="balance__title">Your balance</div>
+                    <div className="balance__title"><Trans i18nKey="yourBalance"/></div>
 
                     <div className="balance__info">
                         <PieChartComponent data={chartData} />
@@ -174,13 +175,11 @@ export class PersonalInfo extends Component<Props, State> {
                     </div>
                 </div>
                 <div className="mint-history tiles">
-                    <div className="mint-history__title">History</div>
+                    <div className="mint-history__title"><Trans i18nKey="history"/></div>
 
                     {!!this.state.history.length && (
                         <div className="mint-history__description">
-                            If an operation succeeds, it will be highlighted in
-                            green. Otherwise, it will be highlighted in red and
-                            it means that your funds are being returned to you.
+                            <Trans i18nKey="historyDescription"/>
                         </div>
                     )}
                     {!!this.state.history.length && (
@@ -189,7 +188,7 @@ export class PersonalInfo extends Component<Props, State> {
                         </div>
                     )}
                     {!this.state.history.length && (
-                        <div className="history-empty">No history yet</div>
+                        <div className="history-empty"><Trans i18nKey="noHistory"/></div>
                     )}
                 </div>
             </section>
@@ -197,4 +196,4 @@ export class PersonalInfo extends Component<Props, State> {
     }
 }
 
-export default PersonalInfo;
+export default withTranslation()(PersonalInfo);
