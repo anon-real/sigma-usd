@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import CoinsInfo from './components/CoinsInfo/CoinsInfo';
 import PersonalInfo from './components/PersonalInfo/PersonalInfo';
@@ -14,7 +14,7 @@ const Home = () => {
     const [reserveVal, setReserveVal] = useState(0);
     const [stableVal, setStableVal] = useState(0);
 
-    async function updateParams() {
+    const updateParams = useCallback(async () => {
         if (isWalletSaved()) {
             const bal = await getBalanceFor(getWalletAddress());
             const ageBal = (await scBalance(bal)) / 100;
@@ -28,12 +28,15 @@ const Home = () => {
             setStableVal(ageBal);
             setErgVal(ergBal);
         }
-    }
+    }, []);
 
-    setInterval(() => {
+    useEffect(() => {
+        const id = setInterval(updateParams, 30000);
         updateParams();
-    }, 30000);
-    updateParams();
+        return () => {
+            clearInterval(id);
+        };
+    }, [updateParams]);
 
     return (
         <>
