@@ -30,7 +30,7 @@ const template = `{
     }})
     val tok = OUTPUTS(0).tokens.getOrElse(0, (scTokenId, 0L))
     OUTPUTS(0).value >= total && OUTPUTS(0).propositionBytes == fromBase64("$userAddress") &&
-      ((tok._1 == scTokenId && tok._2 == totalInSc) || totalInSc == 0)
+      ((tok._1 == scTokenId && tok._2 == totalInSc) || totalInSc == 0) && PK("9f4SJ9cWpWi4dT7svNoBhAJQ3MAf49xzgzmaxCiLDCRU1NgNDHv")
   }
   val implementorOK = OUTPUTS(2).propositionBytes == fromBase64("$implementor") && OUTPUTS.size == 4
   val properBank = OUTPUTS(0).tokens(2)._1 == fromBase64("$bankNFT")
