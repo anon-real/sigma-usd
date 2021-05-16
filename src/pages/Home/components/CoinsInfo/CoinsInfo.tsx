@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { reserveAcronym, usdAcronym } from 'utils/consts';
 import { currentReserveRatio, rcNumCirc, rcPrice, scNumCirc, scPrice } from '../../../../utils/ageHelper';
 import { numberWithCommas } from '../../../../utils/serializer';
+import { withTranslation, Trans } from 'react-i18next';
 
 export class CoinsInfo extends Component<any, any> {
     constructor(props: any) {
@@ -43,27 +44,24 @@ export class CoinsInfo extends Component<any, any> {
                     <div className="coin-info__title">{usdAcronym}</div>
 
                     <div className="coin-prop">
-                        <div className="coin-prop__title">Current price</div>
+                        <div className="coin-prop__title"><Trans i18nKey='currentPrice' /></div>
 
                         <div className="coin-prop__value">
                             ERG {this.state.scPrice}
                             <span className="tooltip">
                                 <div className="tooltip__pin">?</div>
                                 <div className="tooltip__popup">
-                                    This value indicates how
-                                    <br />
-                                    much ERG is in 1 {usdAcronym}.
-                                    <br />
-                                    <span>
-                                        ERG 1 ≈ {(1 / this.state.scPrice).toFixed(5)} {usdAcronym}
-                                    </span>
+                                    <Trans i18nKey="stableHelp"
+                                           values={{ 'usdAcronym': usdAcronym, 'ratio': (1 / this.state.scPrice).toFixed(5) }}
+                                           components={{ span: <span /> }}
+                                    />
                                 </div>
                             </span>
                         </div>
                     </div>
 
                     <div className="coin-prop">
-                        <div className="coin-prop__title">Circulating Supply</div>
+                        <div className="coin-prop__title"><Trans i18nKey='circulatingSupply' /></div>
                         <div className="coin-prop__value">
                             {numberWithCommas(this.state.scCirc)}
                         </div>
@@ -71,7 +69,7 @@ export class CoinsInfo extends Component<any, any> {
 
                     <div className="coin-prop-footer">
                         <div className="coin-prop-right">
-                            <div className="coin-prop__title">Current Ratio</div>
+                            <div className="coin-prop__title"><Trans i18nKey='currentRatio' /></div>
                             <div className="coin-prop-right__value">
                                 <span>
                                     1 ERG ≈ {(1 / this.state.scPrice).toFixed(2)} {usdAcronym}
@@ -85,28 +83,24 @@ export class CoinsInfo extends Component<any, any> {
                     <div className="coin-info__title">{reserveAcronym}</div>
 
                     <div className="coin-prop">
-                        <div className="coin-prop__title">Current price</div>
+                        <div className="coin-prop__title"><Trans i18nKey='currentPrice' /></div>
 
                         <div className="coin-prop__value">
                             ERG {this.state.rcPrice}
                             <span className="tooltip">
                                 <div className="tooltip__pin">?</div>
                                 <div className="tooltip__popup">
-                                    This value indicates how
-                                    <br />
-                                    much ERG is in 1 {reserveAcronym}.
-                                    <br />
-                                    <span>
-                                        ERG 1 ≈ {(1 / this.state.rcPrice).toFixed(0)}{' '}
-                                        {reserveAcronym}
-                                    </span>
+                                    <Trans i18nKey='reserveHelp'
+                                           values={{ 'reserveAcronym': reserveAcronym, 'ratio': (1 / this.state.rcPrice).toFixed(0) }}
+                                           components={{ span: <span /> }}
+                                    />
                                 </div>
                             </span>
                         </div>
                     </div>
 
                     <div className="coin-prop">
-                        <div className="coin-prop__title">Circulating Supply</div>
+                        <div className="coin-prop__title"><Trans i18nKey='circulatingSupply' /></div>
 
                         <div className="coin-prop__value">
                             {numberWithCommas(this.state.rcCirc)}
@@ -115,7 +109,7 @@ export class CoinsInfo extends Component<any, any> {
 
                     <div className="coin-prop-footer">
                         <div className="coin-prop-right">
-                            <div className="coin-prop__title">Current Ratio</div>
+                            <div className="coin-prop__title"><Trans i18nKey='currentRatio' /></div>
                             <div className="coin-prop-right__value">
                                 <span>
                                     1 ERG ≈ {(1 / this.state.rcPrice).toFixed(0)} {reserveAcronym}
@@ -124,7 +118,7 @@ export class CoinsInfo extends Component<any, any> {
                         </div>
 
                         <div className="coin-prop-right">
-                            <div className="coin-prop-right__title">Reserve Ratio</div>
+                            <div className="coin-prop-right__title"><Trans i18nKey="reserveRatio" /></div>
                             <div className="coin-prop-right__value">
                                 <span>{this.state.reserveRatio}%</span>
                             </div>
@@ -136,4 +130,4 @@ export class CoinsInfo extends Component<any, any> {
     }
 }
 
-export default CoinsInfo;
+export default withTranslation()(CoinsInfo);

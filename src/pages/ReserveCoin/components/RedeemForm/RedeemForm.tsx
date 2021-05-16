@@ -16,9 +16,13 @@ import Loader from '../../../../components/Loader/Loader';
 import { isWalletSaved } from '../../../../utils/helpers';
 import { redeemRc } from '../../../../utils/redeemRc';
 import InfoModal from '../../../../components/InfoModal/InfoModal';
+import { Trans, withTranslation } from 'react-i18next';
+import { WithT } from 'i18next';
 
-export class RedeemForm extends Component<any, any> {
-    constructor(props: any) {
+type RedeemFormProps = WithT;
+
+class RedeemForm extends Component<RedeemFormProps, any> {
+    constructor(props: RedeemFormProps) {
         super(props);
         this.state = {
             redeemErgVal: 0,
@@ -64,8 +68,9 @@ export class RedeemForm extends Component<any, any> {
             }
 
             if (maxAllowed < inp) {
+                const { t } = this.props;
                 this.setState({
-                    errMsg: `Unable to redeem more than ${maxAllowed} ${reserveName} based on the current reserve status`,
+                    errMsg: t('errorCannotRedeemOverReserve', { maxAllowed, coin: reserveName }),
                 });
                 return;
             }
@@ -92,8 +97,9 @@ export class RedeemForm extends Component<any, any> {
     }
 
     startRcRedeem() {
+        const { t } = this.props;
         if (!isWalletSaved()) {
-            toast.warn('Please set up your wallet first.');
+            toast.warn(t('warnSetWallet'));
             this.setState({ isWalletModalOpen: true });
             return;
         }
@@ -113,14 +119,15 @@ export class RedeemForm extends Component<any, any> {
             .catch((err) => {
                 let { message } = err;
                 if (!message) message = err;
-                toast.error(`Could not register the request.\n${message}`);
+                toast.error(t('errorCannotRegisterRequest', { error: err.message }));
                 this.setState({ loading: false });
             });
     }
 
     render() {
+        const { t } = this.props;
         return (
-            <Card title={`Redeem ${reserveName}`}>
+            <Card title={`${t('redeem')} ${reserveName}`}>
                 <Switch rightSide={ergCoin} leftSide={reserveAcronym} />
                 <div className="delimiter" />
                 <div className="input mt-xl-20 mb-xl-20 mt-15 mb-15 mt-lg-20 mb-lg-20">
@@ -132,7 +139,7 @@ export class RedeemForm extends Component<any, any> {
                                 this.inputChange(e.target.value);
                             }}
                             type="number"
-                            placeholder="Amount (SigRSV)"
+                            placeholder={`${t('amount')} (${reserveAcronym})`}
                         />
                     </div>
                     <span
@@ -142,7 +149,7 @@ export class RedeemForm extends Component<any, any> {
                     >
                         {this.state.errMsg
                             ? this.state.errMsg
-                            : 'A fee is charged for currency conversion'}
+                            : <Trans i18nKey="feeNote"/>}
                     </span>
                 </div>
                 <div className="delimiter" />
@@ -151,9 +158,9 @@ export class RedeemForm extends Component<any, any> {
                         {this.state.amount} {reserveAcronym} ≈ {this.state.redeemErgVal.toFixed(3)}{' '}
                         ERG
                     </p>
-                    <p>Fee ≈ {this.state.redeemErgFee.toFixed(3)} ERG </p>
+                    <p><Trans i18nKey="fee"/> ≈ {this.state.redeemErgFee.toFixed(3)} ERG </p>
                     <p>
-                        You will get ≈{' '}
+                        <Trans i18nKey="youGet"/> ≈{' '}
                         {(this.state.redeemErgVal - this.state.redeemErgFee).toFixed(3)} ERG{' '}
                     </p>
                 </div>
@@ -162,7 +169,7 @@ export class RedeemForm extends Component<any, any> {
                     disabled={this.state.loading || this.state.errMsg || !this.state.amount}
                     className="mt-sm-15 mt-xl-40 mt-lg-25 btn btn--white"
                 >
-                    {this.state.loading ? <Loader /> : 'Redeem'}
+                    {this.state.loading ? <Loader /> : <Trans i18nKey="redeem"/>}
                 </button>
                 <InfoModal
                     coin={this.state.coin}
@@ -181,4 +188,4 @@ export class RedeemForm extends Component<any, any> {
     }
 }
 
-export default RedeemForm;
+export default withTranslation()(RedeemForm);

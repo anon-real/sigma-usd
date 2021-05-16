@@ -6,6 +6,7 @@ import {
     isAddressValid, setAnyWallet
 } from '../../utils/helpers';
 import { toast } from 'react-toastify';
+import { Trans, useTranslation } from 'react-i18next';
 
 interface Props {
     onClose: () => void;
@@ -17,12 +18,14 @@ enum Wallets {
 }
 
 const TABS = {
-    [Wallets.ANY_WALLET]: 'Set Wallet',
+    [Wallets.ANY_WALLET]: 'tabSetWallet',
 };
 
 const WalletModal = ({ open, onClose }: Props) => {
     const [currentTab, setCurrentTab] = useState(Wallets.ANY_WALLET);
     const [address, setAddress] = useState(getWalletAddress);
+
+    const { t } = useTranslation();
 
     return (
         <ModalContainer open={open} onClose={onClose}>
@@ -34,28 +37,28 @@ const WalletModal = ({ open, onClose }: Props) => {
                             className="wallet-modal__tab"
                             onClick={() => setCurrentTab(key as Wallets)}
                         >
-                            {TABS[key as Wallets]}
+                            <Trans i18nKey={TABS[key as Wallets]} />
                         </div>
                     ))}
                 </div>
                 <div className="wallet-modal__content">
                     {currentTab === Wallets.ANY_WALLET && (
                         <>
-                            You need to fill out a receiving address first before we can go any further because this wallet is used for any failed transactions.
-                            (and redeeming SigmaUSD/RSV) <br></br><br></br>After you do this and make a purchase you will prompted with an address to manually send your funds to. 
-                            
-
                             <p className="wallet-modal__paragraph">
-
-                             <br></br>Your funds will be safe using smart contracts
-                                that prevent the service from cheating! Transactions may fail due to heavy load during the launch. Try again! <br></br>
+                                <Trans i18nKey="setWalletContent1" />
+                            </p>
+                            <p className="wallet-modal__paragraph">
+                                <Trans i18nKey="setWalletContent2" />
+                            </p>
+                            <p className="wallet-modal__paragraph">
+                                <Trans i18nKey="setWalletContent3" />
                             </p>
                             <div className="wallet-modal__input-group">
                                 <label
                                     htmlFor="address"
                                     className="wallet-modal__input-label"
                                 >
-                                    Address
+                                    <Trans i18nKey="address"/>
                                 </label>
                                 <input
                                     defaultValue={getWalletAddress()}
@@ -65,8 +68,7 @@ const WalletModal = ({ open, onClose }: Props) => {
                                     id="address"
                                 />
                                 <span className="wallet-modal__input-subtext">
-                                    Your minted/redeemed assets will be sent to
-                                    this address
+                                    <Trans i18nKey="addressNote"/>
                                 </span>
 
 
@@ -74,8 +76,7 @@ const WalletModal = ({ open, onClose }: Props) => {
 
                             <p className="wallet-modal__paragraph">
                             <br></br>
-                            This option uses our assembler service, an intermediate step
-                                that you can find out more about{' '}
+                                <Trans i18nKey="assemblerNote"/>{' '}
                             <a
                                 href="https://www.ergoforum.org/t/tx-assembler-service-bypassing-node-requirement-for-dapps/443"
                                 target="_blank"
@@ -83,7 +84,7 @@ const WalletModal = ({ open, onClose }: Props) => {
                             >
                                 here
                             </a>
-                            . 
+                            .
 </p>
                         </>
                     )}
@@ -92,18 +93,18 @@ const WalletModal = ({ open, onClose }: Props) => {
                     <button
                         onClick={() => {
                             setAnyWallet(address);
-                            toast.success('Wallet is set up successfully.');
+                            toast.success(t('successSetWallet'));
                             onClose();
                         }}
                         disabled={!isAddressValid(address)}
                         type="button"
                         className="btn-blue mr-lg-20 mr-0"
                     >
-                        Save
+                        <Trans i18nKey="save" />
                     </button>
                     <button
                         onClick={() => {
-                            toast.success('Wallet is cleared successfully.');
+                            toast.success(t('successClearWallet'));
                             clearWallet();
                             setAddress('');
                             onClose();
@@ -111,7 +112,7 @@ const WalletModal = ({ open, onClose }: Props) => {
                         type="button"
                         className="btn-black"
                     >
-                        Clear wallet info
+                        <Trans i18nKey="clearWallet" />
                     </button>
                 </div>
             </div>
