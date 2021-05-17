@@ -12,9 +12,13 @@ import { isWalletSaved } from '../../../../utils/helpers';
 import { mintSc } from '../../../../utils/mintSc';
 import InfoModal from '../../../../components/InfoModal/InfoModal';
 import WalletModal from '../../../../components/WalletModal/WalletModal';
+import { Trans, withTranslation } from 'react-i18next';
+import { WithT } from 'i18next';
 
-export class PurchaseForm extends Component<any, any> {
-    constructor(props: any) {
+type PurchaseFormProps = WithT;
+
+class PurchaseForm extends Component<PurchaseFormProps, any> {
+    constructor(props: PurchaseFormProps) {
         super(props);
         this.state = {
             mintErgVal: 0,
@@ -53,15 +57,14 @@ export class PurchaseForm extends Component<any, any> {
 
     isInputInvalid(inp: any, requestId: string) {
         maxScToMint().then((maxAllowed) => {
+            const { t } = this.props;
             if (this.state.requestId !== requestId) {
                 return;
             }
 
             if (maxAllowed < inp) {
                 this.setState({
-                    errMsg: `Unable to mint more than ${(maxAllowed / 100).toFixed(
-                        2,
-                    )} ${usdName} based on the current the reserve status`,
+                    errMsg: t('errorCannotMintOverReserve', { maxAllowed: (maxAllowed / 100).toFixed(2), name: usdName }),
                 });
                 return;
             }
@@ -88,8 +91,9 @@ export class PurchaseForm extends Component<any, any> {
     }
 
     startScMint() {
+        const { t } = this.props;
         if (!isWalletSaved()) {
-            toast.warn('Please configure your wallet first.');
+            toast.warn(t('warnSetWallet'));
             this.setState({ isWalletModalOpen: true });
             return;
         }
@@ -107,14 +111,15 @@ export class PurchaseForm extends Component<any, any> {
                 });
             })
             .catch((err) => {
-                toast.error(`Unable to register the request.${err.message}`);
+                toast.error(t('errorCannotRegisterRequest', { error: err.message }));
                 this.setState({ loading: false });
             });
     }
 
     render() {
+        const { t } = this.props;
         return (
-            <Card title={`Purchase ${usdName}`}>
+            <Card title={`${t('purchase')} ${usdName}`}>
                 <Switch leftSide={ergCoin} rightSide={usdAcronym} />
                 <div className="delimiter" />
                 <div className="input mt-xl-20 mb-xl-20 mt-15 mb-15 mt-lg-20 mb-lg-20">
@@ -125,7 +130,7 @@ export class PurchaseForm extends Component<any, any> {
                                 this.inputChange(e.target.value);
                             }}
                             type="number"
-                            placeholder="Amount (SigUSD)"
+                            placeholder={`${t('amount')} (${usdAcronym})`}
                         />
                     </div>
                     <span
@@ -135,7 +140,7 @@ export class PurchaseForm extends Component<any, any> {
                     >
                         {this.state.errMsg
                             ? this.state.errMsg
-                            : 'A fee is charged for currency conversion'}
+                            : <Trans i18nKey="feeNote"/>}
                     </span>
                 </div>
                 <div className="delimiter" />
@@ -143,9 +148,9 @@ export class PurchaseForm extends Component<any, any> {
                     <p>
                         {this.state.amount} {usdName} ≈ {this.state.mintErgVal.toFixed(3)} ERG
                     </p>
-                    <p>Fee ≈ {this.state.mintErgFee.toFixed(3)} ERG </p>
+                    <p><Trans i18nKey="fee"/> ≈ {this.state.mintErgFee.toFixed(3)} ERG </p>
                     <p>
-                        You will pay ≈ {(this.state.mintErgVal + this.state.mintErgFee).toFixed(3)}{' '}
+                        <Trans i18nKey="youPay"/> ≈ {(this.state.mintErgVal + this.state.mintErgFee).toFixed(3)}{' '}
                         ERG{' '}
                     </p>
                 </div>
@@ -154,7 +159,7 @@ export class PurchaseForm extends Component<any, any> {
                     onClick={() => this.startScMint()}
                     disabled={this.state.loading || this.state.errMsg || !this.state.amount}
                 >
-                    {this.state.loading ? <Loader /> : 'Purchase'}
+                    {this.state.loading ? <Loader /> : <Trans i18nKey="purchase"/>}
                 </button>
                 <InfoModal
                     coin={this.state.coin}
@@ -174,4 +179,4 @@ export class PurchaseForm extends Component<any, any> {
     }
 }
 
-export default PurchaseForm;
+export default withTranslation()(PurchaseForm);

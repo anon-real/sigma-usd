@@ -1,5 +1,6 @@
 import React from 'react';
 import { Cell, Pie, PieChart, ResponsiveContainer } from 'recharts';
+import { Trans } from 'react-i18next';
 
 interface IPieChartProps {
     data: any;
@@ -33,7 +34,7 @@ export class PieChartComponent extends React.PureComponent<IPieChartProps> {
         const { data } = this.props;
 
         if (data.every(({ value }: any) => !value)) {
-            return <div className="empty-chart">You don’t have any assets right now</div>;
+            return <div className="empty-chart"><Trans i18nKey="noAssets"/></div>;
         }
         const filteredData = data.filter(({ value }: any) => value !== 0);
 

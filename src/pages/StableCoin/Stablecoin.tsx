@@ -4,8 +4,12 @@ import Header from '../../components/Header/Header';
 import PurchaseForm from './components/PurchaseForm/PurchaseForm';
 import RedeemForm from './components/RedeemForm/RedeemForm';
 import './Stablecoin.scss';
+import { useTranslation, Trans } from 'react-i18next';
 
 const Stablecoin = () => {
+
+    useTranslation();
+
     return (
         <div className="main">
             <Header />
@@ -14,25 +18,31 @@ const Stablecoin = () => {
                 <section className="main-navigation">
                     <nav className="main-navigation__list">
                         <NavLink exact to="/">
-                            <span>Dashboard</span>
+                            <span>
+                                <Trans i18nKey="menuDash" />
+                            </span>
                         </NavLink>
                         <NavLink to="/stablecoin">
-                            <span>StableCoin</span>
+                            <span>
+                                <Trans i18nKey="menuStableCoin" />
+                            </span>
                         </NavLink>
                         <NavLink to="/reservecoin">
-                            <span>ReserveCoin</span>
+                            <span>
+                                <Trans i18nKey="menuReserveCoin" />
+                            </span>
                         </NavLink>
                     </nav>
                 </section>
 
                 <div className="top-section">
                     <h2 className="top-section__title">
-                        Purchase{' '}
+                        <Trans i18nKey="purchase" />{' '}
                         <span className="top-section__title--ampersand">
-                            & Redeem <span className="top-section__title--colored">SigmaUSD</span>
+                            & <Trans i18nKey="redeem" /> <span className="top-section__title--colored">SigmaUSD</span>
                         </span>
                     </h2>
-                    <p className="top-section__paragraph">Welcome to decentralized stability</p>
+                    <p className="top-section__paragraph"><Trans i18nKey="stableTag"/></p>
                 </div>
                 <div className="reservecoin-cards">
                     <PurchaseForm />

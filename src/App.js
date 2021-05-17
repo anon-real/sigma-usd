@@ -28,7 +28,7 @@ export const initApp = () => {
     }, 10000);
 
     ReactDOM.render(
-        <>
+        <React.Suspense fallback="loading">
             <Provider store={store}>
                 <HashRouter>
                 <Switch>
@@ -45,7 +45,7 @@ export const initApp = () => {
                 </HashRouter>
             </Provider>
             <ToastContainer closeButton={false} autoClose={10000} />
-        </>,
+        </React.Suspense>,
         rootElement
     );
 }

@@ -6,6 +6,7 @@ import { rcBalance, scBalance } from '../../utils/ageHelper';
 import { friendlyAddress, getWalletAddress, isWalletSaved } from '../../utils/helpers';
 import WalletModal from '../WalletModal/WalletModal';
 import { getBalanceFor } from '../../utils/explorer';
+import { Trans, withTranslation } from 'react-i18next';
 
 export class HeaderComponent extends Component<any, any> {
     constructor(props: any) {
@@ -42,13 +43,13 @@ export class HeaderComponent extends Component<any, any> {
 
                     <nav className="navigation">
                         <NavLink to="/" exact className="navigation__item">
-                            Dashboard
+                            <Trans i18nKey="menuDash" />
                         </NavLink>
                         <NavLink to="/stablecoin" className="navigation__item">
-                            StableCoin
+                            <Trans i18nKey="menuStableCoin" />
                         </NavLink>
                         <NavLink to="/reservecoin" className="navigation__item">
-                            ReserveCoin
+                            <Trans i18nKey="menuReserveCoin" />
                         </NavLink>
                     </nav>
 
@@ -93,7 +94,7 @@ export class HeaderComponent extends Component<any, any> {
                             <span>
                                 {isWalletSaved()
                                     ? friendlyAddress(getWalletAddress(), 3)
-                                    : 'Set Wallet'}
+                                    :  <Trans i18nKey="headerSetWallet" />}
                             </span>
                         </div>
                     </div>
@@ -110,4 +111,4 @@ export class HeaderComponent extends Component<any, any> {
     }
 }
 
-export default HeaderComponent;
+export default withTranslation()(HeaderComponent);
