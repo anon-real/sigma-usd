@@ -291,8 +291,10 @@ export async function maxScToMint() {
 export async function maxRcToMint(height) {
     if (!bankBox || !oracleBox) await forceUpdateState();
     if (bankBox.current_reserve_ratio(oracleBox) >= 800n) return 0
-    if (bankBox.current_reserve_ratio(oracleBox) <= 410) return rcNumCirc()
-    return Number(bankBox.num_able_to_mint_reservecoin(oracleBox, BigInt(height)));
+    let circ = await rcNumCirc()
+    let rr = Number(bankBox.current_reserve_ratio(oracleBox))
+    let rcForReserve = parseInt(circ / rr)
+    return rcForReserve * (800 - rr)
 }
 
 export async function ableRcToRedeem(amount) {
