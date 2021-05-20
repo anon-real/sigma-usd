@@ -84,7 +84,7 @@ const Home = () => {
                             href="https://ergoplatform.org/en/blog/2021-02-05-building-ergo-how-the-ageusd-stablecoin-works/"
                             rel="noreferrer noopener"
                         >
-                            AgeUSD Protocol
+                            <Trans i18nKey="financeDescriptionAgeUSDProtocolText" />
                         </a>
                     </div>
                 </section>

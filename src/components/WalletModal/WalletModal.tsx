@@ -82,7 +82,7 @@ const WalletModal = ({ open, onClose }: Props) => {
                                 target="_blank"
                                 rel="noopener noreferrer"
                             >
-                                here
+                                <Trans i18nKey="assemblerNoteLinkHere"/>
                             </a>
                             .
 </p>
