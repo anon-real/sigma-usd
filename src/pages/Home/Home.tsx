@@ -116,7 +116,7 @@ const Home = () => {
 
                     <div className="switch-site-button">
                         <a href="https://old.sigmausd.io" rel="noopener noreferer">
-                            <Trans i18nKey="viewSigmaUSDV1Text" />
+                            <Trans i18nKey="viewSigmaUSDV1Text"/>
                         </a>
                     </div>
                 </footer>
