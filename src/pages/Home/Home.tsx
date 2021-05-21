@@ -84,7 +84,7 @@ const Home = () => {
                             href="https://ergoplatform.org/en/blog/2021-02-05-building-ergo-how-the-ageusd-stablecoin-works/"
                             rel="noreferrer noopener"
                         >
-                            AgeUSD Protocol
+                            <Trans i18nKey="financeDescriptionAgeUSDProtocolText"/>
                         </a>
                     </div>
                 </section>
@@ -116,7 +116,7 @@ const Home = () => {
 
                     <div className="switch-site-button">
                         <a href="https://old.sigmausd.io" rel="noopener noreferer">
-                            View SigmaUSD V1
+                            <Trans i18nKey="viewSigmaUSDV1Text" />
                         </a>
                     </div>
                 </footer>
