@@ -80,7 +80,7 @@ background-position: -99.99% 0;
             background-color: #fff;
             text-decoration: none;
             & span {
-                font-family: "Inter";
+                font-family: "Inter", sans-serif;
                 font-weight: 500;
                 color: transparent;
                 background-clip: text;
@@ -128,7 +128,7 @@ background-position: -99.99% 0;
         &_part1,
         &_part2,
         &_part3 {
-            font-family: "Inter";
+            font-family: "Inter", sans-serif;
             font-weight: 900;
             font-size: 105px;
             line-height: 110px;
@@ -157,7 +157,7 @@ background-position: -99.99% 0;
         }
     }
     &__text {
-        font-family: "Inter";
+        font-family: "Inter", sans-serif;
         font-size: 20px;
         margin-top: 30px;
 
@@ -260,7 +260,7 @@ background-position: -99.99% 0;
                 }
             }
             &__title {
-                font-family: "Inter";
+                font-family: "Inter", sans-serif;
                 font-size: 15px;
                 margin-bottom: 5px;
                 @media (max-width: $width-laptop) {
@@ -327,7 +327,7 @@ background-position: -99.99% 0;
                         position: absolute;
                         background: #DFDFDF;
                         color: #000;
-                        font-family: "Inter";
+                        font-family: "Inter", sans-serif;
                         opacity: 0;
                         transition-duration: .3s;
                         max-width: 136px;
@@ -379,7 +379,7 @@ background-position: -99.99% 0;
         & .coin-prop-right {
             &__title {
                 position: relative;
-                font-family: "Inter";
+                font-family: "Inter", sans-serif;
                 font-size: 15px;
                 margin-bottom: 5px;
                 @media (max-width: $width-laptop) {
@@ -445,7 +445,7 @@ background-position: -99.99% 0;
                         position: absolute;
                         background: #DFDFDF;
                         color: #000;
-                        font-family: "Inter";
+                        font-family: "Inter", sans-serif;
                         opacity: 0;
                         transition-duration: .3s;
                         max-width: 136px;
@@ -560,7 +560,7 @@ background-position: -99.99% 0;
                 width: 250px;
                 display: flex;
                 justify-content: space-between;
-                font-family: "Inter";
+                font-family: "Inter", sans-serif;
                 font-weight: 600;
                 font-size: 18px;
                 @media (max-width: $width-laptop) {
@@ -651,7 +651,7 @@ background-position: -99.99% 0;
             margin-bottom: 20px;
         }
         & .history-empty {
-            font-family: Inter;
+            font-family: Inter, sans-serif;
             font-style: normal;
             font-weight: 600;
             font-size: 30px;
@@ -716,7 +716,7 @@ background-position: -99.99% 0;
                 @media (max-width: $width-phone) {
                     max-width: 100%;
                     font-size: 10px;
-                    font-family: "Inter";
+                    font-family: "Inter", sans-serif;
                 }
                 &__title {
                     display: flex;
@@ -730,7 +730,7 @@ background-position: -99.99% 0;
                             font-size: 16px * $k-laptop;
                         }
                         @media (max-width: $width-phone) {
-                            font-family: "Inter";
+                            font-family: "Inter", sans-serif;
                             font-weight: 500;
                             font-size: 12px;
                         }

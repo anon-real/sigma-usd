@@ -180,7 +180,7 @@ header {
         }
 
         &__value {
-            font-family: "Inter";
+            font-family: "Inter", sans-serif;
             margin-left: 16px;
             white-space: nowrap;
 
@@ -206,7 +206,7 @@ header {
         border-radius: 10px;
         background: #fff;
         color: #000;
-        font-family: "Inter";
+        font-family: "Inter", sans-serif;
         font-weight: 600;
         display: flex;
         align-items: center;
@@ -230,7 +230,7 @@ header {
         }
 
         @media (max-width: $width-phone) {
-            font-family: "Inter";
+            font-family: "Inter", sans-serif;
             margin-left: 20px;
             max-width: 130px;
             padding: 8px 13px;
