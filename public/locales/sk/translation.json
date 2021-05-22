@@ -6,7 +6,7 @@
     "financeDescriptionText1": "Žiadni sprostredkovatelia, <br /> iba čisté decentralizované financie.",
     "financeDescriptionText2": "Zažite najnovší pokrok <br />v Stablecoinoch - nakupujte a predávajte SigUSD a SigRSV za Ergo pomocou smart-kontraktov.",
     "financeDescriptionText3": "Tento projekt je založený na",
-    "financeDescriptionAgeUSDProtocolText": "AgeUSD Protokol",
+    "financeDescriptionAgeUSDProtocolText": "AgeUSD Protokole",
     "yourBalance": "Váš zostatok",
     "noAssets": "Aktuálne nevlastníte žiadne prostriedky",
     "history": "História",
@@ -50,5 +50,6 @@
     "clickToCopy": "Pre zkopírovanie sumy a adresy na ne kliknite!",
     "infoContent1": "Pošlite presne <0>{{amount}}</0> na <1>{{address}}</1>;<br/>operácia bude následne vykonaná automaticky.",
     "infoContent2": "V prípade akéhokoľvek zlyhania Vám budú Vaše prostriedky zaslané späť. Podvádzanie zo strany tejto služby je výlučené vďaka použitiu smart-kontraktov, ktoré Vaše prostriedky chránia!",
-    "remainingTime": "<0>Zostáva</0><1>{{remainingTime}}</1><2>sekúnd</2>"
+    "remainingTime": "<0>Zostáva</0><1>{{remainingTime}}</1><2>sekúnd</2>",
+    "viewSigmaUSDV1Text": "Zobraz SigmaUSD V1"
 }
