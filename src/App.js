@@ -1,7 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 // import registerServiceWorker from './registerServiceWorker';
-import { unregister } from './registerServiceWorker';
 
 import { HashRouter, Switch, Route } from 'react-router-dom';
 // import './assets/base.css';

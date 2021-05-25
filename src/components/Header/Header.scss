@@ -123,14 +123,14 @@ header {
         }
 
         & .navigation__item:nth-child(n + 2) {
-            margin-left: 30px;
+            margin-left: 20px;
 
             @media (max-width: $width-laptop) {
-                margin-left: 30px * $k-laptop;
+                margin-left: 20px * $k-laptop;
             }
 
             @media (max-width: $width-tablet) {
-                margin-left: 30px * $k-tablet;
+                margin-left: 20px * $k-tablet;
             }
         }
     }
@@ -150,6 +150,7 @@ header {
         }
 
         @media (max-width: $width-phone) {
+            min-width: 100px;
             font-size: 10px;
             width: initial;
         }
@@ -259,4 +260,12 @@ header {
             }
         }
     }
+}
+
+.language-selector {
+    margin-left: 20px;
+    border: none;
+    background-color: initial;
+    color: white;
+    font-size: 16px;
 }

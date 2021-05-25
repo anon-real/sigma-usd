@@ -1,4 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react';
+import { usdName } from 'utils/consts';
+import { Trans, useTranslation } from 'react-i18next';
 import { NavLink } from 'react-router-dom';
 import CoinsInfo from './components/CoinsInfo/CoinsInfo';
 import PersonalInfo from './components/PersonalInfo/PersonalInfo';
@@ -7,8 +9,6 @@ import './Home.scss';
 import { getBalanceFor } from '../../utils/explorer';
 import { getWalletAddress, isWalletSaved } from '../../utils/helpers';
 import { ergBalance, rcBalance, rcPrice, scBalance, scPrice } from '../../utils/ageHelper';
-import { usdName } from 'utils/consts';
-import { Trans, useTranslation } from 'react-i18next';
 
 const Home = () => {
     const [ergVal, setErgVal] = useState(0);
@@ -64,6 +64,7 @@ const Home = () => {
                         </NavLink>
                     </nav>
                 </section>
+
                 <section className="finance-description">
                     <div className="finance-description__title">
                         <div className="finance-description__title_part1">The</div>

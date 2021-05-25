@@ -10,7 +10,7 @@ if (!window.BigUint64Array) {
     const rootElement = document.getElementById('root');
     ReactDOM.render(
         <div className = "browser-support">
-        Unfortunately, Safari and Internet Explorer do not yet support BigUint64Array which is required
+        Unfortunately, IOS OC and Internet Explorer do not yet support BigUint64Array which is required
         for the sites core functionality.
         <br/><br/>
         Please use the latest version of Firefox, Brave Browser, or Chrome instead.

@@ -1,26 +1,35 @@
-import React, { Component } from 'react';
+import React, { ChangeEvent, Component } from 'react';
 import { NavLink } from 'react-router-dom';
+import { Trans, withTranslation } from 'react-i18next';
 import './Header.scss';
 import format from 'format-number';
 import { rcBalance, scBalance } from '../../utils/ageHelper';
 import { friendlyAddress, getWalletAddress, isWalletSaved } from '../../utils/helpers';
 import WalletModal from '../WalletModal/WalletModal';
 import { getBalanceFor } from '../../utils/explorer';
-import { Trans, withTranslation } from 'react-i18next';
 
 export class HeaderComponent extends Component<any, any> {
     constructor(props: any) {
         super(props);
+        const { i18n } = props;
+
         this.state = {
             ageBal: 0,
             reserveBal: 0,
             isModalOpen: false,
+            language: i18n.language,
         };
     }
 
     componentDidMount() {
         this.updateBal();
     }
+
+    onLanguageChange = (event: ChangeEvent<HTMLSelectElement>) => {
+        const { i18n } = this.props;
+        this.setState({ language: event.target.value });
+        i18n.changeLanguage(event.target.value);
+    };
 
     async updateBal() {
         if (isWalletSaved()) {
@@ -92,12 +101,23 @@ export class HeaderComponent extends Component<any, any> {
                                 />
                             </svg>
                             <span>
-                                {isWalletSaved()
-                                    ? friendlyAddress(getWalletAddress(), 3)
-                                    :  <Trans i18nKey="headerSetWallet" />}
+                                {isWalletSaved() ? (
+                                    friendlyAddress(getWalletAddress(), 3)
+                                ) : (
+                                    <Trans i18nKey="headerSetWallet" />
+                                )}
                             </span>
                         </div>
                     </div>
+                    <select
+                        className="language-selector"
+                        value={this.state.language}
+                        onChange={this.onLanguageChange}
+                    >
+                        <option value="EN">EN</option>
+                        <option value="SK">SK</option>
+                        <option value="SV">SV</option>
+                    </select>
                 </div>
                 <WalletModal
                     onClose={() => {
