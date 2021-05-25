@@ -173,7 +173,7 @@ class PurchaseForm extends Component<PurchaseFormProps, any> {
                     onClick={() => this.startRcRedeem()}
                     disabled={this.state.loading || this.state.errMsg || !this.state.amount}
                 >
-                    {this.state.loading ? <Loader /> : <Trans i18nKey="purchase"/>}
+                    {this.state.loading ? <Loader /> : <Trans i18nKey="purchaseButton"/>}
                 </button>
                 <InfoModal
                     coin={this.state.coin}

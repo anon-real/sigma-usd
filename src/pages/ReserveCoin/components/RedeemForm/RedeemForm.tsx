@@ -169,7 +169,7 @@ class RedeemForm extends Component<RedeemFormProps, any> {
                     disabled={this.state.loading || this.state.errMsg || !this.state.amount}
                     className="mt-sm-15 mt-xl-40 mt-lg-25 btn btn--white"
                 >
-                    {this.state.loading ? <Loader /> : <Trans i18nKey="redeem"/>}
+                    {this.state.loading ? <Loader /> : <Trans i18nKey="redeemButton"/>}
                 </button>
                 <InfoModal
                     coin={this.state.coin}

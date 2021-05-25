@@ -71,7 +71,7 @@ const Reservecoin = () => {
 
                     <div className="switch-site-button">
                         <a href="https://old.sigmausd.io" rel="noopener noreferer">
-                            View SigmaUSD V1
+                            <Trans i18nKey="viewSigmaUSDV1Text" />
                         </a>
                     </div>
                 </footer>

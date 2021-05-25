@@ -6,6 +6,7 @@
     "financeDescriptionText1": "No intermediaries, no middlemen, <br /> just pure, decentralized finance.",
     "financeDescriptionText2": "Experience the latest advancements in Stablecoins by buying and selling SigUSD and SigRSV using Ergo and smart contracts.",
     "financeDescriptionText3": "This project is based on the",
+    "financeDescriptionAgeUSDProtocolText": "AgeUSD Protocol",
     "yourBalance": "Your Balance",
     "noAssets": "You don’t have any assets right now",
     "history": "History",
@@ -18,7 +19,9 @@
     "reserveHelp": "This value indicates how <br /> much ERG is in 1 {{reserveAcronym}}.<br/><span>ERG 1 ≈ {{ratio}} {{reserveAcronym}}</span>",
     "reserveRatio": "Reserve Ratio",
     "purchase": "Purchase",
+    "purchaseButton": "Purchase",
     "redeem": "Redeem",
+    "redeemButton": "Redeem",
     "amount": "Amount",
     "stableTag": "Welcome to decentralized stability",
     "reserveTag": "Provide liquidity and earn premiums upon redemption",
@@ -38,6 +41,7 @@
     "address": "Address",
     "addressNote": "Your minted/redeemed assets will be sent to this address",
     "assemblerNote": "This option uses our assembler service, an intermediate step that you can find out more about",
+    "assemblerNoteLinkHere": "here",
     "save": "Save",
     "successSetWallet": "Wallet is set up successfully.",
     "clearWallet": "Clear wallet info",
@@ -46,5 +50,6 @@
     "clickToCopy": "Click on the amount and the address to copy them!",
     "infoContent1": "Send exactly <0>{{amount}}</0> to <1>{{address}}</1>;<br/>the operation will be done automatically afterward.",
     "infoContent2": "Your funds will be sent back to you in case of any failure. Smart contracts are being used to prevent the intermediate service from cheating!",
-    "remainingTime": "<0>Remaining</0><1>{{remainingTime}}</1><2>seconds</2>"
+    "remainingTime": "<0>Remaining</0><1>{{remainingTime}}</1><2>seconds</2>",
+    "viewSigmaUSDV1Text": "View SigmaUSD V1"
 }
