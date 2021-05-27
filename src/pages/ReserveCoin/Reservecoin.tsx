@@ -4,9 +4,12 @@ import Header from '../../components/Header/Header';
 import PurchaseForm from './components/PurchaseForm/PurchaseForm';
 import RedeemForm from './components/RedeemForm/RedeemForm';
 import './Reservecoin.scss';
-import { Trans } from 'react-i18next';
+import { Trans, useTranslation } from 'react-i18next';
 
 const Reservecoin = () => {
+
+    useTranslation();
+
     return (
         <div className="main">
             <Header />
