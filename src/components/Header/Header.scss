@@ -265,7 +265,11 @@ header {
 .language-selector {
     margin-left: 20px;
     border: none;
-    background-color: initial;
+    background-color: inherit;
     color: white;
     font-size: 16px;
+
+    option {
+        color: black !important;
+    }
 }
