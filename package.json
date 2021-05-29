@@ -150,7 +150,7 @@
   },
   "scripts": {
     "start": "react-app-rewired start",
-    "build": "react-app-rewired build",
+    "build": "REACT_APP_COMMIT=`git rev-parse HEAD` react-app-rewired build",
     "predeploy": "npm run build",
     "deploy": "gh-pages -d build"
   },
