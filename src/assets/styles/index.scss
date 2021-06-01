@@ -182,3 +182,8 @@ li {
         background: none !important;
     }
 }
+
+.main-container .react-loading-skeleton {
+  background-color: var(--darkerBlack);
+  background-image: linear-gradient(90deg, var(--darkerBlack), var(--grayLight), var(--darkerBlack));
+}
