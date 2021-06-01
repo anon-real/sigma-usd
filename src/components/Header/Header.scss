@@ -201,7 +201,7 @@ header {
 
     & .wallet-btn {
         margin-left: 20px;
-        max-width: 200px;
+        max-width: 300px;
         padding: 13px 17px;
         font-size: 16px;
         border-radius: 10px;
@@ -216,7 +216,7 @@ header {
 
         @media (max-width: $width-laptop) {
             margin-left: 40px * $k-laptop;
-            max-width: 200px * $k-laptop;
+            max-width: 300px * $k-laptop;
             padding: (13px * $k-laptop) (17px * $k-laptop);
             font-size: 20px * $k-laptop;
             border-radius: 10px * $k-laptop;
@@ -224,7 +224,7 @@ header {
 
         @media (max-width: $width-tablet) {
             margin-left: 40px * $k-tablet;
-            max-width: 200px * $k-tablet;
+            max-width: 300px * $k-tablet;
             padding: (13px * $k-tablet) (17px * $k-tablet);
             font-size: 20px * $k-tablet;
             border-radius: 10px * $k-tablet;
@@ -233,7 +233,7 @@ header {
         @media (max-width: $width-phone) {
             font-family: "Inter", sans-serif;
             margin-left: 20px;
-            max-width: 130px;
+            max-width: 200px;
             padding: 8px 13px;
             font-size: 12px;
             border-radius: 6px;
