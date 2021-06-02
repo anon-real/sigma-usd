@@ -7,6 +7,7 @@ import { rcBalance, scBalance } from '../../utils/ageHelper';
 import { friendlyAddress, getWalletAddress, isWalletSaved } from '../../utils/helpers';
 import WalletModal from '../WalletModal/WalletModal';
 import { getBalanceFor } from '../../utils/explorer';
+import { availableLanguages } from 'i18n';
 
 export class HeaderComponent extends Component<any, any> {
     constructor(props: any) {
@@ -17,7 +18,7 @@ export class HeaderComponent extends Component<any, any> {
             ageBal: 0,
             reserveBal: 0,
             isModalOpen: false,
-            language: i18n.language,
+            language: i18n.services.languageUtils.getLanguagePartFromCode(i18n.language),
         };
     }
 
@@ -114,9 +115,7 @@ export class HeaderComponent extends Component<any, any> {
                         value={this.state.language}
                         onChange={this.onLanguageChange}
                     >
-                        <option value="en">EN</option>
-                        <option value="sk">SK</option>
-                        <option value="sv">SV</option>
+                        {availableLanguages.map(([code, label]) => (<option key={code} value={code}>{label}</option>))}
                     </select>
                 </div>
                 <WalletModal
