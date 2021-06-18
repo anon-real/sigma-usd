@@ -9,6 +9,7 @@ import './Home.scss';
 import { getBalanceFor } from '../../utils/explorer';
 import { getWalletAddress, isWalletSaved } from '../../utils/helpers';
 import { ergBalance, rcBalance, rcPrice, scBalance, scPrice } from '../../utils/ageHelper';
+import Footer from 'components/Footer/Footer';
 
 const Home = () => {
     const [ergVal, setErgVal] = useState(0);
@@ -93,34 +94,8 @@ const Home = () => {
                 <CoinsInfo />
                 <PersonalInfo ergVal={ergVal} stableVal={stableVal} reserveVal={reserveVal} />
 
-                <footer className="footer mt-auto py-3">
-                    <span className="text-muted">
-                        <a href="https://ergoplatform.org/" target="_blank">
-                            ergoplatform.org
-                        </a>{' '}
-                        <a>|</a>
-                        <a href="https://sigmaverse.io/" target="_blank">
-                            {' '}
-                            sigmaverse.io
-                        </a>{' '}
-                        <a>|</a>
-                        <a href="https://ergonaut.space/" target="_blank">
-                            {' '}
-                            ergonaut.space
-                        </a>{' '}
-                        <a>|</a>
-                        <a href="https://github.com/anon-real/sigma-usd" target="_blank">
-                            {' '}
-                            github
-                        </a>
-                    </span>
-
-                    <div className="switch-site-button">
-                        <a href="https://old.sigmausd.io" rel="noopener noreferer">
-                            <Trans i18nKey="viewSigmaUSDV1Text" />
-                        </a>
-                    </div>
-                </footer>
+                <Footer />
+                
             </main>
         </>
     );
