@@ -1,4 +1,5 @@
 const path = require('path');
+const rewireTypingsForCssModule = require('react-app-rewire-typings-for-css-module');
 
 module.exports = function override(config, env) {
 
@@ -23,6 +24,8 @@ module.exports = function override(config, env) {
         include: path.resolve(__dirname, 'src'),
         use: [{ loader: require.resolve('wasm-loader'), options: {} }]
     });
+
+    config = rewireTypingsForCssModule.factory({})(config);
 
     return config;
 };
