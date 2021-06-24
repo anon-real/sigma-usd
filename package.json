@@ -96,6 +96,7 @@
     "react-google-maps": "^9.4.5",
     "react-hamburgers": "^1.0.0",
     "react-i18next": "^11.8.13",
+    "react-loading-skeleton": "^2.2.0",
     "react-metismenu": "^1.4.0",
     "react-motion": "^0.5.2",
     "react-perfect-scrollbar": "^1.4.4",
@@ -139,8 +140,10 @@
     "@types/recharts": "^1.8.19",
     "animate-sass": "^0.8.2",
     "css-loader": "^1.0.1",
+    "css-modules-typescript-loader": "^4.0.1",
     "node-sass": "^4.10.0",
     "prettier": "2.1.2",
+    "react-app-rewire-typings-for-css-module": "^4.0.3",
     "react-app-rewired": "^2.1.6",
     "sass-loader": "^6.0.6",
     "ts-loader": "^8.0.4",
@@ -150,7 +153,7 @@
   },
   "scripts": {
     "start": "react-app-rewired start",
-    "build": "react-app-rewired build",
+    "build": "REACT_APP_COMMIT=`git rev-parse HEAD` react-app-rewired build",
     "predeploy": "npm run build",
     "deploy": "gh-pages -d build"
   },

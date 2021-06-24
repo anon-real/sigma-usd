@@ -8,6 +8,7 @@ import LanguageDetector from 'i18next-browser-languagedetector';
 // for passing in lng and translations on init
 
 export const availableLanguages = [
+    ['cs', 'CZ'],
     ['en', 'EN'],
     ['sk', 'SK'],
     ['sv', 'SV'],
