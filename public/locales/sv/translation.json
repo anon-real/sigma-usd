@@ -51,5 +51,8 @@
     "infoContent1": "Skicka exakt <0>{{amount}}</0> till <1>{{address}}</1>;<br/>resten sköts automatiskt.",
     "infoContent2": "Vid fel skickas dina tillgångar tillbaka till dig. Smarta kontrakt används för att mellanhänder ej ska kunna fuska!",
     "remainingTime": "<1>{{remainingTime}}</1><2>sekunder</2> <0>återstår</0>",
-    "viewSigmaUSDV1Text": "Se SigmaUSD V1 här"
+    "viewSigmaUSDV1Text": "Se SigmaUSD V1 här",
+    "miningStatPending": "pending",
+    "miningStatMined": "mined",
+    "miningStatRefundMined": "refund mined"
 }
