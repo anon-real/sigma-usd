@@ -116,6 +116,7 @@ export class HeaderComponent extends Component<any, any> {
                     >
                         <option value="cs">CZ</option>
                         <option value="en">EN</option>
+                        <option value="pt">PT</option>
                         <option value="sk">SK</option>
                         <option value="sv">SV</option>
                     </select>
