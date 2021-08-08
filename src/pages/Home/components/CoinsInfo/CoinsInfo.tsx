@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { reserveAcronym, usdAcronym } from 'utils/consts';
 import Skeleton from 'react-loading-skeleton';
 
-import { currentReserveRatio, rcNumCirc, rcPrice, scNumCirc, scPrice } from '../../../../utils/ageHelper';
+import { rcNumCirc, rcPrice, scNumCirc, scPrice } from '../../../../utils/ageHelper';
 import { numberWithCommas } from '../../../../utils/serializer';
 import { withTranslation, Trans } from 'react-i18next';
 
@@ -15,7 +15,6 @@ type CoinsInfoState = {
     rcPriceFormatted?: string;
     scCirc?: string,
     rcCirc?: number,
-    reserveRatio?: number,
 };
 
 export class CoinsInfo extends Component<CoinsInfoProps, CoinsInfoState> {
@@ -35,7 +34,6 @@ export class CoinsInfo extends Component<CoinsInfoProps, CoinsInfoState> {
             rcPrice: rc,
             rcPriceFormatted: rc.toFixed(8),
             scCirc: scCirc.toFixed(2),
-            reserveRatio: currentReserveRatio(),
             rcCirc,
         });
     }
@@ -128,12 +126,6 @@ export class CoinsInfo extends Component<CoinsInfoProps, CoinsInfoState> {
                             </div>
                         </div>
 
-                        <div className="coin-prop-right">
-                            <div className="coin-prop-right__title"><Trans i18nKey="reserveRatio" /></div>
-                            <div className="coin-prop-right__value">
-                                <span>{this.state.reserveRatio || <Skeleton width={32} />}%</span>
-                            </div>
-                        </div>
                     </div>
                 </div>
             </section>

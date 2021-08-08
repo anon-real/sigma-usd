@@ -345,7 +345,12 @@ export async function ergBalance(bal) {
     return bal['erg'] || 0;
 }
 
-export function currentReserveRatio() {
+export async function currentReserveRatio() {
+    if (!bankBox || !oracleBox) await forceUpdateState();
     return Number(bankBox.current_reserve_ratio(oracleBox));
 }
 
+export async function baseReserves() {
+    if (!bankBox || !oracleBox) await forceUpdateState();
+    return bankBox.base_reserves();
+}

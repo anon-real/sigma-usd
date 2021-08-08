@@ -1,0 +1,21 @@
+section.root {
+    display:block;
+    margin-top: 30px;
+}
+
+.content {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.content > * {
+    flex: 1 1;
+}
+
+.percent {
+    font-size: 0.6em;
+}
+
+.usd {
+    font-size: 0.6em;
+}

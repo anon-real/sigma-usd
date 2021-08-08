@@ -51,5 +51,9 @@
     "infoContent1": "Pošlete přesně <0>{{amount}}</0> na <1>{{address}}</1>;<br/>operace bude následně provedena automaticky.",
     "infoContent2": "V případě jakéhokoliv selhání Vám budou Vaše prostředky zaslány zpět. Podvádění ze strany této služby je vyloučeno díky použití smart-kontraktů, které Vaše prostředky chrání!",
     "remainingTime": "<0>Zůstává</0><1>{{remainingTime}}</1><2>sekund</2>",
-    "viewSigmaUSDV1Text": "Zobraz SigmaUSD V1"
+    "viewSigmaUSDV1Text": "Zobraz SigmaUSD V1",
+    "reserves": "Reserves",
+    "baseReserves": "Base Reserves",
+    "baseReservesTooltip": "The reserves represent <br /> {{percent}}% of the {{supply}} <br /> total {{ergCoin}} in circulation.",
+    "baseReservesUsdTooltip": "The reserves represent <br /> approximately ${{value}} <br /> worth of {{usdAcronym}}."
 }
