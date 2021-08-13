@@ -6,6 +6,7 @@ import RedeemForm from './components/RedeemForm/RedeemForm';
 import './Reservecoin.scss';
 import { Trans, useTranslation } from 'react-i18next';
 import Footer from 'components/Footer/Footer';
+import { Navigation } from 'components/Navigation/Navigation';
 
 const Reservecoin = () => {
 
@@ -14,27 +15,8 @@ const Reservecoin = () => {
     return (
         <div className="main">
             <Header />
-            <div className="mt-xl-60 mt-10  mt-lg-40 a-container">
-                <section className="main-navigation">
-                    <nav className="main-navigation__list">
-                        <NavLink exact to="/">
-                            <span>
-                                <Trans i18nKey="menuDash" />
-                            </span>
-                        </NavLink>
-                        <NavLink to="/stablecoin">
-                            <span>
-                                <Trans i18nKey="menuStableCoin" />
-                            </span>
-                        </NavLink>
-                        <NavLink to="/reservecoin">
-                            <span>
-                                <Trans i18nKey="menuReserveCoin" />
-                            </span>
-                        </NavLink>
-                    </nav>
-                </section>
-
+            <div className="mt-xl-60 mt-10 mt-lg-40 a-container">
+                <Navigation />
                 <div className="top-section">
                     <h2 className="top-section__title">
                         <Trans i18nKey="purchase" />{' '}
@@ -50,7 +32,6 @@ const Reservecoin = () => {
                     <PurchaseForm />
                     <RedeemForm />
                 </div>
-
                 <Footer />
             </div>
         </div>

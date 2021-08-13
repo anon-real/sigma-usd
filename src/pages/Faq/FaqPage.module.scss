@@ -1,0 +1,19 @@
+.list {
+    width: 100%;
+}
+
+.entry {
+    margin-bottom: 24px;
+
+    a {
+        color: #2F5EF6;
+        text-decoration: none;
+        &:hover {
+            text-decoration: underline;
+        }
+    }
+
+    .title {
+        align-items: flex-start;
+    }
+}

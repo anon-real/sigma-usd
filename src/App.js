@@ -12,6 +12,7 @@ import { forceUpdateState } from './utils/ageHelper';
 import { reqFollower } from './utils/assembler';
 import Stablecoin from './pages/StableCoin/Stablecoin';
 import Home from './pages/Home/Home';
+import { FaqPage } from 'pages/Faq/FaqPage';
 
 const store = configureStore();
 const rootElement = document.getElementById('root');
@@ -32,13 +33,16 @@ export const initApp = () => {
                 <HashRouter>
                 <Switch>
                     <Route exact path="/">
-                    <Home />
+                        <Home />
                     </Route>
                     <Route path="/stablecoin">
-                    <Stablecoin />
+                        <Stablecoin />
                     </Route>
                     <Route path="/reservecoin">
-                    <ReserveCoin />
+                        <ReserveCoin />
+                    </Route>
+                    <Route path="/faq/:slug?">
+                        <FaqPage />
                     </Route>
                 </Switch>
                 </HashRouter>
