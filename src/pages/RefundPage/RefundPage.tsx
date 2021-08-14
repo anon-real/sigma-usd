@@ -62,7 +62,7 @@ export const RefundPage = () => {
 
 
                 <div className={cn('card', css.card)}>
-                    <h3 className="card__title">Return Funds</h3>
+                    <h3 className="card__title"><Trans i18nKey="refundForm" /></h3>
                     <div className="form">
                         <div className={cn('input', css.input)}>
                             <div className="input-group">
@@ -71,7 +71,7 @@ export const RefundPage = () => {
                                     onChange={(e) => {
                                         setFrom(e.target.value);
                                     }}
-                                    placeholder={`your wallet address you sent funds from`}
+                                    placeholder={t('refundToPlaceholder')}
                                 />
                             </div>
                         </div>
@@ -82,7 +82,7 @@ export const RefundPage = () => {
                                     onChange={(e) => {
                                         setTo(e.target.value);
                                     }}
-                                    placeholder={`the proxy address you sent funds to`}
+                                    placeholder={t('refundFromPlaceholder')}
                                 />
                             </div>
 
@@ -91,7 +91,7 @@ export const RefundPage = () => {
                                 onClick={handleSubmit}
                                 disabled={!from || !to}
                             >
-                                Submit Refund
+                                <Trans i18nKey="refundSubmit" />
                             </button>
                         </div>
                     </div>
