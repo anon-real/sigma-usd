@@ -73,5 +73,8 @@ export function getBalanceFor(addr) {
             res.confirmedTokensBalance.forEach(tok => bal[tok.tokenId] = tok.amount)
             return bal
         });
-}
+} 
 
+export async function getCirculatingSupply() {
+    return getRequest('/info').then(res => res.data?.supply);
+}

@@ -51,5 +51,9 @@
     "infoContent1": "Sende genau <0>{{amount}}</0> an <1>{{address}}</1>;<br/>der Vorgang wird automatisch ausgeführt.",
     "infoContent2": "Ihr verwendetes Guthaben wird im Falle eines Fehlers an Sie zurückgesendet. Smart Contracts verhindern, dass der Zwischendienst betrügen kann!",
     "remainingTime": "<0>Noch</0><1>{{remainingTime}}</1><2>Sekunden</2>",
-    "viewSigmaUSDV1Text": "SigmaUSD V1 anzeigen"
+    "viewSigmaUSDV1Text": "SigmaUSD V1 anzeigen",
+    "reserves": "Reserves",
+    "baseReserves": "Base Reserves",
+    "baseReservesTooltip": "The reserves represent <br /> {{percent}}% of the {{supply}} <br /> total {{ergCoin}} in circulation.",
+    "baseReservesUsdTooltip": "The reserves represent <br /> approximately ${{value}} <br /> worth of {{usdAcronym}}."
 }

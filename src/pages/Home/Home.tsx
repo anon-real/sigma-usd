@@ -4,6 +4,7 @@ import { Trans, useTranslation } from 'react-i18next';
 import { NavLink } from 'react-router-dom';
 import CoinsInfo from './components/CoinsInfo/CoinsInfo';
 import PersonalInfo from './components/PersonalInfo/PersonalInfo';
+import { ReserveInfo } from './components/ReserveInfo/ReserveInfo';
 import Header from '../../components/Header/Header';
 import './Home.scss';
 import { getBalanceFor } from '../../utils/explorer';
@@ -92,6 +93,7 @@ const Home = () => {
                 </section>
 
                 <CoinsInfo />
+                <ReserveInfo />
                 <PersonalInfo ergVal={ergVal} stableVal={stableVal} reserveVal={reserveVal} />
 
                 <Footer />

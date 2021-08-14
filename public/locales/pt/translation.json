@@ -51,5 +51,9 @@
     "infoContent1": "Envie exatamente <0>{{amount}}</0> para <1>{{address}}</1>;<br/>a operação será executada automáticamente após o envio.",
     "infoContent2": "Seus fundos serão devolvidos a você em caso de falha. Contratos inteligentes estão sendo usados para evitar que o serviço intermediário trapaceie!",
     "remainingTime": "<0>Restam</0><1>{{remainingTime}}</1><2>segundos</2>",
-    "viewSigmaUSDV1Text": "Visualizar SigmaUSD V1"
+    "viewSigmaUSDV1Text": "Visualizar SigmaUSD V1",
+    "reserves": "Reserves",
+    "baseReserves": "Base Reserves",
+    "baseReservesTooltip": "The reserves represent <br /> {{percent}}% of the {{supply}} <br /> total {{ergCoin}} in circulation.",
+    "baseReservesUsdTooltip": "The reserves represent <br /> approximately ${{value}} <br /> worth of {{usdAcronym}}."
 }
