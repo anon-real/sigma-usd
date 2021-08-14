@@ -59,5 +59,7 @@
     "miningStatPending": "pending",
     "miningStatMined": "mined",
     "miningStatRefundMined": "refund mined",
+    "refund":"Refund",
+    "refundDescription":" return funds that become 'stuck' in a proxy address",
     "__LAST__": "KEEP THIS ENTRY LAST TO AVOID MERGE CONFLICTS FROM COMMAS"
 }

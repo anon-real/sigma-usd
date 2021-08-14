@@ -11,6 +11,7 @@ import { Provider } from 'react-redux';
 import { forceUpdateState } from './utils/ageHelper';
 import { reqFollower } from './utils/assembler';
 import Stablecoin from './pages/StableCoin/Stablecoin';
+import { RefundPage } from './pages/RefundPage/RefundPage';
 import Home from './pages/Home/Home';
 
 const store = configureStore();
@@ -39,6 +40,9 @@ export const initApp = () => {
                     </Route>
                     <Route path="/reservecoin">
                     <ReserveCoin />
+                    </Route>
+                    <Route path="/refund">
+                    <RefundPage />
                     </Route>
                 </Switch>
                 </HashRouter>
