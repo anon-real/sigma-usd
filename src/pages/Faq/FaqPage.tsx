@@ -9,6 +9,7 @@ import Header from 'components/Header/Header';
 import { Navigation } from 'components/Navigation/Navigation';
 import { Title } from 'components/Title/Title';
 import { useParams } from 'react-router-dom';
+import Footer from 'components/Footer/Footer';
 
 
 const questions = [
@@ -44,8 +45,8 @@ export const FaqPage = () => {
             <main className="main-container">
                 <Navigation />
                 <Title>
-                    <>FAQ</>
-                    <>Answers to frequently asked questions</>
+                    <Trans i18nKey="faq" />
+                    <Trans i18nKey="faqTag" />
                 </Title>
                 <ul className={css.list}>
                     {questions.map(q => {
@@ -62,6 +63,8 @@ export const FaqPage = () => {
                         );
                     })}
                 </ul>
+
+                <Footer />
             </main>
         </>
     );

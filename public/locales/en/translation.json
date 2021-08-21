@@ -59,5 +59,7 @@
     "miningStatPending": "pending",
     "miningStatMined": "mined",
     "miningStatRefundMined": "refund mined",
+    "faq": "FAQ",
+    "faqTag": "Answers to frequently asked questions",
     "__LAST__": "KEEP THIS ENTRY LAST TO AVOID MERGE CONFLICTS FROM COMMAS"
 }

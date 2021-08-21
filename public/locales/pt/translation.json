@@ -55,5 +55,11 @@
     "reserves": "Reserves",
     "baseReserves": "Base Reserves",
     "baseReservesTooltip": "The reserves represent <br /> {{percent}}% of the {{supply}} <br /> total {{ergCoin}} in circulation.",
-    "baseReservesUsdTooltip": "The reserves represent <br /> approximately ${{value}} <br /> worth of {{usdAcronym}}."
+    "baseReservesUsdTooltip": "The reserves represent <br /> approximately ${{value}} <br /> worth of {{usdAcronym}}.",
+    "miningStatPending": "pending",
+    "miningStatMined": "mined",
+    "miningStatRefundMined": "refund mined",
+    "faq": "FAQ",
+    "faqTag": "Answers to frequently asked questions",
+    "__LAST__": "KEEP THIS ENTRY LAST TO AVOID MERGE CONFLICTS FROM COMMAS"
 }
