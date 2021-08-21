@@ -119,7 +119,8 @@ export class HeaderComponent extends Component<any, any> {
                         <option value="pt">PT</option>
                         <option value="sk">SK</option>
                         <option value="sv">SV</option>
-						<option value="de">DE</option>
+                        <option value="de">DE</option>
+                        <option value="es">ES</option>
                     </select>
                 </div>
                 <WalletModal
