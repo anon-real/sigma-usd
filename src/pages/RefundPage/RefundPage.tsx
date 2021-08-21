@@ -8,6 +8,7 @@ import { NavLink } from 'react-router-dom';
 import { getWalletAddress } from 'utils/helpers';
 import { returnFunds } from 'utils/assembler';
 import { toast } from 'react-toastify';
+import Footer from 'components/Footer/Footer';
 
 export const RefundPage = () => {
 
@@ -96,6 +97,8 @@ export const RefundPage = () => {
                         </div>
                     </div>
                 </div>
+
+                <Footer />
             </main>
         </>
     )

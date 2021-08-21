@@ -33,16 +33,16 @@ export const initApp = () => {
                 <HashRouter>
                 <Switch>
                     <Route exact path="/">
-                    <Home />
+                        <Home />
                     </Route>
                     <Route path="/stablecoin">
-                    <Stablecoin />
+                        <Stablecoin />
                     </Route>
                     <Route path="/reservecoin">
-                    <ReserveCoin />
+                        <ReserveCoin />
                     </Route>
                     <Route path="/refund">
-                    <RefundPage />
+                        <RefundPage />
                     </Route>
                 </Switch>
                 </HashRouter>
