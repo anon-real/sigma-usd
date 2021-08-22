@@ -13,6 +13,7 @@ import { reqFollower } from './utils/assembler';
 import Stablecoin from './pages/StableCoin/Stablecoin';
 import { RefundPage } from './pages/RefundPage/RefundPage';
 import Home from './pages/Home/Home';
+import { FaqPage } from 'pages/Faq/FaqPage';
 
 const store = configureStore();
 const rootElement = document.getElementById('root');
@@ -40,6 +41,9 @@ export const initApp = () => {
                     </Route>
                     <Route path="/reservecoin">
                         <ReserveCoin />
+                    </Route>
+                    <Route path="/faq/:slug?">
+                        <FaqPage />
                     </Route>
                     <Route path="/refund">
                         <RefundPage />

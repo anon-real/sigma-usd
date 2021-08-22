@@ -59,6 +59,8 @@
     "miningStatPending": "pending",
     "miningStatMined": "mined",
     "miningStatRefundMined": "refund mined",
+    "faq": "FAQ",
+    "faqTag": "Answers to frequently asked questions",
     "refund":"Refund",
     "refundDescription":" return funds that become 'stuck' in a proxy address",
     "refundForm": "Return Funds",

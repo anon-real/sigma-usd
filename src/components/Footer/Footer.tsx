@@ -27,6 +27,10 @@ const Footer = React.memo(() => {
                     github
                 </a>
                 <span>{' '}|{' '}</span>
+                <a href="#/faq">
+                    <Trans i18nKey="faq" />
+                </a>
+                <span>{' '}|{' '}</span>
                 <a href="#/refund">
                 <Trans i18nKey="refund" />
                 </a>
