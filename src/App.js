@@ -11,6 +11,7 @@ import { Provider } from 'react-redux';
 import { forceUpdateState } from './utils/ageHelper';
 import { reqFollower } from './utils/assembler';
 import Stablecoin from './pages/StableCoin/Stablecoin';
+import { RefundPage } from './pages/RefundPage/RefundPage';
 import Home from './pages/Home/Home';
 import { FaqPage } from 'pages/Faq/FaqPage';
 
@@ -43,6 +44,8 @@ export const initApp = () => {
                     </Route>
                     <Route path="/faq/:slug?">
                         <FaqPage />
+                    <Route path="/refund">
+                        <RefundPage />
                     </Route>
                 </Switch>
                 </HashRouter>
