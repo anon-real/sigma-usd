@@ -1,60 +1,55 @@
 what-is-sigmausd:
-  q: What is SigmaUSD?
+  q: Was ist SigmaUSD?
   a: |-
-    SigmaUSD is the first UTxO-based stable coin — an instantiation of the
-    [AgeUSD protocol](https://ergoplatform.org/en/blog/2021-02-05-building-ergo-how-the-ageusd-stablecoin-works/).
-    The foundation on which a new era of digital finance will be built.
+    SigmaUSD ist der erste UTxO-basierte StableCoin — eine Implementierung des
+    [AgeUSD-Protokolls](https://ergoplatform.org/en/blog/2021-02-05-building-ergo-how-the-ageusd-stablecoin-works/).
+    Die Grundlage, auf der ein neues Zeitalter des digitalen Finanzwesens aufbauen wird.
 
-    Its economic model designed in partnership between IOHK, Ergo, and Emurgo maintains the conservative settings
-    for collateral reserves and avoids the need for liquidations.
-    Along with that, it supports a fully decentralised stablecoin emission setup.
-    Thus, SigmaUSD will offer the world a stable, simple, and decentralised stablecoin.
+    Das in Zusammenarbeit von IOHK (IOG), Ergo und Emurgo entwickelte Wirtschaftsmodell bietet konservative Eigenschaften für
+	rücklagenbasierte Sicherheiten und vermeidet die Notwendigkeit von Liquidationen.
+    Zusätzlich unterstützt es ein vollständig dezentralisiertes System für die StableCoin-Emission.
+    So bietet SigmaUSD der Welt einen stabilen, einfachen und dezentralisierten StableCoin.
 
 what-is-ageusd:
-  q: What is AgeUSD?
+  q: Was ist AgeUSD?
   a: |-
-    AgeUSD is a novel crypto-backed algorithmic stablecoin protocol that has been created in joint partnership
-    by the [Ergo Foundation](https://ergoplatform.org/en/foundation/), [EMURGO](https://emurgo.io/), 
-    and [IOG](https://iohk.io/en/about/) on top of the [Ergo Blockchain](https://ergoplatform.org/).
-    SigmaUSD is an instance of the AgeUSD Protocol.
+    AgeUSD ist ein neuartiges kryptogestütztes algorithmisches Stablecoin-Protokoll, das in gemeinsamer Partnerschaft von der [Ergo Foundation](https://ergoplatform.org/en/foundation/), [EMURGO](https://emurgo.io/), 
+    uönd [IOG](https://iohk.io/en/about/) auf der [Ergo-Blockchain](https://ergoplatform.org/) entwickelt wurde.
+    SigmaUSD ist eine Implementierung des AgeUSD-Protokolls.
     
-    For more information, see this [overview](https://ergoplatform.org/en/blog/2021-02-05-building-ergo-how-the-ageusd-stablecoin-works/),
-    explore the [repository](https://github.com/Emurgo/age-usd/blob/main/README.md) containing the protocol specification or
-    watch this community made [video](https://www.youtube.com/watch?v=O3hPEp3tzoU). 
+    Mehr Informationen gibt es in diesem [Überblick](https://ergoplatform.org/en/blog/2021-02-05-building-ergo-how-the-ageusd-stablecoin-works/),
+    im [Code Repository](https://github.com/Emurgo/age-usd/blob/main/README.md), in dem die Protokollspezifikationen enthalten sind oder
+    in diesem [Community-Video](https://www.youtube.com/watch?v=O3hPEp3tzoU). 
 
 bearwhale:
-  q: What is the bearwhale saga?
-  a: Read about the saga on the [blog](https://ergoplatform.org/en/blog/2021-05-13-bearwhale-saga/)
+  q: Was ist die "bearwhale saga"=
+  a: Lies mehr über die Saga in [diesem Blogbeitrag](https://ergoplatform.org/en/blog/2021-05-13-bearwhale-saga/).
 
 how-to-buy:
-  q: How do I buy SigmaUSD/SigmaRSV?
+  q: Wie kaufe ich SigmaUSD/SigmaRSV?
   a: |-
-    Check out these community made guides to get a detailed overview on how to buy:
+    Detaillierte (englischsprachige) Anleitungen zum Kauf wurden von Mitgliedern aus der Community erstellt:
       - [SigmaUSD Tutorial](https://youtu.be/FR1NCJbzn7w)
       - [Using The AgeUSD protocol to take a short position on Ergo Blockchain](https://www.youtube.com/watch?v=cJuKRfRrTG4)
 
 sigmausd-vs-oracle:
-  q: Why is the value of SigmaUSD different than exchanges/CoinMarketCap/etc ?
+  q: Warum unterscheidet sich der SigmaUSD-Preis vom USD-Preis auf Exchanges/CoinMarketCap/usw.?
   a: |-
-    The USD value of SigmaUSD is determined by the [ERG-USD Oracle Pool](https://explorer.ergoplatform.com/en/oracle-pool-state/ergusd).
-    The Oracle updates every 12 minutes and can only increase/decrease by up to a fixed percentage so the price will fluxuate
-    much sporatically than exchanges that update contintually.
+    Der USD-Preis von SigmaUSD wird durch den [ERG-USD Orakel-Pool](https://explorer.ergoplatform.com/en/oracle-pool-state/ergusd) festgelegt.
+    Das Orakel wird alle 12 Minuten aktualisiert und kann bei jeder Aktualisierung nur um einen bestimmten Prozentsatz steigen oder fallen, so dass
+	der Preis weniger schwankt als bei Exchanges, bei denen der Preis deutlich häufiger aktualisiert wird.
 
 refunds:
-  q: What do I do if my refund gets "stuck"?
+  q: Was kann ich machen, wenn meine Rückerstattung "festhängt"?
   a: |-
-    Transactions can fail when the oracle refreshes during (and the price changes).
-    In this event the funds will be returned to your connected wallet. 
-
-    Use this link for a refund anytime if your funds become "stuck" in a proxy address:
-    
-    ```
-    https://assm.sigmausd.io/return/{your_address_set_in_ui}/{the_long_address_you_sent_to}
-    ```
+    Transaktionen können fehlschlagen, wenn sich der Preis während der Durchführung ändert.
+    Sollte dies passieren, werden die Beträge dem verbundenen Wallet zurückerstattet.
+	
+    Wenn Beträge in einer Proxy-Adresse hängen, kann die [Refund-Seite](https://sigmausd.io/#/refund) genutzt werden.
 
 reserve-ratio-bounds:
-  q: How does the reserve ratio affect my ability to purchase/redeem?
+  q: Wie beeinflusst das Rücklagen-Verhältnis das Kaufen und Einlösen?
   a: |-
-    Some purchase/redeem operations are prohibited when the reserve ratio falls outside the 400% - 800% range.
+    Einige Kauf- und Einlösevorgänge sind nicht durchführbar, wenn das Rücklagenverhältnis außerhalb 400% bis 800% liegt.
 
     ![reserve ratio operations](/images/faq/reserve-ratio.png)
