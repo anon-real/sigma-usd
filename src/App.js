@@ -44,6 +44,7 @@ export const initApp = () => {
                     </Route>
                     <Route path="/faq/:slug?">
                         <FaqPage />
+                    </Route>
                     <Route path="/refund">
                         <RefundPage />
                     </Route>
