@@ -55,5 +55,12 @@
     "reserves": "Reserves",
     "baseReserves": "Base Reserves",
     "baseReservesTooltip": "The reserves represent <br /> {{percent}}% of the {{supply}} <br /> total {{ergCoin}} in circulation.",
-    "baseReservesUsdTooltip": "The reserves represent <br /> approximately ${{value}} <br /> worth of {{usdAcronym}}."
+    "baseReservesUsdTooltip": "The reserves represent <br /> approximately ${{value}} <br /> worth of {{usdAcronym}}.",
+    "refund":"Refund",
+    "refundDescription":" return funds that become 'stuck' in a proxy address",
+    "refundForm": "Return Funds",
+    "refundToPlaceholder": "your wallet address you sent funds from",
+    "refundFromPlaceholder": "the proxy address you sent funds to",
+    "refundSubmit": "Submit Refund",
+    "__LAST__": "KEEP THIS ENTRY LAST TO AVOID MERGE CONFLICTS FROM COMMAS"
 }
