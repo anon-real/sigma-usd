@@ -30,10 +30,11 @@ i18n
         },
         backend: {
             loadPath: (lng, ns) => {
+                const version = document.querySelector('meta[name="build-version"]')?.content;
                 if (isYamlTranslation(ns[0])) {
-                    return `/locales/${lng}/${ns}.yaml`
+                    return `/locales/${lng}/${ns}.yaml?v=${version}`
                 } else {
-                    return `/locales/${lng}/${ns}.json`
+                    return `/locales/${lng}/${ns}.json?v=${version}`
                 }
             },
             parse: (data, lng, ns) => {
