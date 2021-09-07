@@ -3,6 +3,7 @@ import { NavLink } from 'react-router-dom';
 import { Trans, withTranslation } from 'react-i18next';
 import './Header.scss';
 import format from 'format-number';
+import { DropdownMenu } from 'components/DropdownMenu/DropdownMenu';
 import { rcBalance, scBalance } from '../../utils/ageHelper';
 import { friendlyAddress, getWalletAddress, isWalletSaved } from '../../utils/helpers';
 import WalletModal from '../WalletModal/WalletModal';
@@ -109,6 +110,7 @@ export class HeaderComponent extends Component<any, any> {
                             </span>
                         </div>
                     </div>
+
                     <select
                         className="language-selector"
                         value={this.state.language}
@@ -122,6 +124,8 @@ export class HeaderComponent extends Component<any, any> {
                         <option value="de">DE</option>
                         <option value="es">ES</option>
                     </select>
+
+                    <DropdownMenu />
                 </div>
                 <WalletModal
                     onClose={() => {
