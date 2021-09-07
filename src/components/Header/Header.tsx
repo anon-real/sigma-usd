@@ -4,6 +4,7 @@ import { Trans, withTranslation } from 'react-i18next';
 import './Header.scss';
 import format from 'format-number';
 import { DropdownMenu } from 'components/DropdownMenu/DropdownMenu';
+import LanguageSelector from 'components/LanguageSelector/LanguageSelector';
 import { rcBalance, scBalance } from '../../utils/ageHelper';
 import { friendlyAddress, getWalletAddress, isWalletSaved } from '../../utils/helpers';
 import WalletModal from '../WalletModal/WalletModal';
@@ -12,25 +13,17 @@ import { getBalanceFor } from '../../utils/explorer';
 export class HeaderComponent extends Component<any, any> {
     constructor(props: any) {
         super(props);
-        const { i18n } = props;
 
         this.state = {
             ageBal: 0,
             reserveBal: 0,
             isModalOpen: false,
-            language: i18n.language,
         };
     }
 
     componentDidMount() {
         this.updateBal();
     }
-
-    onLanguageChange = (event: ChangeEvent<HTMLSelectElement>) => {
-        const { i18n } = this.props;
-        this.setState({ language: event.target.value });
-        i18n.changeLanguage(event.target.value);
-    };
 
     async updateBal() {
         if (isWalletSaved()) {
@@ -110,21 +103,7 @@ export class HeaderComponent extends Component<any, any> {
                             </span>
                         </div>
                     </div>
-
-                    <select
-                        className="language-selector"
-                        value={this.state.language}
-                        onChange={this.onLanguageChange}
-                    >
-                        <option value="cs">CZ</option>
-                        <option value="en">EN</option>
-                        <option value="pt">PT</option>
-                        <option value="sk">SK</option>
-                        <option value="sv">SV</option>
-                        <option value="de">DE</option>
-                        <option value="es">ES</option>
-                    </select>
-
+                    <LanguageSelector />
                     <DropdownMenu />
                 </div>
                 <WalletModal

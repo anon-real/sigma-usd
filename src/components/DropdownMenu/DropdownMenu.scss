@@ -1,6 +1,12 @@
+$width-phone: 545px;
+
 .dropdown-menu-btn-container {
     position: relative;
     margin-left: 20px;
+
+    @media (max-width: $width-phone) {
+        margin-left: 10px;
+    }
 
     .dropdown-menu-btn {
         height: 30px;
@@ -29,7 +35,6 @@
         position: absolute;
         background-color: black;
         padding: 8px 0;
-
 
         li {
             a {

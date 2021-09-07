@@ -1,3 +1,4 @@
+import LanguageSelector from 'components/LanguageSelector/LanguageSelector';
 import useOnClickOutside from 'hooks/useClickOutside';
 import React, { useRef, useState } from 'react';
 import { Trans } from 'react-i18next';
