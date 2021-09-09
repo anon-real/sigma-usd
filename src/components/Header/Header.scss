@@ -33,13 +33,14 @@ header {
     & > div {
         display: flex;
         align-items: center;
-        width: 975px;
+        width: 1100px;
 
         @media (max-width: $width-laptop) {
-            width: 728px;
+            width: 850px;
         }
 
         @media (max-width: $width-tablet) {
+            width: 650px;
             justify-content: center;
         }
 
@@ -83,7 +84,7 @@ header {
 
         @media (max-width: $width-phone) {
             letter-spacing: 0;
-            margin-right: 16px;
+            margin-right: 10px;
         }
 
         & .company-name__br {
@@ -232,11 +233,12 @@ header {
 
         @media (max-width: $width-phone) {
             font-family: "Inter", sans-serif;
-            margin-left: 20px;
-            max-width: 200px;
+            margin-left: 10px;
+            max-width: 120px;
             padding: 8px 13px;
-            font-size: 12px;
+            font-size: 10px;
             border-radius: 6px;
+            padding: 8px 8px;
         }
 
         &__icon {
@@ -268,6 +270,10 @@ header {
     background-color: inherit;
     color: white;
     font-size: 16px;
+
+    @media (max-width: $width-phone) {
+        margin-left: 10px;
+    }
 
     option {
         color: black !important;
