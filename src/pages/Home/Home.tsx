@@ -14,9 +14,9 @@ import Footer from 'components/Footer/Footer';
 import { Navigation } from 'components/Navigation/Navigation';
 
 const Home = () => {
-    const [ergVal, setErgVal] = useState(0);
-    const [reserveVal, setReserveVal] = useState(0);
-    const [stableVal, setStableVal] = useState(0);
+    const [ergVal, setErgVal] = useState<number | undefined>(undefined);
+    const [reserveVal, setReserveVal] = useState<number | undefined>(undefined);
+    const [stableVal, setStableVal] = useState<number | undefined>(undefined);
 
     const updateParams = useCallback(async () => {
         if (isWalletSaved()) {
@@ -77,7 +77,7 @@ const Home = () => {
 
                 <CoinsInfo />
                 <ReserveInfo />
-                <PersonalInfo ergVal={ergVal} stableVal={stableVal} reserveVal={reserveVal} />
+                { isWalletSaved() && <PersonalInfo ergVal={ergVal} stableVal={stableVal} reserveVal={reserveVal} /> }
 
                 <Footer />
 
