@@ -1,3 +1,4 @@
+import { availableLanguages } from 'i18n';
 import { i18n as i18nInterface } from 'i18next';
 import React from 'react';
 import { withTranslation } from 'react-i18next';
@@ -8,20 +9,14 @@ interface Props {
 }
 
 const LanguageSelector = (props: Props) => {
-    const { i18n, className } = props;
+    const { i18n, } = props;
     return (
         <select
             className="language-selector"
             value={i18n.language}
             onChange={({ target: { value } }) => i18n.changeLanguage(value)}
         >
-            <option value="cs">CZ</option>
-            <option value="en">EN</option>
-            <option value="pt">PT</option>
-            <option value="sk">SK</option>
-            <option value="sv">SV</option>
-            <option value="de">DE</option>
-            <option value="es">ES</option>
+            {availableLanguages.map(([code, label]) => (<option key={code} value={code}>{label}</option>))}
         </select>
     );
 };

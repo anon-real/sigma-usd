@@ -136,6 +136,7 @@
   "devDependencies": {
     "@babel/plugin-transform-react-jsx": "^7.12.10",
     "@types/classnames": "^2.2.11",
+    "@types/js-yaml": "^4.0.3",
     "@types/react": "^17.0.0",
     "@types/react-dom": "^17.0.0",
     "@types/react-router-dom": "^5.1.7",
