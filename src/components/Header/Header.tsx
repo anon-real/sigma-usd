@@ -3,6 +3,8 @@ import { NavLink } from 'react-router-dom';
 import { Trans, withTranslation } from 'react-i18next';
 import './Header.scss';
 import format from 'format-number';
+import { DropdownMenu } from 'components/DropdownMenu/DropdownMenu';
+import LanguageSelector from 'components/LanguageSelector/LanguageSelector';
 import { rcBalance, scBalance } from '../../utils/ageHelper';
 import { friendlyAddress, getWalletAddress, isWalletSaved } from '../../utils/helpers';
 import WalletModal from '../WalletModal/WalletModal';
@@ -12,25 +14,17 @@ import { availableLanguages } from 'i18n';
 export class HeaderComponent extends Component<any, any> {
     constructor(props: any) {
         super(props);
-        const { i18n } = props;
 
         this.state = {
             ageBal: 0,
             reserveBal: 0,
             isModalOpen: false,
-            language: i18n.services.languageUtils.getLanguagePartFromCode(i18n.language),
         };
     }
 
     componentDidMount() {
         this.updateBal();
     }
-
-    onLanguageChange = (event: ChangeEvent<HTMLSelectElement>) => {
-        const { i18n } = this.props;
-        this.setState({ language: event.target.value });
-        i18n.changeLanguage(event.target.value);
-    };
 
     async updateBal() {
         if (isWalletSaved()) {
@@ -110,13 +104,8 @@ export class HeaderComponent extends Component<any, any> {
                             </span>
                         </div>
                     </div>
-                    <select
-                        className="language-selector"
-                        value={this.state.language}
-                        onChange={this.onLanguageChange}
-                    >
-                        {availableLanguages.map(([code, label]) => (<option key={code} value={code}>{label}</option>))}
-                    </select>
+                    <LanguageSelector />
+                    <DropdownMenu />
                 </div>
                 <WalletModal
                     onClose={() => {

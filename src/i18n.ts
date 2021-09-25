@@ -3,9 +3,12 @@ import { initReactI18next } from 'react-i18next';
 
 import Backend from 'i18next-http-backend';
 import LanguageDetector from 'i18next-browser-languagedetector';
-// don't want to use this?
-// have a look at the Quick start guide
-// for passing in lng and translations on init
+
+import yaml from 'js-yaml';
+
+const yamlTranslations = ['faq'];
+
+const isYamlTranslation = (ns) => yamlTranslations.includes(ns);
 
 export const availableLanguages = [
     ['cs', 'CZ'],
@@ -31,6 +34,23 @@ i18n
         supportedLngs: availableLanguages.map(([code]) => code),
         interpolation: {
             escapeValue: false, // not needed for react as it escapes by default
+        },
+        backend: {
+            loadPath: (lng, ns) => {
+                const version = document.querySelector('meta[name="build-version"]')?.content;
+                if (isYamlTranslation(ns[0])) {
+                    return `/locales/${lng}/${ns}.yaml?v=${version}`
+                } else {
+                    return `/locales/${lng}/${ns}.json?v=${version}`
+                }
+            },
+            parse: (data, lng, ns) => {
+                if (isYamlTranslation(ns)) {
+                   return yaml.load(data);
+                } else {
+                    return JSON.parse(data);
+                }
+            },
         },
     });
 

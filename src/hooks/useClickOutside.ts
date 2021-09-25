@@ -18,7 +18,7 @@ const TOUCHSTART = 'touchstart';
 const events = [MOUSEDOWN, TOUCHSTART];
 
 export default function useOnClickOutside(
-  ref: React.RefObject<HTMLElement>,
+  ref: React.MutableRefObject<HTMLElement | undefined>,
   handler: (event: Event) => void | null,
 ) {
   const isBrowser = typeof document !== 'undefined';

@@ -4,12 +4,14 @@ import { Trans, useTranslation } from 'react-i18next';
 import { NavLink } from 'react-router-dom';
 import CoinsInfo from './components/CoinsInfo/CoinsInfo';
 import PersonalInfo from './components/PersonalInfo/PersonalInfo';
+import { ReserveInfo } from './components/ReserveInfo/ReserveInfo';
 import Header from '../../components/Header/Header';
 import './Home.scss';
 import { getBalanceFor } from '../../utils/explorer';
 import { getWalletAddress, isWalletSaved } from '../../utils/helpers';
 import { ergBalance, rcBalance, rcPrice, scBalance, scPrice } from '../../utils/ageHelper';
 import Footer from 'components/Footer/Footer';
+import { Navigation } from 'components/Navigation/Navigation';
 
 const Home = () => {
     const [ergVal, setErgVal] = useState(0);
@@ -46,25 +48,7 @@ const Home = () => {
         <>
             <Header />
             <main className="main-container">
-                <section className="main-navigation">
-                    <nav className="main-navigation__list">
-                        <NavLink exact to="/">
-                            <span>
-                                <Trans i18nKey="menuDash" />
-                            </span>
-                        </NavLink>
-                        <NavLink exact to="/stablecoin">
-                            <span>
-                                <Trans i18nKey="menuStableCoin" />
-                            </span>
-                        </NavLink>
-                        <NavLink exact to="/reservecoin">
-                            <span>
-                                <Trans i18nKey="menuReserveCoin" />
-                            </span>
-                        </NavLink>
-                    </nav>
-                </section>
+                <Navigation />
 
                 <section className="finance-description">
                     <div className="finance-description__title">
@@ -92,10 +76,11 @@ const Home = () => {
                 </section>
 
                 <CoinsInfo />
+                <ReserveInfo />
                 <PersonalInfo ergVal={ergVal} stableVal={stableVal} reserveVal={reserveVal} />
 
                 <Footer />
-                
+
             </main>
         </>
     );

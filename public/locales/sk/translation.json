@@ -51,5 +51,21 @@
     "infoContent1": "Pošlite presne <0>{{amount}}</0> na <1>{{address}}</1>;<br/>operácia bude následne vykonaná automaticky.",
     "infoContent2": "V prípade akéhokoľvek zlyhania Vám budú Vaše prostriedky zaslané späť. Podvádzanie zo strany tejto služby je výlučené vďaka použitiu smart-kontraktov, ktoré Vaše prostriedky chránia!",
     "remainingTime": "<0>Zostáva</0><1>{{remainingTime}}</1><2>sekúnd</2>",
-    "viewSigmaUSDV1Text": "Zobraz SigmaUSD V1"
+    "viewSigmaUSDV1Text": "Zobraz SigmaUSD V1",
+    "reserves": "Reserves",
+    "baseReserves": "Base Reserves",
+    "baseReservesTooltip": "The reserves represent <br /> {{percent}}% of the {{supply}} <br /> total {{ergCoin}} in circulation.",
+    "baseReservesUsdTooltip": "The reserves represent <br /> approximately ${{value}} <br /> worth of {{usdAcronym}}.",
+    "miningStatPending": "pending",
+    "miningStatMined": "mined",
+    "miningStatRefundMined": "refund mined",
+    "faq": "FAQ",
+    "faqTag": "Answers to frequently asked questions",
+    "refund":"Refund",
+    "refundDescription":" return funds that become 'stuck' in a proxy address",
+    "refundForm": "Return Funds",
+    "refundToPlaceholder": "your wallet address you sent funds from",
+    "refundFromPlaceholder": "the proxy address you sent funds to",
+    "refundSubmit": "Submit Refund",
+    "__LAST__": "KEEP THIS ENTRY LAST TO AVOID MERGE CONFLICTS FROM COMMAS"
 }

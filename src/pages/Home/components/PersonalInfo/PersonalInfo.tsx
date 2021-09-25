@@ -19,6 +19,8 @@ interface HistoryItem {
     date: string;
     action: string;
     link: string;
+    status: 'success' | 'fail';
+    miningStat: string;
 }
 
 interface State {
@@ -27,6 +29,31 @@ interface State {
     stableVal?: number;
     history: HistoryItem[];
     intervalId: any;
+}
+
+const miningStatToTranslationKey: Record<string,string> = {
+    'pending': 'miningStatPending',
+    'mined': 'miningStatMined',
+    'refund mined': 'miningStatRefundMined',
+};
+
+const nameToTranslationKeys: Record<string, {action: string, token: string}> = {
+    'Purchase SigRSV': {
+        action: 'purchase',
+        token: reserveAcronym,
+    },
+    'Redeem SigRSV': {
+        action: 'redeem',
+        token: reserveAcronym,
+    },
+    'Purchase SigUSD': {
+        action: 'purchase',
+        token: usdAcronym,
+    },
+    'Redeem SigUSD': {
+        action: 'redeem',
+        token: usdAcronym,
+    },
 }
 
 export class PersonalInfo extends Component<Props, State> {
@@ -69,7 +96,8 @@ export class PersonalInfo extends Component<Props, State> {
     }
 
     getHistoryElems() {
-        return this.state.history.map((item: any) => {
+        return this.state.history.map((item: HistoryItem) => {
+            const { action, token } = nameToTranslationKeys[item.name] ?? {};
             return (
                 <a
                     key={item.id}
@@ -84,7 +112,7 @@ export class PersonalInfo extends Component<Props, State> {
                     <div className="history-item__title">
                         <div className="transaction-left-side">
                             <span className="transaction-name">
-                                {item.name}
+                                {action && token ? <><Trans i18nKey={action}/>{' '}{token}</> : item.name}
                             </span>
                             <span
                                 className={cn('transaction-badge', {
@@ -92,7 +120,7 @@ export class PersonalInfo extends Component<Props, State> {
                                     mined: item.miningStat === 'mined',
                                 })}
                             >
-                                {item.miningStat}
+                                <Trans i18nKey={miningStatToTranslationKey[item.miningStat]}>{item.miningStat}</Trans>
                             </span>
                         </div>
                         <span className="transaction-date">
@@ -113,7 +141,7 @@ export class PersonalInfo extends Component<Props, State> {
             (a: any, b: any) => b.timestamp - a.timestamp
         );
         this.setState({
-            history: raw.map((col: any, index: number) => {
+            history: raw.map((col: any, index: number): HistoryItem => {
                 const time = moment(col.timestamp);
                 return {
                     id: index + 1,
