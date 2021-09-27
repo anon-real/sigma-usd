@@ -36,7 +36,7 @@ sigmausd-vs-oracle:
   q: Prečo je hodnota SigmaUSD rozdielna oproti burze, CoinMarketCap-u a podobne?
   a: |-
     Hodnota v dolároch je odvodená na základe [ERG-USD Oracle Pool-u](https://explorer.ergoplatform.com/en/oracle-pool-state/ergusd).
-    Výsledná cena z oracle pool-u sa aktualizuje každých 12 minút a môže sa zmeniť len o fixný počet percent, takže cena sa cena mení
+    Výsledná cena z oracle pool-u sa aktualizuje každých 12 minút a môže sa zmeniť len o fixný počet percent, takže sa cena mení
     oveľa zriedkavejšie v porovnaní s cenou na burze, ktorá sa mení plynule.
 
 refunds:
@@ -51,6 +51,6 @@ refunds:
 reserve-ratio-bounds:
   q: Ako ovplyvňuje rezervný pomer moju schopnosť nakúpiť/predať?
   a: |-
-    Niektoré nákupné/predajné operácie sú zakáze pokiaľ sa rezervný pomer nachádza mimo intervalu 400% - 800%.
+    Niektoré nákupné/predajné operácie sú zakázané pokiaľ sa rezervný pomer nachádza mimo intervalu 400% - 800%.
 
     ![reserve ratio operations](/images/faq/reserve-ratio.png)
