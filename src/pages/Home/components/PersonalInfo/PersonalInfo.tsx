@@ -5,6 +5,7 @@ import PieChartComponent, { COLORS, COLORSIDS } from './PieChart';
 import { reserveAcronym, usdAcronym } from '../../../../utils/consts';
 import { getForKey } from '../../../../utils/helpers';
 import { Trans, withTranslation } from 'react-i18next';
+import Skeleton from 'react-loading-skeleton';
 
 interface Props {
     ergVal?: number;
@@ -161,17 +162,17 @@ export class PersonalInfo extends Component<Props, State> {
         const chartData = [
             {
                 name: usdAcronym,
-                key: 'SigmaUSD',
+                key: COLORSIDS.SIGMAUSD,
                 value: this.state.stableVal,
             },
             {
                 name: reserveAcronym,
-                key: 'SigmaRSV',
+                key: COLORSIDS.SIGMARSV,
                 value: this.state.reserveVal,
             },
             {
                 name: 'ERG',
-                key: 'Ergo',
+                key: COLORSIDS.ERGO,
                 value: this.state.ergVal,
             },
         ];
@@ -189,13 +190,13 @@ export class PersonalInfo extends Component<Props, State> {
                                     <span
                                         className="coin-title"
                                         style={{
-                                            color: COLORS[key as COLORSIDS],
+                                            color: COLORS[key],
                                         }}
                                     >
                                         {name}
                                     </span>
                                     <span className="coin-value">
-                                        ${value?.toFixed(3)}
+                                        {value !== undefined ? <>${value.toFixed(3)}</> : <>$ <Skeleton width={40} /></>}
                                     </span>
                                 </div>
                             ))}
