@@ -9,6 +9,7 @@ import { rcBalance, scBalance } from '../../utils/ageHelper';
 import { friendlyAddress, getWalletAddress, isWalletSaved } from '../../utils/helpers';
 import WalletModal from '../WalletModal/WalletModal';
 import { getBalanceFor } from '../../utils/explorer';
+import { availableLanguages } from 'i18n';
 
 export class HeaderComponent extends Component<any, any> {
     constructor(props: any) {

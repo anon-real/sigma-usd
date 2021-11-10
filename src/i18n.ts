@@ -8,7 +8,17 @@ import yaml from 'js-yaml';
 
 const yamlTranslations = ['faq'];
 
-const isYamlTranslation = (ns) => yamlTranslations.includes(ns);
+const isYamlTranslation = (ns: string) => yamlTranslations.includes(ns);
+
+export const availableLanguages = [
+    ['cs', 'CZ'],
+    ['en', 'EN'],
+    ['de', 'DE'],
+    ['es', 'ES'],
+    ['pt', 'PT'],
+    ['sk', 'SK'],
+    ['sv', 'SV'],
+].sort(([code1,], [code2,]) => code1.localeCompare(code2));
 
 i18n
     // load translation using http -> see /public/locales (i.e. https://github.com/i18next/react-i18next/tree/master/example/react/public/locales)
@@ -23,14 +33,15 @@ i18n
     // for all options read: https://www.i18next.com/overview/configuration-options
     .init({
         fallbackLng: 'en',
-        debug: true,
-
+        // debug: true,
+        supportedLngs: availableLanguages.map(([code]) => code),
         interpolation: {
             escapeValue: false, // not needed for react as it escapes by default
         },
         backend: {
             loadPath: (lng, ns) => {
-                const version = document.querySelector('meta[name="build-version"]')?.content;
+                const metaElem = document.querySelector('meta[name="build-version"]');
+                const version = metaElem instanceof HTMLMetaElement ? metaElem.content : 'unknown';
                 if (isYamlTranslation(ns[0])) {
                     return `/locales/${lng}/${ns}.yaml?v=${version}`
                 } else {
@@ -38,8 +49,8 @@ i18n
                 }
             },
             parse: (data, lng, ns) => {
-                if (isYamlTranslation(ns)) {
-                   return yaml.load(data);
+                if (ns && isYamlTranslation(Array.isArray(ns) ? ns[0] : ns)) {
+                    return yaml.load(data);
                 } else {
                     return JSON.parse(data);
                 }
