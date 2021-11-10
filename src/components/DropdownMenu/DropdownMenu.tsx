@@ -43,7 +43,7 @@ export const DropdownMenu = () => {
                             target="_blank"
                             rel="noopener noreferrer"
                         >
-                            History
+                            <Trans i18nKey="history"/>
                         </a>
                     </li>
                 </ul>

@@ -46,11 +46,7 @@ refunds:
     Transactions can fail when the oracle refreshes during (and the price changes).
     In this event the funds will be returned to your connected wallet. 
 
-    Use this link for a refund anytime if your funds become "stuck" in a proxy address:
-    
-    ```
-    https://assm.sigmausd.io/return/{your_address_set_in_ui}/{the_long_address_you_sent_to}
-    ```
+    Use this [link](#/refund) to request a refund anytime if your funds become "stuck" in a proxy address.
 
 reserve-ratio-bounds:
   q: How does the reserve ratio affect my ability to purchase/redeem?
