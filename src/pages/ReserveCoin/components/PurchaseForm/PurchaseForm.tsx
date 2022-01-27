@@ -24,7 +24,7 @@ export class PurchaseForm extends Component<any, any> {
             address: '',
             dueTime: null,
             curHeight: NaN,
-            errMsg: 'Purchasing is disabled - see https://ergoplatform.org/en/blog/2021_03_04-finding-right-balance/',
+            errMsg: '',
             amount: '',
             inputChangeTimerId: null,
             requestId: null,
@@ -164,8 +164,8 @@ export class PurchaseForm extends Component<any, any> {
                 <button
                     className="mt-sm-15 mt-xl-40 mt-lg-25 btn btn--white"
                     onClick={() => this.startRcRedeem()}
-                    // disabled={this.state.loading || this.state.errMsg || !this.state.amount}
-                    disabled={true}
+                    disabled={this.state.loading || this.state.errMsg || !this.state.amount}
+                    // disabled={true}
                 >
                     {this.state.loading ? <Loader /> : 'Purchase'}
                 </button>
