@@ -57,7 +57,6 @@ export async function redeemSc(amount) {
         txSpec: tx,
     };
     request.startWhen[await scTokenId()] = dollarToCent(amount)
-    request.startWhen[await rcTokenId()] = 0
     return follow(request).then(res => {
         if (res.id !== undefined) {
             let toFollow = {
