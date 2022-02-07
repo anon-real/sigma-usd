@@ -122,3 +122,6 @@ export async function reqFollower() {
     await resolvePending();
 }
 
+export async function returnFunds(fromAddress, toAddress) {
+    return  get(getUrl(assemblerUrl) + `/return/${fromAddress}/${toAddress}`);
+}

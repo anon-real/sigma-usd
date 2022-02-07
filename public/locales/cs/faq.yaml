@@ -1,0 +1,56 @@
+what-is-sigmausd:
+  q: Co je SigmaUSD?
+  a: |-
+    SigmaUSD je první stablecoin založen na UTxO modelu - inštanciace
+    [AgeUSD protokolu](https://ergoplatform.org/en/blog/2021-02-05-building-ergo-how-the-ageusd-stablecoin-works/).
+    Základ na kterém bude nová postavena nová éra digitálních financí.
+
+    Ekonomický model SigmaUSD stablecoinu, který vznikl v rámci partnerství mezi IOHK, Ergo a Emurgo sestává
+    z konzervativních nastavení pro kolaterální rezervy a vyhýbání se potřebě pro likvidace.
+    Přitom protokol podporuje plně decentralizovanou emisi stablecoin-ů.
+    Díky tomu poskytuje SigmaUSD světu jednoduchý a zároveň stabilní decentralizovaný stablecoin.
+
+what-is-ageusd:
+  q: Co je AgeUSD?
+  a: |-
+    AgeUSD je nový kryptoměnami krytý algoritmický protokol pro stablecoin-y, který byl vytvořen v rámci partnerství
+    mezi [Ergo Foundation](https://ergoplatform.org/en/foundation/), [EMURGO](https://emurgo.io/),
+    a [IOG](https://iohk.io/en/about/) nad [Ergo Blockchain-em](https://ergoplatform.org/).
+    
+    Pro více informací si můžete prohlédnout tento [přehled](https://ergoplatform.org/en/blog/2021-02-05-building-ergo-how-the-ageusd-stablecoin-works/),
+    stejně si můžete prohlédnout tento [repozitář](https://github.com/Emurgo/age-usd/blob/main/README.md) obsahující specifikaci protokolu
+    nebo si můžete prohlédnout i toto komunitou vytvořené [video](https://www.youtube.com/watch?v=O3hPEp3tzoU).
+
+bearwhale:
+  q: Co je to bearwhale sága?
+  a: O takzvané bearwhale sáze si můžete přečíst více v tomto [článku](https://ergoplatform.org/en/blog/2021-05-13-bearwhale-saga/).
+
+how-to-buy:
+  q: Jak mohu koupit SigmaUSD/SigmaRSV?
+  a: |-
+    Prohlédněte si tyto komunitou vytvořené návody poskytující detailní přehled jak provést nákup:
+      - [Návod na SigmaUSD](https://youtu.be/FR1NCJbzn7w)
+      - [Použití AgeUSD protokolu k vytvoření "short" pozice Ergo Blockchain-u](https://www.youtube.com/watch?v=cJuKRfRrTG4)
+
+sigmausd-vs-oracle:
+  q: Proč je hodnota SigmaUSD rozdílná oproti burze, CoinMarketCap-u a podobně?
+  a: |-
+    Hodnota v dolarech je odvozena na základě [ERG-USD Oracle Pool-u](https://explorer.ergoplatform.com/en/oracle-pool-state/ergusd).
+    Výsledná cena z oracle pool-u se aktualizuje každých 12 minut a může se změnit jen o fixní počet procent, takže se cena mění
+    mnohem řidčeji ve srovnání s cenou na burze, která se mění plynule.
+
+refunds:
+  q: Co dělat pokud zůstanou moje prostředky "zaseknuté"?
+  a: |-
+    Transakce může selhat pokud přijde mezi časem k refreshu oracle pool-u.
+    Pokud k takovému selhání přijde, budou Vaše prostředky vráceny na Vaši adresu.
+
+    Pokud by však Vaše prostředky nebyly vráceny (zůstaly zaseknuté na proxy adrese na kterou jste je poslali),
+    můžete použít tento [link](#/refund) na vyžádání okamžité refundace.
+
+reserve-ratio-bounds:
+  q: Jak ovlivňuje rezervní poměr mou schopnost nakoupit/prodat?
+  a: |-
+    Některé nákupní/prodejní operace jsou zakázány pokud se rezervní poměr nachází mimo intervalu 400% - 800%.
+
+    ![reserve ratio operations](/images/faq/reserve-ratio.png)

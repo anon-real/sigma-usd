@@ -1,0 +1,60 @@
+$width-phone: 545px;
+
+.dropdown-menu-btn-container {
+    position: relative;
+    margin-left: 20px;
+
+    @media (max-width: $width-phone) {
+        margin-left: 10px;
+    }
+
+    .dropdown-menu-btn {
+        height: 30px;
+        width: 36px;
+        background-color: #141414;
+        border: 1px solid transparent;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 5px;
+        cursor: pointer;
+
+        &:hover {
+            border: 1px solid white;
+        }
+
+        &:active {
+            background-color: #434343;
+        }
+    }
+
+    .dropdown-menu {
+        top: 32px;
+        right: 0;
+        border-radius: 5px;
+        position: absolute;
+        background-color: black;
+        padding: 8px 0;
+
+        li {
+            a {
+                font-size: 16px;
+                padding-left: 25px;
+                padding-right: 25px;
+                cursor: pointer;
+                color: white;
+                width: 100%;
+                text-decoration: none;
+                line-height: 32px;
+                height: 32px;
+                display: block;
+                font-family: "Inter", sans-serif;
+
+                &:hover {
+                    background-color: #434343;
+                }
+            }
+        }
+
+    }
+}

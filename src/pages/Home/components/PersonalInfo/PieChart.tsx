@@ -1,10 +1,17 @@
 import React from 'react';
 import { Cell, Pie, PieChart, ResponsiveContainer } from 'recharts';
 import { Trans } from 'react-i18next';
+import Skeleton from 'react-loading-skeleton';
 
+
+type DataItem = {
+    name: string;
+    key: COLORSIDS;
+    value: number | undefined;
+};
 interface IPieChartProps {
-    data: any;
-    labels?: any;
+    data: DataItem[];
+    labels?: unknown;
     compact?: boolean;
 }
 export enum COLORSIDS {
@@ -24,19 +31,17 @@ export class PieChartComponent extends React.PureComponent<IPieChartProps> {
         activeIndex: 0,
     };
 
-    onPieEnter = (data: any, index: number) => {
-        this.setState({
-            activeIndex: index,
-        });
-    };
-
     render(): JSX.Element {
         const { data } = this.props;
 
-        if (data.every(({ value }: any) => !value)) {
-            return <div className="empty-chart"><Trans i18nKey="noAssets"/></div>;
+        if (data.every(({ value }) => !value)) {
+            return (
+                <div className="empty-chart">
+                   {data.every(({ value }) => value === 0) ? <Trans i18nKey="noAssets"/> : <Skeleton width={40} />}
+                </div>
+            );
         }
-        const filteredData = data.filter(({ value }: any) => value !== 0);
+        const filteredData = data.filter(({ value }) => value !== 0);
 
         return (
             <div className="chart">
@@ -53,10 +58,10 @@ export class PieChartComponent extends React.PureComponent<IPieChartProps> {
                             label={false}
                             labelLine={false}
                         >
-                            {filteredData.map((entry: any) => (
+                            {filteredData.map((entry) => (
                                 <Cell
                                     key={`cell-${entry.value}`}
-                                    fill={COLORS[entry.key as COLORSIDS]}
+                                    fill={COLORS[entry.key]}
                                 />
                             ))}
                         </Pie>
