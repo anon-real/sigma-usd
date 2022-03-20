@@ -66,6 +66,7 @@ export function getWalletAddress() {
 }
 
 export function getWalletType() {
+    if (!isWalletSaved()) return null
     return JSON.parse(localStorage.getItem('wallet')).type
 }
 
@@ -73,14 +74,31 @@ export function clearWallet() {
     localStorage.removeItem('wallet');
 }
 
-export function setAnyWallet(address) {
+export function setWallet(tp, address) {
     localStorage.setItem(
         'wallet',
         JSON.stringify({
-            type: 'any',
+            type: tp,
             address: address,
         })
     );
+}
+
+export function setAnyWallet(address) {
+    setWallet('any', address)
+}
+
+export function setYoroiWallet(address) {
+    setWallet('Yoroi', address)
+}
+
+export function setNautilusWallet(address) {
+    setWallet('Nautilus', address)
+}
+
+export function isDappWallet() {
+    const tp = getWalletType()
+    return isWalletSaved() && (tp === 'Nautilus' || tp === 'Yoroi')
 }
 
 export function getUrl(url) {

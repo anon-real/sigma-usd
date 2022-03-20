@@ -3,10 +3,11 @@ import React, { useState } from 'react';
 import {
     clearWallet,
     getWalletAddress,
-    isAddressValid, setAnyWallet
+    isAddressValid, setAnyWallet, setNautilusWallet, setYoroiWallet
 } from '../../utils/helpers';
 import { toast } from 'react-toastify';
 import { Trans, useTranslation } from 'react-i18next';
+import { setupWallet } from '../../utils/walletUtils';
 
 interface Props {
     onClose: () => void;
@@ -101,6 +102,31 @@ const WalletModal = ({ open, onClose }: Props) => {
                         className="btn-blue mr-lg-20 mr-0"
                     >
                         <Trans i18nKey="save" />
+                    </button>
+                    <button
+                        onClick={() => {
+                            setupWallet(true, 'Yoroi').then(address => {
+                                setYoroiWallet(address);
+                                onClose();
+                            })
+                        }}
+                        type="button"
+                        className="btn-blue mr-lg-20 mr-0"
+                    >
+                        <Trans i18nKey="Yoroi" />
+                    </button>
+                    <button
+                        onClick={() => {
+                            setupWallet(true, 'Nautilus').then(address => {
+                                setNautilusWallet(address);
+                                console.log(onClose)
+                                onClose();
+                            })
+                        }}
+                        type="button"
+                        className="btn-blue mr-lg-20 mr-0"
+                    >
+                        <Trans i18nKey="Nautilus" />
                     </button>
                     <button
                         onClick={() => {

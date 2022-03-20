@@ -8,12 +8,13 @@ import { ergCoin, reserveName, usdAcronym, usdName } from '../../../../utils/con
 import { feeToMintSc, maxScToMint, priceToMintSc, scNumCirc } from '../../../../utils/ageHelper';
 import { dollarToCent } from '../../../../utils/serializer';
 import Loader from '../../../../components/Loader/Loader';
-import { isWalletSaved } from '../../../../utils/helpers';
+import { isDappWallet, isWalletSaved } from '../../../../utils/helpers';
 import { mintSc } from '../../../../utils/mintSc';
 import InfoModal from '../../../../components/InfoModal/InfoModal';
 import WalletModal from '../../../../components/WalletModal/WalletModal';
 import { Trans, withTranslation } from 'react-i18next';
 import { WithT } from 'i18next';
+import { walletSendFunds } from '../../../../utils/walletUtils';
 
 type PurchaseFormProps = WithT;
 
@@ -100,15 +101,23 @@ class PurchaseForm extends Component<PurchaseFormProps, any> {
         this.setState({ loading: true });
         mintSc(this.state.amount)
             .then((res) => {
-                this.setState({
-                    address: res.addr,
-                    coin: 'ERG',
-                    price: res.price / 1e9,
-                    isModalOpen: true,
-                    loading: false,
-                    // mintNanoErgVal: 0,
-                    dueTime: res.dueTime,
-                });
+                if (isDappWallet()) {
+                    walletSendFunds({'ERG': res.price}, res.addr).then(res => {
+                        this.setState({
+                            loading: false,
+                        });
+                    })
+                } else {
+                    this.setState({
+                        address: res.addr,
+                        coin: 'ERG',
+                        price: res.price / 1e9,
+                        isModalOpen: true,
+                        loading: false,
+                        // mintNanoErgVal: 0,
+                        dueTime: res.dueTime,
+                    });
+                }
             })
             .catch((err) => {
                 toast.error(t('errorCannotRegisterRequest', { error: err.message }));

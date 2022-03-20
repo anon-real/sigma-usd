@@ -225,6 +225,7 @@ export async function mintRcTx(amount) {
         implementor
     );
     res = JSON.parse(res);
+    console.log('w', res)
     res.requests.splice(3, 1);
     res.requests[1].value += res.requests[2].value
     res.requests.splice(2, 1);
@@ -299,7 +300,6 @@ export async function maxRcToMint(height) {
 
 export async function ableRcToRedeem(amount) {
     if (!bankBox || !oracleBox) await forceUpdateState();
-    console.log(amount, BigInt(bankBox.redeem_reservecoin_reserve_ratio(oracleBox, BigInt(amount))));
     return Number(bankBox.able_to_redeem_reservecoin_amount(oracleBox, BigInt(amount)));
 }
 

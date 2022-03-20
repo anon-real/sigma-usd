@@ -4,7 +4,7 @@ import { toast } from 'react-toastify';
 import { generateUniqueId } from 'utils/utils';
 import Card from '../../../../components/Card/Card';
 import Switch from '../../../../components/Switch/Switch';
-import { ergCoin, reserveAcronym, reserveName } from '../../../../utils/consts';
+import { ergCoin, reserveAcronym, reserveName, sigRsvTokenId } from '../../../../utils/consts';
 import {
     amountFromRedeemingRc,
     feeFromRedeemingRc,
@@ -13,11 +13,12 @@ import {
 import { isNatural } from '../../../../utils/serializer';
 import WalletModal from '../../../../components/WalletModal/WalletModal';
 import Loader from '../../../../components/Loader/Loader';
-import { isWalletSaved } from '../../../../utils/helpers';
+import { isDappWallet, isWalletSaved } from '../../../../utils/helpers';
 import { redeemRc } from '../../../../utils/redeemRc';
 import InfoModal from '../../../../components/InfoModal/InfoModal';
 import { Trans, withTranslation } from 'react-i18next';
 import { WithT } from 'i18next';
+import { walletSendFunds } from '../../../../utils/walletUtils';
 
 type RedeemFormProps = WithT;
 
@@ -106,15 +107,28 @@ class RedeemForm extends Component<RedeemFormProps, any> {
         this.setState({ loading: true });
         redeemRc(this.state.amount)
             .then((res) => {
-                this.setState({
-                    address: res.addr,
-                    coin: reserveName,
-                    price: this.state.amount,
-                    isModalOpen: true,
-                    loading: false,
-                    mintNanoErgVal: 0,
-                    dueTime: res.dueTime,
-                });
+                if (isDappWallet()) {
+                    let need = {
+                        'ERG': 10000000,
+                        [sigRsvTokenId]: this.state.amount
+                    }
+                    walletSendFunds(need, res.addr).then(res => {
+                        this.setState({
+                            loading: false,
+                        });
+                    })
+
+                } else {
+                    this.setState({
+                        address: res.addr,
+                        coin: reserveName,
+                        price: this.state.amount,
+                        isModalOpen: true,
+                        loading: false,
+                        mintNanoErgVal: 0,
+                        dueTime: res.dueTime,
+                    });
+                }
             })
             .catch((err) => {
                 let { message } = err;
