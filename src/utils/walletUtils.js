@@ -13,47 +13,88 @@ function walletDisconnect() {
     localStorage.removeItem('wallet');
 }
 
-export async function setupWallet(isFirst = false, tp='Yoroi') {
-    if (tp !== 'Yoroi' && tp !== 'Nautilus')
-        return null
-    const nautilusExists = ergoConnector.nautilus !== undefined && ergoConnector.nautilus.connect !== undefined
-    const yoroiExists = ergo_request_read_access !== undefined
+const setupYoroi = async () => {
+    const yoroiExists = window.ergo_request_read_access;
 
-    if ((tp === 'Yoroi' && !yoroiExists) || (tp === 'Nautilus' && !nautilusExists)) {
-        showMsg(`You should have the ${tp} wallet installed to be able to connect to it.`, true)
-        return null
+    if (!yoroiExists) {
+        showMsg(`You should have the Yoroi wallet installed to be able to connect to it.`, true)
+        return null;
     }
-    let granted = false
-    if (tp === 'Nautilus')
-        granted = await ergoConnector.nautilus.connect()
-    else if (tp === 'Yoroi')
-        granted = await ergo_request_read_access()
+    try {
+        const granted = await window.ergo_request_read_access();
 
-    if (!granted) {
-        if (isFirst) showMsg('Wallet access denied', true)
-    } else {
+        if (granted) {
+            showMsg('Wallet access denied', true);
+            return;
+        }
+
         const addr = await getConnectedAddress(tp, false)
-        if (isFirst) showMsg(`Successfully connected to ${tp}`)
+        showMsg(`Successfully connected to Yoroi`);
         return addr
+    } catch(e) {
+        showMsg(`You should have the Yoroi wallet installed to be able to connect to it.`, true)
     }
-    return null
+}
+
+const setupNautilus = async () => {
+    const nautilusExists = window.ergoConnector?.nautilus?.connect;
+
+    if (!nautilusExists) {
+        showMsg(`You should have the Nautilus wallet installed to be able to connect to it.`, true)
+        return null;
+    }
+    try {
+        const granted = await window.ergoConnector?.nautilus?.connect();
+
+        if (granted) {
+            showMsg('Wallet access denied', true);
+            return;
+        }
+
+        const addr = await getConnectedAddress(tp, false);
+
+        showMsg(`Successfully connected to Nautilus`);
+
+        return addr
+    } catch(e) {
+        showMsg(`You should have the Nautilus wallet installed to be able to connect to it.`, true)
+    }
+}
+
+export async function setupWallet(wallet) {
+    switch (wallet) {
+        case 'Yoroi': {
+            return setupYoroi();
+        }
+        case 'Nautilus': {
+            return setupNautilus();
+        }
+        default: {
+            return null;
+        }
+    }
 }
 
 export async function getConnectedAddress(tp = undefined, setup=true) {
     if (tp === undefined)
         tp = getWalletType()
-    if (window.ergo === undefined && setup)
-        await setupWallet(false, tp)
-    if (tp === 'Yoroi')
-        return await ergo.get_change_address();
-    if (tp === 'Nautilus')
-        return await ergo.get_change_address()
-    return null
+
+    switch (tp) {
+        case 'Yoroi': {
+            return ergo.get_change_address();
+        }
+        case 'Nautilus': {
+            return ergo.get_change_address();
+        }
+        default: {
+            return getWalletAddress();
+        }
+    }
 }
 
 export async function walletSendFunds(need, addr, registers={}, notif=true) {
     const wasm = await ergolib
-    await setupWallet(false, getWalletType())
+
     const height = await currentHeight()
 
     let have = JSON.parse(JSON.stringify(need))

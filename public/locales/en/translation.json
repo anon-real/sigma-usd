@@ -67,5 +67,6 @@
     "refundToPlaceholder": "your wallet address you sent funds from",
     "refundFromPlaceholder": "the proxy address you sent funds to",
     "refundSubmit": "Submit Refund",
-    "__LAST__": "KEEP THIS ENTRY LAST TO AVOID MERGE CONFLICTS FROM COMMAS"
+    "__LAST__": "KEEP THIS ENTRY LAST TO AVOID MERGE CONFLICTS FROM COMMAS",
+    "connectWallet": "Connect wallet"
 }

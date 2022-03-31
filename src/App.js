@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import ReactDOM from 'react-dom';
 // import registerServiceWorker from './registerServiceWorker';
 
@@ -14,12 +14,15 @@ import Stablecoin from './pages/StableCoin/Stablecoin';
 import { RefundPage } from './pages/RefundPage/RefundPage';
 import Home from './pages/Home/Home';
 import { FaqPage } from 'pages/Faq/FaqPage';
+import { setupWallet } from 'utils/walletUtils';
+import { getWalletType } from 'utils/helpers';
 
 const store = configureStore();
 const rootElement = document.getElementById('root');
 
-export const initApp = () => {
+const App = () => {
     forceUpdateState();
+
     setInterval(() => {
         forceUpdateState();
     }, 20000);
@@ -28,7 +31,16 @@ export const initApp = () => {
         reqFollower();
     }, 10000);
 
-    ReactDOM.render(
+    // useDidMount
+    useEffect(() => {
+        const walletType = getWalletType();
+
+        if (['Nautilus', 'Yoroi'].find((type) => type === walletType)) {
+            setupWallet(walletType);
+        }
+    }, [])
+
+    return (
         <React.Suspense fallback="loading">
             <Provider store={store}>
                 <HashRouter>
@@ -52,7 +64,12 @@ export const initApp = () => {
                 </HashRouter>
             </Provider>
             <ToastContainer closeButton={false} autoClose={10000} />
-        </React.Suspense>,
+        </React.Suspense>
+    )
+}
+export const initApp = () => {
+    ReactDOM.render(
+        <App />,
         rootElement
     );
 }

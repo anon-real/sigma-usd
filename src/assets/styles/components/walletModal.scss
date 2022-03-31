@@ -1,5 +1,6 @@
 .wallet-modal {
     margin-bottom: -15px;
+
     .wallet-modal__tabs {
         display: flex;
         margin-bottom: 20px;
@@ -20,6 +21,17 @@
         align-items: center;
         justify-content: center;
         padding: 0 15px;
+        cursor: pointer;
+        transition: all ease-out 0.15s;
+
+        & + .wallet-modal__tab {
+            margin-left: 20px;
+        }
+
+        &.active {
+            background-color: #2F5EF6;
+            color: #fff;
+        }
     }
 
     .wallet-modal__paragraph {

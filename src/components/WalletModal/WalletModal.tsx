@@ -1,13 +1,10 @@
 import ModalContainer from 'components/ModalContainer/ModalContainer';
 import React, { useState } from 'react';
-import {
-    clearWallet,
-    getWalletAddress,
-    isAddressValid, setAnyWallet, setNautilusWallet, setYoroiWallet
-} from '../../utils/helpers';
 import { toast } from 'react-toastify';
 import { Trans, useTranslation } from 'react-i18next';
-import { setupWallet } from '../../utils/walletUtils';
+import classNames from 'classnames';
+import { clearWallet, getWalletAddress, isAddressValid, setAnyWallet } from '../../utils/helpers';
+import { YoroiTab } from './YoroiTab';
 
 interface Props {
     onClose: () => void;
@@ -16,10 +13,63 @@ interface Props {
 
 enum Wallets {
     ANY_WALLET = 'ANY_WALLET',
+    YOROI = 'YOROI',
 }
 
 const TABS = {
-    [Wallets.ANY_WALLET]: 'tabSetWallet',
+    [Wallets.ANY_WALLET]: 'Any wallet',
+    [Wallets.YOROI]: 'Yoroi',
+};
+
+const renderTabContent = ({ currentTab, address, setAddress }: any) => {
+    switch (currentTab) {
+        case Wallets.YOROI: {
+            return <YoroiTab />;
+        }
+        default: {
+            return (
+                <>
+                    <p className="wallet-modal__paragraph">
+                        <Trans i18nKey="setWalletContent1" />
+                    </p>
+                    <p className="wallet-modal__paragraph">
+                        <Trans i18nKey="setWalletContent2" />
+                    </p>
+                    <p className="wallet-modal__paragraph">
+                        <Trans i18nKey="setWalletContent3" />
+                    </p>
+                    <div className="wallet-modal__input-group">
+                        <label htmlFor="address" className="wallet-modal__input-label">
+                            <Trans i18nKey="address" />
+                        </label>
+                        <input
+                            defaultValue={getWalletAddress()}
+                            value={address}
+                            onChange={(e) => setAddress(e.target.value)}
+                            className="wallet-modal__input"
+                            id="address"
+                        />
+                        <span className="wallet-modal__input-subtext">
+                            <Trans i18nKey="addressNote" />
+                        </span>
+                    </div>
+
+                    <p className="wallet-modal__paragraph">
+                        <br />
+                        <Trans i18nKey="assemblerNote" />{' '}
+                        <a
+                            href="https://www.ergoforum.org/t/tx-assembler-service-bypassing-node-requirement-for-dapps/443"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                        >
+                            <Trans i18nKey="assemblerNoteLinkHere" />
+                        </a>
+                        .
+                    </p>
+                </>
+            );
+        }
+    }
 };
 
 const WalletModal = ({ open, onClose }: Props) => {
@@ -35,7 +85,9 @@ const WalletModal = ({ open, onClose }: Props) => {
                     {Object.keys(TABS).map((key) => (
                         <div
                             key={key}
-                            className="wallet-modal__tab"
+                            className={classNames('wallet-modal__tab', {
+                                active: key === currentTab,
+                            })}
                             onClick={() => setCurrentTab(key as Wallets)}
                         >
                             <Trans i18nKey={TABS[key as Wallets]} />
@@ -43,52 +95,7 @@ const WalletModal = ({ open, onClose }: Props) => {
                     ))}
                 </div>
                 <div className="wallet-modal__content">
-                    {currentTab === Wallets.ANY_WALLET && (
-                        <>
-                            <p className="wallet-modal__paragraph">
-                                <Trans i18nKey="setWalletContent1" />
-                            </p>
-                            <p className="wallet-modal__paragraph">
-                                <Trans i18nKey="setWalletContent2" />
-                            </p>
-                            <p className="wallet-modal__paragraph">
-                                <Trans i18nKey="setWalletContent3" />
-                            </p>
-                            <div className="wallet-modal__input-group">
-                                <label
-                                    htmlFor="address"
-                                    className="wallet-modal__input-label"
-                                >
-                                    <Trans i18nKey="address"/>
-                                </label>
-                                <input
-                                    defaultValue={getWalletAddress()}
-                                    value={address}
-                                    onChange={(e) => setAddress(e.target.value)}
-                                    className="wallet-modal__input"
-                                    id="address"
-                                />
-                                <span className="wallet-modal__input-subtext">
-                                    <Trans i18nKey="addressNote"/>
-                                </span>
-
-
-                            </div>
-
-                            <p className="wallet-modal__paragraph">
-                            <br></br>
-                                <Trans i18nKey="assemblerNote"/>{' '}
-                            <a
-                                href="https://www.ergoforum.org/t/tx-assembler-service-bypassing-node-requirement-for-dapps/443"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                            >
-                                <Trans i18nKey="assemblerNoteLinkHere"/>
-                            </a>
-                            .
-</p>
-                        </>
-                    )}
+                    {renderTabContent({ currentTab, address, setAddress })}
                 </div>
                 <div className="wallet-modal__buttons">
                     <button
@@ -103,31 +110,19 @@ const WalletModal = ({ open, onClose }: Props) => {
                     >
                         <Trans i18nKey="save" />
                     </button>
-                    <button
+                    {/* <button
                         onClick={() => {
-                            setupWallet(true, 'Yoroi').then(address => {
-                                setYoroiWallet(address);
-                                onClose();
-                            })
-                        }}
-                        type="button"
-                        className="btn-blue mr-lg-20 mr-0"
-                    >
-                        <Trans i18nKey="Yoroi" />
-                    </button>
-                    <button
-                        onClick={() => {
-                            setupWallet(true, 'Nautilus').then(address => {
+                            setupWallet(true, 'Nautilus').then((address) => {
                                 setNautilusWallet(address);
-                                console.log(onClose)
+                                console.log(onClose);
                                 onClose();
-                            })
+                            });
                         }}
                         type="button"
                         className="btn-blue mr-lg-20 mr-0"
                     >
                         <Trans i18nKey="Nautilus" />
-                    </button>
+                    </button> */}
                     <button
                         onClick={() => {
                             toast.success(t('successClearWallet'));

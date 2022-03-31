@@ -187,3 +187,11 @@ li {
   background-color: var(--darkerBlack);
   background-image: linear-gradient(90deg, var(--darkerBlack), var(--grayLight), var(--darkerBlack));
 }
+
+.d-flex {
+    display: flex;
+}
+
+.justify-center {
+    justify-content: center;
+}
