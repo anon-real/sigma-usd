@@ -34,10 +34,7 @@ const App = () => {
     // useDidMount
     useEffect(() => {
         const walletType = getWalletType();
-
-        if (['Nautilus', 'Yoroi'].find((type) => type === walletType)) {
-            setupWallet(walletType);
-        }
+        setupWallet(walletType);
     }, [])
 
     return (
