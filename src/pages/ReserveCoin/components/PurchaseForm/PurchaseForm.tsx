@@ -4,17 +4,17 @@ import InfoModal from 'components/InfoModal/InfoModal';
 import WalletModal from 'components/WalletModal/WalletModal';
 import { toast } from 'react-toastify';
 import { generateUniqueId } from 'utils/utils';
+import { Trans, withTranslation } from 'react-i18next';
+import { WithT } from 'i18next';
 import Card from '../../../../components/Card/Card';
 import Switch from '../../../../components/Switch/Switch';
-import { ergCoin, reserveAcronym, reserveName, usdName } from '../../../../utils/consts';
+import { ergCoin, reserveAcronym, reserveName } from '../../../../utils/consts';
 import { feeToMintRc, maxRcToMint, priceToMintRc } from '../../../../utils/ageHelper';
 import { isNatural } from '../../../../utils/serializer';
 import Loader from '../../../../components/Loader/Loader';
 import { isDappWallet, isWalletSaved } from '../../../../utils/helpers';
 import { mintRc } from '../../../../utils/mintRc';
 import { currentHeight } from '../../../../utils/explorer';
-import { Trans, withTranslation } from 'react-i18next';
-import { WithT } from 'i18next';
 import { walletSendFunds } from '../../../../utils/walletUtils';
 
 type PurchaseFormProps = WithT;
@@ -115,13 +115,11 @@ class PurchaseForm extends Component<PurchaseFormProps, any> {
         mintRc(this.state.amount)
             .then((res) => {
                 if (isDappWallet()) {
-                    walletSendFunds({'ERG': res.price}, res.addr).then(res => {
+                    walletSendFunds({ ERG: res.price }, res.addr).then((res) => {
                         this.setState({
                             loading: false,
                         });
-
-                    })
-
+                    });
                 } else {
                     this.setState({
                         address: res.addr,
@@ -163,9 +161,7 @@ class PurchaseForm extends Component<PurchaseFormProps, any> {
                             error: this.state.errMsg,
                         })}
                     >
-                        {this.state.errMsg
-                            ? this.state.errMsg
-                            : <Trans i18nKey="feeNote"/>}
+                        {this.state.errMsg ? this.state.errMsg : <Trans i18nKey="feeNote" />}
                     </span>
                 </div>
                 <div className="delimiter" />
@@ -173,10 +169,12 @@ class PurchaseForm extends Component<PurchaseFormProps, any> {
                     <p>
                         {this.state.amount} {reserveName} ≈ {this.state.mintErgVal.toFixed(3)} ERG
                     </p>
-                    <p><Trans i18nKey="fee"/> ≈ {this.state.mintErgFee.toFixed(3)} ERG </p>
                     <p>
-                        <Trans i18nKey="youPay"/> ≈ {(this.state.mintErgVal + this.state.mintErgFee).toFixed(3)}{' '}
-                        ERG{' '}
+                        <Trans i18nKey="fee" /> ≈ {this.state.mintErgFee.toFixed(3)} ERG{' '}
+                    </p>
+                    <p>
+                        <Trans i18nKey="youPay" /> ≈{' '}
+                        {(this.state.mintErgVal + this.state.mintErgFee).toFixed(3)} ERG{' '}
                     </p>
                 </div>
                 <button
@@ -184,7 +182,7 @@ class PurchaseForm extends Component<PurchaseFormProps, any> {
                     onClick={() => this.startRcRedeem()}
                     disabled={this.state.loading || this.state.errMsg || !this.state.amount}
                 >
-                    {this.state.loading ? <Loader /> : <Trans i18nKey="purchaseButton"/>}
+                    {this.state.loading ? <Loader /> : <Trans i18nKey="purchaseButton" />}
                 </button>
                 <InfoModal
                     coin={this.state.coin}

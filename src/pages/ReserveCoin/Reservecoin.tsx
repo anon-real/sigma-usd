@@ -9,7 +9,6 @@ import Footer from 'components/Footer/Footer';
 import { Navigation } from 'components/Navigation/Navigation';
 
 const Reservecoin = () => {
-
     useTranslation();
 
     return (
@@ -21,7 +20,8 @@ const Reservecoin = () => {
                     <h2 className="top-section__title">
                         <Trans i18nKey="purchase" />{' '}
                         <span className="top-section__title--ampersand">
-                            & <Trans i18nKey="redeem" /> <span className="top-section__title--colored">SigmaRSV</span>
+                            & <Trans i18nKey="redeem" />{' '}
+                            <span className="top-section__title--colored">SigmaRSV</span>
                         </span>
                     </h2>
                     <p className="top-section__paragraph">
