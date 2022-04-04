@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { toast } from 'react-toastify';
 import { Trans, useTranslation } from 'react-i18next';
 import classNames from 'classnames';
-import { clearWallet, getWalletAddress, isAddressValid, setAnyWallet } from '../../utils/helpers';
+import { getWalletAddress, isAddressValid, setAnyWallet } from '../../utils/helpers';
 import { YoroiTab } from './YoroiTab';
 
 interface Props {
@@ -108,7 +108,7 @@ const WalletModal = ({ open, onClose }: Props) => {
                         type="button"
                         className="btn-blue mr-lg-20 mr-0"
                     >
-                        <Trans i18nKey="save" />
+                        <Trans i18nKey="close" />
                     </button>
                     {/* <button
                         onClick={() => {
@@ -123,7 +123,7 @@ const WalletModal = ({ open, onClose }: Props) => {
                     >
                         <Trans i18nKey="Nautilus" />
                     </button> */}
-                    <button
+                    {/* <button
                         onClick={() => {
                             toast.success(t('successClearWallet'));
                             clearWallet();
@@ -134,7 +134,7 @@ const WalletModal = ({ open, onClose }: Props) => {
                         className="btn-black"
                     >
                         <Trans i18nKey="clearWallet" />
-                    </button>
+                    </button> */}
                 </div>
             </div>
         </ModalContainer>

@@ -3,7 +3,7 @@ module.exports = {
   extends: ['airbnb', 'plugin:prettier/recommended', 'prettier/react'],
   env: {
     browser: true,
-    jest: true,
+    "es6": true
   },
   plugins: ['@typescript-eslint', 'react', 'import', "react-hooks"],
   settings: {

@@ -85,20 +85,20 @@ export function setWallet(tp, address) {
 }
 
 export function setAnyWallet(address) {
-    setWallet('any', address)
+    setWallet('ANY', address)
 }
 
 export function setYoroiWallet(address) {
-    setWallet('Yoroi', address)
+    setWallet('YOROI', address)
 }
 
 export function setNautilusWallet(address) {
-    setWallet('Nautilus', address)
+    setWallet('NAUTILUS', address)
 }
 
 export function isDappWallet() {
     const tp = getWalletType()
-    return isWalletSaved() && (tp === 'Nautilus' || tp === 'Yoroi')
+    return isWalletSaved() && (tp === 'NAUTILUS' || tp === 'YOROI')
 }
 
 export function getUrl(url) {

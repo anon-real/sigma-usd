@@ -22,10 +22,16 @@
     "isolatedModules": true,
     "noEmit": true
   },
+  "typeRoots": [
+    "src/@types"
+  ],
   "include": [
     "src",
     "**/*.ts",
     "**/*.tsx",
+    "@types/**/*",
   ],
-  "exclude": ["node_modules"],
+  "exclude": [
+    "node_modules"
+  ]
 }

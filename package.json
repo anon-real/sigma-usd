@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@coinbarn/ergo-ts": "^0.3.0",
+    "@ergolabs/ergo-sdk": "^0.1.28",
     "@fortawesome/fontawesome-svg-core": "^1.2.15",
     "@fortawesome/free-brands-svg-icons": "^5.7.2",
     "@fortawesome/free-solid-svg-icons": "^5.7.2",

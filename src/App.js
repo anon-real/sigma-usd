@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useContext, useEffect } from 'react';
 import ReactDOM from 'react-dom';
 // import registerServiceWorker from './registerServiceWorker';
 
@@ -16,6 +16,7 @@ import Home from './pages/Home/Home';
 import { FaqPage } from 'pages/Faq/FaqPage';
 import { setupWallet } from 'utils/walletUtils';
 import { getWalletType } from 'utils/helpers';
+import { useWallet, WalletContextProvider } from 'providers/WalletContext';
 
 const store = configureStore();
 const rootElement = document.getElementById('root');
@@ -31,39 +32,36 @@ const App = () => {
         reqFollower();
     }, 10000);
 
-    // useDidMount
-    useEffect(() => {
-        const walletType = getWalletType();
-        setupWallet(walletType);
-    }, [])
-
     return (
         <React.Suspense fallback="loading">
             <Provider store={store}>
-                <HashRouter>
-                <Switch>
-                    <Route exact path="/">
-                        <Home />
-                    </Route>
-                    <Route path="/stablecoin">
-                        <Stablecoin />
-                    </Route>
-                    <Route path="/reservecoin">
-                        <ReserveCoin />
-                    </Route>
-                    <Route path="/faq/:slug?">
-                        <FaqPage />
-                    </Route>
-                    <Route path="/refund">
-                        <RefundPage />
-                    </Route>
-                </Switch>
-                </HashRouter>
+                <WalletContextProvider>
+                    <HashRouter>
+                    <Switch>
+                        <Route exact path="/">
+                            <Home />
+                        </Route>
+                        <Route path="/stablecoin">
+                            <Stablecoin />
+                        </Route>
+                        <Route path="/reservecoin">
+                            <ReserveCoin />
+                        </Route>
+                        <Route path="/faq/:slug?">
+                            <FaqPage />
+                        </Route>
+                        <Route path="/refund">
+                            <RefundPage />
+                        </Route>
+                    </Switch>
+                    </HashRouter>
+                </WalletContextProvider>
             </Provider>
             <ToastContainer closeButton={false} autoClose={10000} />
         </React.Suspense>
     )
 }
+
 export const initApp = () => {
     ReactDOM.render(
         <App />,

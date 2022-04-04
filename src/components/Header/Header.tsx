@@ -5,14 +5,23 @@ import './Header.scss';
 import format from 'format-number';
 import { DropdownMenu } from 'components/DropdownMenu/DropdownMenu';
 import LanguageSelector from 'components/LanguageSelector/LanguageSelector';
+import { WalletContext } from 'providers/WalletContext';
 import { rcBalance, scBalance } from '../../utils/ageHelper';
-import { friendlyAddress, getWalletAddress, isDappWallet, isWalletSaved } from '../../utils/helpers';
+import {
+    friendlyAddress,
+    getWalletAddress,
+    isDappWallet,
+    isWalletSaved,
+} from '../../utils/helpers';
 import WalletModal from '../WalletModal/WalletModal';
 import { getBalanceFor } from '../../utils/explorer';
 import { getDappBalance } from '../../utils/walletUtils';
 import { sigRsvTokenId, sigUsdTokenId } from '../../utils/consts';
 
 export class HeaderComponent extends Component<any, any> {
+    // eslint-disable-next-line react/static-property-placement
+    static contextType = WalletContext;
+
     constructor(props: any) {
         super(props);
 
@@ -28,18 +37,15 @@ export class HeaderComponent extends Component<any, any> {
     }
 
     async updateBal() {
-        if (isWalletSaved()) {
-            if (isDappWallet()) {
-                const ageBal = await getDappBalance(sigUsdTokenId);
-                const reserveBal = await getDappBalance(sigRsvTokenId);
-                this.setState({ reserveBal, ageBal: (ageBal / 100).toFixed(2) });
-
-            } else {
-                const bal = await getBalanceFor(getWalletAddress());
-                const ageBal = await scBalance(bal);
-                const reserveBal = await rcBalance(bal);
-                this.setState({ reserveBal, ageBal: (ageBal / 100).toFixed(2) });
-            }
+        if (isDappWallet()) {
+            const ageBal = await getDappBalance(sigUsdTokenId);
+            const reserveBal = await getDappBalance(sigRsvTokenId);
+            this.setState({ reserveBal, ageBal: (Number(ageBal) / 100).toFixed(2) });
+        } else if (getWalletAddress()) {
+            const bal = await getBalanceFor(getWalletAddress());
+            const ageBal = await scBalance(bal);
+            const reserveBal = await rcBalance(bal);
+            this.setState({ reserveBal, ageBal: (ageBal / 100).toFixed(2) });
         }
     }
 
