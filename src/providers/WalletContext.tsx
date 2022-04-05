@@ -20,10 +20,12 @@ export type WalletContextType = {
     isWalletLoading: boolean;
     isWalletConnected: boolean;
     address: string;
-    setAddress: (address: string) => void;
-    setupWallet: (newWalletType: WalletType) => void;
+    setWalletTypeAndAddress: (type: WalletType, address: string) => void;
+    setupWallet: (newWalletType: WalletType) => Promise<boolean>;
     walletInit: () => void;
     getUtxos: () => void;
+    isWalletInitialized: boolean;
+    getTokenBalance: (token: string) => Promise<string>;
 };
 
 function noop() {}
@@ -35,23 +37,58 @@ const initialState = {
     setIsWalletConnected: noop,
     isWalletLoading: false,
     isWalletConnected: false,
-    setupWallet: noop,
-    setAddress: () => {},
+    setupWallet: () => Promise.resolve(false),
+    setWalletTypeAndAddress: noop,
     walletInit: noop,
     getUtxos: noop,
     getBalance: noop,
+    isWalletInitialized: false,
+    getTokenBalance: () => Promise.resolve(''),
 };
 export const WalletContext = createContext<WalletContextType>(initialState);
 
 export const useWallet = (): WalletContextType => useContext(WalletContext);
 
-export const checkIsDappWalletConnected = (walletType: WalletType) => {
+export const checkIsDappWalletExists = (walletType: WalletType) => {
+    // eslint-disable-next-line default-case
+    switch (walletType) {
+        case WalletType.NAUTILUS: {
+            return window.ergoConnector?.nautilus;
+        }
+        default: {
+            return false;
+        }
+    }
+};
+
+export const connectWallet = async (walletType: WalletType) => {
+    switch (walletType) {
+        case WalletType.NAUTILUS: {
+            const granted = await window.ergoConnector?.nautilus?.connect({
+                createErgoObject: false,
+            });
+
+            if (!granted) {
+                showMsg('Wallet access denied', true);
+                return false;
+            }
+
+            return true;
+        }
+    }
+};
+
+export const checkIsDappWalletConnected = async (walletType: WalletType) => {
     // eslint-disable-next-line default-case
     switch (walletType) {
         case WalletType.NAUTILUS: {
             return window.ergoConnector?.nautilus?.isConnected();
         }
+        case WalletType.YOROI: {
+            return window.ergo.check_read_access();
+        }
         default: {
+            // never
             return false;
         }
     }
@@ -61,12 +98,13 @@ export const getDappAddress = async (walletType: WalletType) => {
     // eslint-disable-next-line default-case
     switch (walletType) {
         case WalletType.NAUTILUS: {
-            return window.ergo.get_change_address();
+            return (await window.ergoConnector.nautilus.getContext()).get_change_address();
         }
         case WalletType.YOROI: {
             return window.ergo.get_change_address();
         }
         default: {
+            // never
             return '';
         }
     }
@@ -76,12 +114,13 @@ export const getDappBalance = async (walletType: WalletType) => {
     // eslint-disable-next-line default-case
     switch (walletType) {
         case WalletType.NAUTILUS: {
-            return window.ergo.get_change_address();
+            return (await window.ergoConnector.nautilus.getContext()).get_change_address();
         }
         case WalletType.YOROI: {
             return window.ergo.get_change_address();
         }
         default: {
+            // never
             return '';
         }
     }
@@ -91,11 +130,23 @@ export const WalletContextProvider = ({
     children,
 }: React.PropsWithChildren<unknown>): JSX.Element => {
     const [walletType, setWalletType] = useState(initialState.walletType);
+    const [isWalletInitialized, setIsWalletInitialized] = useState(
+        initialState.isWalletInitialized,
+    );
     const [walletConnectionState, setWalletConnectionState] = useState(
         WalletConnectionState.NOT_CONNECTED,
     );
     const [address, setAddress] = useState(initialState.address);
     const [isWalletLoading, setIsWalletLoading] = useState<boolean>(false);
+
+    const setWalletTypeAndAddress = useCallback(
+        (type: WalletType, newAddress: string) => {
+            setAddress(newAddress);
+            setWalletType(type);
+            setWallet(type, newAddress);
+        },
+        [setAddress, setWalletType],
+    );
 
     const setIsWalletConnected = useCallback((isConnected: boolean) => {
         setWalletConnectionState(
@@ -106,31 +157,43 @@ export const WalletContextProvider = ({
     const walletInit = useCallback(async () => {
         const type = getWalletType();
         setIsWalletLoading(true);
+
         if (type === WalletType.ANY || !type) {
             setWalletConnectionState(WalletConnectionState.CONNECTED);
             const walletAddress = getWalletAddress();
-            setAddress(walletAddress);
-            setWalletType(WalletType.ANY);
+            setWalletTypeAndAddress(WalletType.ANY, walletAddress);
             setIsWalletLoading(false);
+            setIsWalletInitialized(true);
         } else {
-            const isWalletConnected = await checkIsDappWalletConnected(type);
+            const isWalletExists = await checkIsDappWalletExists(type);
+
+            if (!isWalletExists) {
+                setWalletType(WalletType.ANY);
+                setWalletConnectionState(WalletConnectionState.CONNECTED);
+                setWallet(WalletType.ANY, '');
+                setIsWalletLoading(false);
+                setIsWalletInitialized(true);
+                return;
+            }
+
+            const isWalletConnected = await connectWallet(type);
 
             if (!isWalletConnected) {
                 setWalletType(WalletType.ANY);
                 setWalletConnectionState(WalletConnectionState.CONNECTED);
                 setWallet(WalletType.ANY, '');
                 setIsWalletLoading(false);
+                setIsWalletInitialized(true);
                 return;
             }
 
             const dappAddress = await getDappAddress(type);
-            setWallet(type, dappAddress);
-            setAddress(dappAddress);
-            setWalletType(type);
+            setWalletTypeAndAddress(type, dappAddress);
             setWalletConnectionState(WalletConnectionState.CONNECTED);
             setIsWalletLoading(false);
+            setIsWalletInitialized(true);
         }
-    }, [setWalletType]);
+    }, [setWalletTypeAndAddress, setWalletType]);
 
     useEffect(() => {
         walletInit();
@@ -145,6 +208,22 @@ export const WalletContextProvider = ({
         }
     }, [walletType]);
 
+    const getTokenBalance = useCallback(
+        async (token = 'ERG') => {
+            // eslint-disable-next-line default-case
+            switch (walletType) {
+                case WalletType.NAUTILUS: {
+                    return (await window.ergoConnector.nautilus.getContext()).get_balance(token);
+                }
+                default: {
+                    // never
+                    return Promise.resolve('');
+                }
+            }
+        },
+        [walletType],
+    );
+
     const setupWallet = useCallback(
         async (newWalletType: WalletType) => {
             setIsWalletLoading(true);
@@ -155,17 +234,13 @@ export const WalletContextProvider = ({
                     setWalletConnectionState(WalletConnectionState.CONNECTED);
                     setWallet(WalletType.ANY, '');
                     setIsWalletLoading(false);
-                    break;
+                    return true;
                 }
                 case WalletType.NAUTILUS: {
-                    const granted = await window.ergoConnector?.nautilus?.connect({
-                        createErgoObject: false,
-                    });
+                    const isWalletConnected = await connectWallet(newWalletType);
 
-                    if (!granted) {
-                        showMsg('Wallet access denied', true);
-                        setIsWalletLoading(false);
-                        return;
+                    if (!isWalletConnected) {
+                        return false;
                     }
 
                     const dappAddress = await getDappAddress(newWalletType);
@@ -174,6 +249,16 @@ export const WalletContextProvider = ({
                     setWalletType(newWalletType);
                     setWalletConnectionState(WalletConnectionState.CONNECTED);
                     setIsWalletLoading(false);
+                    showMsg('Successfully connected to Nautilus');
+
+                    return true;
+                }
+                default: {
+                    setWalletType(WalletType.ANY);
+                    setWalletConnectionState(WalletConnectionState.CONNECTED);
+                    setWallet(WalletType.ANY, '');
+                    setIsWalletLoading(false);
+                    return true;
                 }
             }
         },
@@ -190,9 +275,11 @@ export const WalletContextProvider = ({
         isWalletConnected,
         setupWallet,
         address,
-        setAddress,
+        setWalletTypeAndAddress,
         walletInit,
         getUtxos,
+        isWalletInitialized,
+        getTokenBalance,
     };
 
     return <WalletContext.Provider value={ctxValue}>{children}</WalletContext.Provider>;

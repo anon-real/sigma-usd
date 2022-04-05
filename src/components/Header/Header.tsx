@@ -15,7 +15,6 @@ import {
 } from '../../utils/helpers';
 import WalletModal from '../WalletModal/WalletModal';
 import { getBalanceFor } from '../../utils/explorer';
-import { getDappBalance } from '../../utils/walletUtils';
 import { sigRsvTokenId, sigUsdTokenId } from '../../utils/consts';
 
 export class HeaderComponent extends Component<any, any> {
@@ -38,8 +37,10 @@ export class HeaderComponent extends Component<any, any> {
 
     async updateBal() {
         if (isDappWallet()) {
-            const ageBal = await getDappBalance(sigUsdTokenId);
-            const reserveBal = await getDappBalance(sigRsvTokenId);
+            const walletState = this.context;
+            const { getTokenBalance } = walletState;
+            const ageBal = await getTokenBalance(sigUsdTokenId);
+            const reserveBal = await getTokenBalance(sigRsvTokenId);
             this.setState({ reserveBal, ageBal: (Number(ageBal) / 100).toFixed(2) });
         } else if (getWalletAddress()) {
             const bal = await getBalanceFor(getWalletAddress());

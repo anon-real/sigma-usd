@@ -1,9 +1,11 @@
 import ModalContainer from 'components/ModalContainer/ModalContainer';
-import React, { useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import { Trans, useTranslation } from 'react-i18next';
 import classNames from 'classnames';
-import { getWalletAddress, isAddressValid, setAnyWallet } from '../../utils/helpers';
+import { checkIsDappWalletExists, useWallet, WalletType } from 'providers/WalletContext';
+import { Nautilus } from 'utils/wallets/nautilus';
+import { isAddressValid, setAnyWallet } from '../../utils/helpers';
 import { YoroiTab } from './YoroiTab';
 
 interface Props {
@@ -11,19 +13,15 @@ interface Props {
     open: boolean;
 }
 
-enum Wallets {
-    ANY_WALLET = 'ANY_WALLET',
-    YOROI = 'YOROI',
-}
-
 const TABS = {
-    [Wallets.ANY_WALLET]: 'Any wallet',
-    [Wallets.YOROI]: 'Yoroi',
+    [WalletType.ANY]: 'Any wallet',
+    [WalletType.NAUTILUS]: 'Nautilus Wallet',
+    [WalletType.YOROI]: 'Yoroi Wallet',
 };
 
-const renderTabContent = ({ currentTab, address, setAddress }: any) => {
+const renderTabContent = ({ currentTab, walletType, address, setWallet }: any) => {
     switch (currentTab) {
-        case Wallets.YOROI: {
+        case WalletType.YOROI: {
             return <YoroiTab />;
         }
         default: {
@@ -43,9 +41,9 @@ const renderTabContent = ({ currentTab, address, setAddress }: any) => {
                             <Trans i18nKey="address" />
                         </label>
                         <input
-                            defaultValue={getWalletAddress()}
+                            defaultValue={address}
                             value={address}
-                            onChange={(e) => setAddress(e.target.value)}
+                            onChange={(e) => setWallet(walletType, e.target.value)}
                             className="wallet-modal__input"
                             id="address"
                         />
@@ -73,8 +71,53 @@ const renderTabContent = ({ currentTab, address, setAddress }: any) => {
 };
 
 const WalletModal = ({ open, onClose }: Props) => {
-    const [currentTab, setCurrentTab] = useState(Wallets.ANY_WALLET);
-    const [address, setAddress] = useState(getWalletAddress);
+    const walletState = useWallet();
+    const {
+        address,
+        walletType,
+        setWalletTypeAndAddress: setWallet,
+        setupWallet,
+        isWalletInitialized,
+    } = walletState;
+    const [currentTab, setCurrentTab] = useState(walletType);
+
+    useEffect(() => {
+        if (isWalletInitialized) {
+            setCurrentTab(walletType);
+        }
+    }, [walletType, setCurrentTab, isWalletInitialized]);
+
+    const changeTab = useCallback(
+        async (newTab) => {
+            // eslint-disable-next-line default-case
+            switch (newTab) {
+                case WalletType.ANY: {
+                    setupWallet(newTab);
+                    setCurrentTab(newTab);
+                    break;
+                }
+                case WalletType.NAUTILUS: {
+                    const isNautilusExists = await checkIsDappWalletExists(newTab);
+
+                    if (!isNautilusExists) {
+                        window.open(Nautilus.extensionLink, '_blank');
+                        break;
+                    }
+
+                    const isWalletSetup = await setupWallet(newTab);
+
+                    if (isWalletSetup) {
+                        setCurrentTab(newTab);
+                    }
+                    break;
+                }
+                default: {
+                    break;
+                }
+            }
+        },
+        [setupWallet],
+    );
 
     const { t } = useTranslation();
 
@@ -88,14 +131,14 @@ const WalletModal = ({ open, onClose }: Props) => {
                             className={classNames('wallet-modal__tab', {
                                 active: key === currentTab,
                             })}
-                            onClick={() => setCurrentTab(key as Wallets)}
+                            onClick={() => changeTab(key as WalletType)}
                         >
-                            <Trans i18nKey={TABS[key as Wallets]} />
+                            <Trans i18nKey={TABS[key as WalletType]} />
                         </div>
                     ))}
                 </div>
                 <div className="wallet-modal__content">
-                    {renderTabContent({ currentTab, address, setAddress })}
+                    {renderTabContent({ currentTab, walletType, setWallet, walletState })}
                 </div>
                 <div className="wallet-modal__buttons">
                     <button
