@@ -184,7 +184,7 @@ export const WalletContextProvider = ({
     );
     const [address, setAddress] = useState(initialState.address);
     const [isWalletLoading, setIsWalletLoading] = useState<boolean>(false);
-    const isAddressSet = useMemo(() => address && address.length !== 0, [address]);
+    const isAddressSet = useMemo(() => !!address && address.length !== 0, [address]);
 
     const setWalletTypeAndAddress = useCallback(
         (type: WalletType, newAddress: string) => {
