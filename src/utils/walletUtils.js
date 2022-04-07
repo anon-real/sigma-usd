@@ -61,7 +61,7 @@ function walletDisconnect() {
 //     }
 // }
 
-export async function walletSendFunds(need, addr, getUtxos, registers={}, notif=true) {
+export async function walletSendFunds({ need, addr, getUtxos, signTx, submitTx, registers={}, notif=true}) {
     const wasm = await ergolib
 
     const height = await currentHeight()
@@ -70,10 +70,10 @@ export async function walletSendFunds(need, addr, getUtxos, registers={}, notif=
     have['ERG'] += txFee
     let ins = []
     const keys = Object.keys(have)
-
+debugger;
     for (let i = 0; i < keys.length; i++) {
         if (have[keys[i]] <= 0) continue
-        const curIns = await ergo.get_utxos(have[keys[i]].toString(), keys[i]);
+        const curIns = await getUtxos(have[keys[i]].toString(), keys[i]);
         if (curIns !== undefined) {
             curIns.forEach(bx => {
                 have['ERG'] -= parseInt(bx.value)
@@ -141,13 +141,13 @@ export async function walletSendFunds(need, addr, getUtxos, registers={}, notif=
 
     let tx = null
     try {
-        tx = await ergo.sign_tx(unsigned)
+        tx = await signTx(unsigned)
     } catch (e) {
         showMsg(`Error while sending funds from ${getWalletType()}!`, true)
         console.log('error', e)
         return
     }
-    const txId = await ergo.submit_tx(tx)
+    const txId = await submitTx(tx)
 
     if (notif) {
         if (txId !== undefined && txId.length > 0)

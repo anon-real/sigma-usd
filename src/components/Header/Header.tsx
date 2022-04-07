@@ -51,6 +51,8 @@ export class HeaderComponent extends Component<any, any> {
     }
 
     render() {
+        const { address } = this.context;
+
         return (
             <header className="header-container">
                 <div>
@@ -111,7 +113,7 @@ export class HeaderComponent extends Component<any, any> {
                                 />
                             </svg>
                             <span>
-                                {isWalletSaved() ? (
+                                {address ? (
                                     friendlyAddress(getWalletAddress(), 3)
                                 ) : (
                                     <Trans i18nKey="headerSetWallet" />

@@ -81,6 +81,12 @@
         padding-left: 10px;
         border: 1px solid #c4c4c4;
         height: 35px;
+
+        &:disabled {
+            background: gray;
+            color: white;
+            cursor:not-allowed;
+        }
     }
 
     .wallet-modal__input-subtext {

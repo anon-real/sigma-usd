@@ -1,7 +1,5 @@
 import React from 'react';
 import { Trans } from 'react-i18next';
-// import { setYoroiWallet } from 'utils/helpers';
-// import { setupWallet } from 'utils/walletUtils';
 
 import styles from './YoroiTab.module.scss';
 

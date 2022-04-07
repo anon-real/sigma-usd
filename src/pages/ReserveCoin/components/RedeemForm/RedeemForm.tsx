@@ -2,6 +2,9 @@ import React, { Component } from 'react';
 import cn from 'classnames';
 import { toast } from 'react-toastify';
 import { generateUniqueId } from 'utils/utils';
+import { Trans, withTranslation } from 'react-i18next';
+import { WithT } from 'i18next';
+import { WalletContext } from 'providers/WalletContext';
 import Card from '../../../../components/Card/Card';
 import Switch from '../../../../components/Switch/Switch';
 import { ergCoin, reserveAcronym, reserveName, sigRsvTokenId } from '../../../../utils/consts';
@@ -16,13 +19,14 @@ import Loader from '../../../../components/Loader/Loader';
 import { isDappWallet, isWalletSaved } from '../../../../utils/helpers';
 import { redeemRc } from '../../../../utils/redeemRc';
 import InfoModal from '../../../../components/InfoModal/InfoModal';
-import { Trans, withTranslation } from 'react-i18next';
-import { WithT } from 'i18next';
 import { walletSendFunds } from '../../../../utils/walletUtils';
 
 type RedeemFormProps = WithT;
 
 class RedeemForm extends Component<RedeemFormProps, any> {
+    // eslint-disable-next-line react/static-property-placement
+    static contextType = WalletContext;
+
     constructor(props: RedeemFormProps) {
         super(props);
         this.state = {
@@ -108,16 +112,24 @@ class RedeemForm extends Component<RedeemFormProps, any> {
         redeemRc(this.state.amount)
             .then((res) => {
                 if (isDappWallet()) {
-                    let need = {
-                        'ERG': 10000000,
-                        [sigRsvTokenId]: this.state.amount
-                    }
-                    walletSendFunds(need, res.addr).then(res => {
+                    const { signTx, submitTx, getWalletUtxos: getUtxos } = this.context;
+
+                    const need = {
+                        ERG: 10000000,
+                        [sigRsvTokenId]: this.state.amount,
+                    };
+
+                    walletSendFunds({
+                        need,
+                        addr: res.addr,
+                        getUtxos,
+                        signTx,
+                        submitTx,
+                    }).then((res) => {
                         this.setState({
                             loading: false,
                         });
-                    })
-
+                    });
                 } else {
                     this.setState({
                         address: res.addr,
@@ -161,9 +173,7 @@ class RedeemForm extends Component<RedeemFormProps, any> {
                             error: this.state.errMsg,
                         })}
                     >
-                        {this.state.errMsg
-                            ? this.state.errMsg
-                            : <Trans i18nKey="feeNote"/>}
+                        {this.state.errMsg ? this.state.errMsg : <Trans i18nKey="feeNote" />}
                     </span>
                 </div>
                 <div className="delimiter" />
@@ -172,9 +182,11 @@ class RedeemForm extends Component<RedeemFormProps, any> {
                         {this.state.amount} {reserveAcronym} ≈ {this.state.redeemErgVal.toFixed(3)}{' '}
                         ERG
                     </p>
-                    <p><Trans i18nKey="fee"/> ≈ {this.state.redeemErgFee.toFixed(3)} ERG </p>
                     <p>
-                        <Trans i18nKey="youGet"/> ≈{' '}
+                        <Trans i18nKey="fee" /> ≈ {this.state.redeemErgFee.toFixed(3)} ERG{' '}
+                    </p>
+                    <p>
+                        <Trans i18nKey="youGet" /> ≈{' '}
                         {(this.state.redeemErgVal - this.state.redeemErgFee).toFixed(3)} ERG{' '}
                     </p>
                 </div>
@@ -183,7 +195,7 @@ class RedeemForm extends Component<RedeemFormProps, any> {
                     disabled={this.state.loading || this.state.errMsg || !this.state.amount}
                     className="mt-sm-15 mt-xl-40 mt-lg-25 btn btn--white"
                 >
-                    {this.state.loading ? <Loader /> : <Trans i18nKey="redeemButton"/>}
+                    {this.state.loading ? <Loader /> : <Trans i18nKey="redeemButton" />}
                 </button>
                 <InfoModal
                     coin={this.state.coin}

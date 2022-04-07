@@ -1,3 +1,4 @@
+import { ErgoBoxProxy, ErgoTxProxy, Paging, TxId, UnsignedErgoTxProxy } from '@ergolabs/ergo-sdk';
 import React, { createContext, useCallback, useContext, useEffect, useState } from 'react';
 import { getWalletAddress, getWalletType, setWallet, showMsg } from 'utils/helpers';
 
@@ -23,7 +24,14 @@ export type WalletContextType = {
     setWalletTypeAndAddress: (type: WalletType, address: string) => void;
     setupWallet: (newWalletType: WalletType) => Promise<boolean>;
     walletInit: () => void;
-    getUtxos: () => void;
+    getWalletUtxos: (
+        amount?: any,
+        // eslint-disable-next-line camelcase
+        token_id?: string,
+        paginate?: Paging,
+    ) => Promise<ErgoBoxProxy[] | undefined>;
+    signTx: (tx: UnsignedErgoTxProxy) => Promise<ErgoTxProxy | undefined>;
+    submitTx: (tx: ErgoTxProxy) => Promise<TxId | undefined>;
     isWalletInitialized: boolean;
     getTokenBalance: (token: string) => Promise<string>;
 };
@@ -40,12 +48,14 @@ const initialState = {
     setupWallet: () => Promise.resolve(false),
     setWalletTypeAndAddress: noop,
     walletInit: noop,
-    getUtxos: noop,
+    getWalletUtxos: noop,
+    signTx: noop,
+    submitTx: noop,
     getBalance: noop,
     isWalletInitialized: false,
     getTokenBalance: () => Promise.resolve(''),
 };
-export const WalletContext = createContext<WalletContextType>(initialState);
+export const WalletContext = createContext<WalletContextType>(initialState as any);
 
 export const useWallet = (): WalletContextType => useContext(WalletContext);
 
@@ -98,7 +108,9 @@ export const getDappAddress = async (walletType: WalletType) => {
     // eslint-disable-next-line default-case
     switch (walletType) {
         case WalletType.NAUTILUS: {
-            return (await window.ergoConnector.nautilus.getContext()).get_change_address();
+            return window.ergoConnector.nautilus
+                .getContext()
+                .then((context) => context.get_change_address());
         }
         case WalletType.YOROI: {
             return window.ergo.get_change_address();
@@ -110,18 +122,50 @@ export const getDappAddress = async (walletType: WalletType) => {
     }
 };
 
-export const getDappBalance = async (walletType: WalletType) => {
+export const getSignTx = async (walletType: WalletType, tx: any) => {
     // eslint-disable-next-line default-case
     switch (walletType) {
         case WalletType.NAUTILUS: {
-            return (await window.ergoConnector.nautilus.getContext()).get_change_address();
+            return window.ergoConnector.nautilus
+                .getContext()
+                .then((context) => context.sign_tx(tx));
         }
         case WalletType.YOROI: {
-            return window.ergo.get_change_address();
+            // return window.ergo.get_change_address();
+            // TODO: add YOROI sign tx
+            break;
         }
-        default: {
-            // never
-            return '';
+    }
+};
+
+export const getSubmitTx = async (walletType: WalletType, tx: any) => {
+    // eslint-disable-next-line default-case
+    switch (walletType) {
+        case WalletType.NAUTILUS: {
+            return window.ergoConnector.nautilus
+                .getContext()
+                .then((context) => context.submit_tx(tx));
+        }
+        case WalletType.YOROI: {
+            // return window.ergo.get_change_address();
+            // TODO: add YOROI submit tx
+            break;
+        }
+    }
+};
+
+export const getUtxos = async (walletType: WalletType, ...args: any) => {
+    // eslint-disable-next-line default-case
+    switch (walletType) {
+        case WalletType.NAUTILUS: {
+            return window.ergoConnector.nautilus
+                .getContext()
+                .then((context) => context.get_utxos(...args));
+        }
+        case WalletType.YOROI: {
+            // return window.ergo.get_change_address();
+            // TODO: add YOROI submit tx
+            break;
         }
     }
 };
@@ -199,21 +243,40 @@ export const WalletContextProvider = ({
         walletInit();
     }, []);
 
-    const getUtxos = useCallback(async () => {
-        // eslint-disable-next-line default-case
-        switch (walletType) {
-            case WalletType.NAUTILUS: {
-                return (await window.ergoConnector.nautilus.getContext()).get_utxos();
-            }
-        }
-    }, [walletType]);
+    const getWalletUtxos = useCallback(
+        async (
+            amount?: any,
+            // eslint-disable-next-line camelcase
+            token_id?: string,
+            paginate?: Paging,
+        ) => {
+            return getUtxos(walletType, amount, token_id, paginate);
+        },
+        [walletType],
+    );
+
+    const signTx = useCallback(
+        async (tx) => {
+            return getSignTx(walletType, tx);
+        },
+        [walletType],
+    );
+
+    const submitTx = useCallback(
+        async (tx) => {
+            return getSubmitTx(walletType, tx);
+        },
+        [walletType],
+    );
 
     const getTokenBalance = useCallback(
-        async (token = 'ERG') => {
+        (token = 'ERG') => {
             // eslint-disable-next-line default-case
             switch (walletType) {
                 case WalletType.NAUTILUS: {
-                    return (await window.ergoConnector.nautilus.getContext()).get_balance(token);
+                    return window.ergoConnector.nautilus.getContext().then((context) => {
+                        return context.get_balance(token);
+                    });
                 }
                 default: {
                     // never
@@ -230,9 +293,8 @@ export const WalletContextProvider = ({
             // eslint-disable-next-line
             switch (newWalletType) {
                 case WalletType.ANY: {
-                    setWalletType(WalletType.ANY);
                     setWalletConnectionState(WalletConnectionState.CONNECTED);
-                    setWallet(WalletType.ANY, '');
+                    setWalletTypeAndAddress(WalletType.ANY, '');
                     setIsWalletLoading(false);
                     return true;
                 }
@@ -244,12 +306,9 @@ export const WalletContextProvider = ({
                     }
 
                     const dappAddress = await getDappAddress(newWalletType);
-                    setWallet(newWalletType, dappAddress);
-                    setAddress(dappAddress);
-                    setWalletType(newWalletType);
+                    setWalletTypeAndAddress(newWalletType, dappAddress || '');
                     setWalletConnectionState(WalletConnectionState.CONNECTED);
                     setIsWalletLoading(false);
-                    showMsg('Successfully connected to Nautilus');
 
                     return true;
                 }
@@ -262,8 +321,38 @@ export const WalletContextProvider = ({
                 }
             }
         },
-        [setWalletType],
+        [setWalletType, setWalletTypeAndAddress],
     );
+
+    const resyncWalletAddress = useCallback(async () => {
+        // eslint-disable-next-line
+        switch (walletType) {
+            case WalletType.NAUTILUS: {
+                try {
+                    const isWalletConnected = await connectWallet(walletType);
+
+                    if (!isWalletConnected) {
+                        showMsg('Wallet is not connected', true);
+                        setupWallet(WalletType.ANY);
+                        return false;
+                    }
+                    try {
+                        const dappAddress = await getDappAddress(walletType);
+
+                        setWalletTypeAndAddress(walletType, dappAddress || '');
+                        showMsg('Address successfully updated');
+                        return true;
+                    } catch {
+                        showMsg('Something went wrong', true);
+                        return false;
+                    }
+                } catch {
+                    showMsg('Something went wrong', true);
+                    return false;
+                }
+            }
+        }
+    }, [walletType, setWalletTypeAndAddress, setupWallet]);
 
     const isWalletConnected = walletConnectionState === WalletConnectionState.CONNECTED;
 
@@ -277,10 +366,16 @@ export const WalletContextProvider = ({
         address,
         setWalletTypeAndAddress,
         walletInit,
-        getUtxos,
+        getWalletUtxos,
+        signTx,
+        submitTx,
         isWalletInitialized,
         getTokenBalance,
     };
+
+    if (!isWalletInitialized) {
+        return null!;
+    }
 
     return <WalletContext.Provider value={ctxValue}>{children}</WalletContext.Provider>;
 };

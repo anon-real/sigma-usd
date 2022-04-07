@@ -2,6 +2,9 @@ import React, { Component } from 'react';
 import cn from 'classnames';
 import { toast } from 'react-toastify';
 import { generateUniqueId } from 'utils/utils';
+import { Trans, withTranslation } from 'react-i18next';
+import { WithT } from 'i18next';
+import { WalletContext } from 'providers/WalletContext';
 import Card from '../../../../components/Card/Card';
 import Switch from '../../../../components/Switch/Switch';
 import { ergCoin, reserveName, usdAcronym, usdName } from '../../../../utils/consts';
@@ -12,13 +15,14 @@ import { isDappWallet, isWalletSaved } from '../../../../utils/helpers';
 import { mintSc } from '../../../../utils/mintSc';
 import InfoModal from '../../../../components/InfoModal/InfoModal';
 import WalletModal from '../../../../components/WalletModal/WalletModal';
-import { Trans, withTranslation } from 'react-i18next';
-import { WithT } from 'i18next';
 import { walletSendFunds } from '../../../../utils/walletUtils';
 
 type PurchaseFormProps = WithT;
 
 class PurchaseForm extends Component<PurchaseFormProps, any> {
+    // eslint-disable-next-line react/static-property-placement
+    static contextType = WalletContext;
+
     constructor(props: PurchaseFormProps) {
         super(props);
         this.state = {
@@ -65,7 +69,10 @@ class PurchaseForm extends Component<PurchaseFormProps, any> {
 
             if (maxAllowed < inp) {
                 this.setState({
-                    errMsg: t('errorCannotMintOverReserve', { maxAllowed: (maxAllowed / 100).toFixed(2), name: usdName }),
+                    errMsg: t('errorCannotMintOverReserve', {
+                        maxAllowed: (maxAllowed / 100).toFixed(2),
+                        name: usdName,
+                    }),
                 });
                 return;
             }
@@ -102,11 +109,19 @@ class PurchaseForm extends Component<PurchaseFormProps, any> {
         mintSc(this.state.amount)
             .then((res) => {
                 if (isDappWallet()) {
-                    walletSendFunds({'ERG': res.price}, res.addr).then(res => {
+                    const { signTx, submitTx, getWalletUtxos: getUtxos } = this.context;
+
+                    walletSendFunds({
+                        need: { ERG: res.price },
+                        addr: res.addr,
+                        getUtxos,
+                        signTx,
+                        submitTx,
+                    }).then((res) => {
                         this.setState({
                             loading: false,
                         });
-                    })
+                    });
                 } else {
                     this.setState({
                         address: res.addr,
@@ -147,9 +162,7 @@ class PurchaseForm extends Component<PurchaseFormProps, any> {
                             error: this.state.errMsg,
                         })}
                     >
-                        {this.state.errMsg
-                            ? this.state.errMsg
-                            : <Trans i18nKey="feeNote"/>}
+                        {this.state.errMsg ? this.state.errMsg : <Trans i18nKey="feeNote" />}
                     </span>
                 </div>
                 <div className="delimiter" />
@@ -157,10 +170,12 @@ class PurchaseForm extends Component<PurchaseFormProps, any> {
                     <p>
                         {this.state.amount} {usdName} ≈ {this.state.mintErgVal.toFixed(3)} ERG
                     </p>
-                    <p><Trans i18nKey="fee"/> ≈ {this.state.mintErgFee.toFixed(3)} ERG </p>
                     <p>
-                        <Trans i18nKey="youPay"/> ≈ {(this.state.mintErgVal + this.state.mintErgFee).toFixed(3)}{' '}
-                        ERG{' '}
+                        <Trans i18nKey="fee" /> ≈ {this.state.mintErgFee.toFixed(3)} ERG{' '}
+                    </p>
+                    <p>
+                        <Trans i18nKey="youPay" /> ≈{' '}
+                        {(this.state.mintErgVal + this.state.mintErgFee).toFixed(3)} ERG{' '}
                     </p>
                 </div>
                 <button
@@ -168,7 +183,7 @@ class PurchaseForm extends Component<PurchaseFormProps, any> {
                     onClick={() => this.startScMint()}
                     disabled={this.state.loading || this.state.errMsg || !this.state.amount}
                 >
-                    {this.state.loading ? <Loader /> : <Trans i18nKey="purchaseButton"/>}
+                    {this.state.loading ? <Loader /> : <Trans i18nKey="purchaseButton" />}
                 </button>
                 <InfoModal
                     coin={this.state.coin}
