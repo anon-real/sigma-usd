@@ -110,7 +110,9 @@ class PurchaseForm extends Component<PurchaseFormProps, any> {
 
     startRcRedeem() {
         const { t } = this.props;
-        if (!isWalletSaved()) {
+        const { signTx, submitTx, getWalletUtxos: getUtxos, isAddressSet } = this.context;
+
+        if (!isAddressSet) {
             toast.warn(t('warnSetWallet'));
             this.setState({ isWalletModalOpen: true });
             return;
@@ -119,8 +121,6 @@ class PurchaseForm extends Component<PurchaseFormProps, any> {
         mintRc(this.state.amount)
             .then((res) => {
                 if (isDappWallet()) {
-                    const { signTx, submitTx, getWalletUtxos: getUtxos } = this.context;
-
                     walletSendFunds({
                         need: { ERG: res.price },
                         addr: res.addr,

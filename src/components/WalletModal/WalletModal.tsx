@@ -1,9 +1,10 @@
 import ModalContainer from 'components/ModalContainer/ModalContainer';
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { Trans, useTranslation } from 'react-i18next';
 import classNames from 'classnames';
 import { checkIsDappWalletExists, useWallet, WalletType } from 'providers/WalletContext';
 import { Nautilus } from 'utils/wallets/nautilus';
+import { toast } from 'react-toastify';
 import { showMsg } from '../../utils/helpers';
 // import { YoroiTab } from './YoroiTab';
 import { NautilusTab } from './NautilusTab';
@@ -159,18 +160,16 @@ const WalletModalContent = ({ open, onClose }: any) => {
                     >
                         <Trans i18nKey="Nautilus" />
                     </button> */}
-                    {/* <button
+                    <button
                         onClick={() => {
                             toast.success(t('successClearWallet'));
-                            clearWallet();
-                            setAddress('');
-                            onClose();
+                            changeTab(WalletType.ANY);
                         }}
                         type="button"
                         className="btn-black"
                     >
                         <Trans i18nKey="clearWallet" />
-                    </button> */}
+                    </button>
                 </div>
             </div>
         </ModalContainer>

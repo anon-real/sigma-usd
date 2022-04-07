@@ -103,7 +103,10 @@ class RedeemForm extends Component<RedeemFormProps, any> {
 
     startRcRedeem() {
         const { t } = this.props;
-        if (!isWalletSaved()) {
+
+        const { signTx, submitTx, getWalletUtxos: getUtxos, isAddressSet } = this.context;
+
+        if (!isAddressSet) {
             toast.warn(t('warnSetWallet'));
             this.setState({ isWalletModalOpen: true });
             return;
@@ -112,8 +115,6 @@ class RedeemForm extends Component<RedeemFormProps, any> {
         redeemRc(this.state.amount)
             .then((res) => {
                 if (isDappWallet()) {
-                    const { signTx, submitTx, getWalletUtxos: getUtxos } = this.context;
-
                     const need = {
                         ERG: 10000000,
                         [sigRsvTokenId]: this.state.amount,

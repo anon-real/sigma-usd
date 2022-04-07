@@ -51,7 +51,7 @@ export class HeaderComponent extends Component<any, any> {
     }
 
     render() {
-        const { address } = this.context;
+        const { address, isAddressSet } = this.context;
 
         return (
             <header className="header-container">
@@ -75,7 +75,7 @@ export class HeaderComponent extends Component<any, any> {
                     </nav>
 
                     <div className="coins-wrapper">
-                        {isWalletSaved() && (
+                        {isAddressSet && (
                             <div className="course-box">
                                 <div className="course-box__row">
                                     <span className="course-box__key">

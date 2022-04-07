@@ -1,5 +1,5 @@
 import { ErgoBoxProxy, ErgoTxProxy, Paging, TxId, UnsignedErgoTxProxy } from '@ergolabs/ergo-sdk';
-import React, { createContext, useCallback, useContext, useEffect, useState } from 'react';
+import React, { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import { getWalletAddress, getWalletType, setWallet, showMsg } from 'utils/helpers';
 
 export enum WalletConnectionState {
@@ -34,6 +34,7 @@ export type WalletContextType = {
     submitTx: (tx: ErgoTxProxy) => Promise<TxId | undefined>;
     isWalletInitialized: boolean;
     getTokenBalance: (token: string) => Promise<string>;
+    isAddressSet: boolean;
 };
 
 function noop() {}
@@ -54,6 +55,7 @@ const initialState = {
     getBalance: noop,
     isWalletInitialized: false,
     getTokenBalance: () => Promise.resolve(''),
+    isAddressSet: false,
 };
 export const WalletContext = createContext<WalletContextType>(initialState as any);
 
@@ -182,6 +184,7 @@ export const WalletContextProvider = ({
     );
     const [address, setAddress] = useState(initialState.address);
     const [isWalletLoading, setIsWalletLoading] = useState<boolean>(false);
+    const isAddressSet = useMemo(() => address && address.length !== 0, [address]);
 
     const setWalletTypeAndAddress = useCallback(
         (type: WalletType, newAddress: string) => {
@@ -371,6 +374,7 @@ export const WalletContextProvider = ({
         submitTx,
         isWalletInitialized,
         getTokenBalance,
+        isAddressSet,
     };
 
     if (!isWalletInitialized) {

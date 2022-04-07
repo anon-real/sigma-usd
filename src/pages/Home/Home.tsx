@@ -2,6 +2,9 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { usdName } from 'utils/consts';
 import { Trans, useTranslation } from 'react-i18next';
 import { NavLink } from 'react-router-dom';
+import Footer from 'components/Footer/Footer';
+import { Navigation } from 'components/Navigation/Navigation';
+import { useWallet } from 'providers/WalletContext';
 import CoinsInfo from './components/CoinsInfo/CoinsInfo';
 import PersonalInfo from './components/PersonalInfo/PersonalInfo';
 import { ReserveInfo } from './components/ReserveInfo/ReserveInfo';
@@ -10,16 +13,15 @@ import './Home.scss';
 import { getBalanceFor } from '../../utils/explorer';
 import { getWalletAddress, isWalletSaved } from '../../utils/helpers';
 import { ergBalance, rcBalance, rcPrice, scBalance, scPrice } from '../../utils/ageHelper';
-import Footer from 'components/Footer/Footer';
-import { Navigation } from 'components/Navigation/Navigation';
 
 const Home = () => {
+    const { isAddressSet } = useWallet();
     const [ergVal, setErgVal] = useState<number | undefined>(undefined);
     const [reserveVal, setReserveVal] = useState<number | undefined>(undefined);
     const [stableVal, setStableVal] = useState<number | undefined>(undefined);
 
     const updateParams = useCallback(async () => {
-        if (isWalletSaved()) {
+        if (isAddressSet) {
             const bal = await getBalanceFor(getWalletAddress());
             const ageBal = (await scBalance(bal)) / 100;
             let ergBal = (await ergBalance(bal)) / 1e9;
@@ -77,10 +79,11 @@ const Home = () => {
 
                 <CoinsInfo />
                 <ReserveInfo />
-                { isWalletSaved() && <PersonalInfo ergVal={ergVal} stableVal={stableVal} reserveVal={reserveVal} /> }
+                {isAddressSet && (
+                    <PersonalInfo ergVal={ergVal} stableVal={stableVal} reserveVal={reserveVal} />
+                )}
 
                 <Footer />
-
             </main>
         </>
     );
