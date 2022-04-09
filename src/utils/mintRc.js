@@ -91,5 +91,6 @@ export async function getRcMintP2s(amount, oracleBoxId) {
         .replaceAll('$oracleBoxId', oracleBoxId64)
         .replaceAll('$timestamp', moment().valueOf())
         .replaceAll('\n', '\\n');
+    console.log(script)
     return p2s(script);
 }
