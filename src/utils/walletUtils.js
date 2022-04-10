@@ -113,7 +113,7 @@ debugger;
 
     const changeBox = {
         value: (-have['ERG']).toString(),
-        ergoTree: wasm.Address.from_mainnet_str(await getConnectedAddress()).to_ergo_tree().to_base16_bytes(),
+        ergoTree: wasm.Address.from_mainnet_str(getWalletAddress()).to_ergo_tree().to_base16_bytes(),
         assets: Object.keys(have).filter(key => key !== 'ERG')
             .filter(key => have[key] < 0)
             .map(key => {
