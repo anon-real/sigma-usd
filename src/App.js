@@ -26,7 +26,7 @@ const App = () => {
 
     setInterval(() => {
         forceUpdateState();
-    }, 20000);
+    }, 5000);
 
     setInterval(() => {
         reqFollower();

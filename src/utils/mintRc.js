@@ -24,7 +24,7 @@ const template = `{
 }`;
 
 export async function mintRc(amount) {
-    await forceUpdateState();
+    // await forceUpdateState();
 
     let ourAddr = getWalletAddress();
     let befPrice = await priceToMintRc(amount) + 1000000;

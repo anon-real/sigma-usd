@@ -4,7 +4,7 @@ import { boxesByAddress, txById, txConfNum } from './explorer';
 import { toast } from 'react-toastify';
 import { assemblerUrl } from './consts';
 
-export const txFee = 3000000;
+export const txFee = 5000000;
 export const returnFee = 1200000;
 
 export async function follow(request) {
@@ -62,7 +62,7 @@ async function resolvePending() {
 
 export async function reqFollower() {
     let reqs = getForKey('reqs');
-    if (reqs.length > 0) console.log('following ' + reqs.length + ' requests...');
+    // if (reqs.length > 0) console.log('following ' + reqs.length + ' requests...');
     let newReqs = [];
     for (let i = 0; i < reqs.length; i++) {
         try {

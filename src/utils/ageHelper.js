@@ -49,7 +49,6 @@ export async function forceUpdateState() {
                 inIds = inIds.concat([tx.inputs[0].id]);
             }
         });
-        console.log(inIds, outBanks)
         let notSpent = outBanks.filter(
             (bank) => !inIds.includes(bank.boxId) && !inIds.includes(bank.id)
         );
@@ -225,7 +224,6 @@ export async function mintRcTx(amount) {
         implementor
     );
     res = JSON.parse(res);
-    console.log('w', res)
     res.requests.splice(3, 1);
     res.requests[1].value += res.requests[2].value
     res.requests.splice(2, 1);

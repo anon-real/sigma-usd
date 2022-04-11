@@ -38,7 +38,7 @@ const template = `{
 }`;
 
 export async function redeemSc(amount) {
-    await forceUpdateState()
+    // await forceUpdateState()
 
     let ourAddr = getWalletAddress();
     let ergGet = (await amountFromRedeemingSc(amount) / 1e9)
