@@ -70,7 +70,7 @@ export async function walletSendFunds({ need, addr, getUtxos, signTx, submitTx, 
     have['ERG'] += txFee
     let ins = []
     const keys = Object.keys(have)
-debugger;
+
     for (let i = 0; i < keys.length; i++) {
         if (have[keys[i]] <= 0) continue
         const curIns = await getUtxos(have[keys[i]].toString(), keys[i]);
