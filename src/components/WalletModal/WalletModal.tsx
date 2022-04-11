@@ -5,7 +5,7 @@ import classNames from 'classnames';
 import { checkIsDappWalletExists, useWallet, WalletType } from 'providers/WalletContext';
 import { Nautilus } from 'utils/wallets/nautilus';
 import { toast } from 'react-toastify';
-import { showMsg } from '../../utils/helpers';
+import { isAddressValid, setAnyWallet, showMsg } from '../../utils/helpers';
 // import { YoroiTab } from './YoroiTab';
 import { NautilusTab } from './NautilusTab';
 
@@ -20,7 +20,13 @@ const TABS = {
     // [WalletType.YOROI]: 'Yoroi Wallet',
 };
 
-const renderTabContent = ({ currentTab, walletType, address, setWallet }: any) => {
+const renderTabContent = ({
+    currentTab,
+    address,
+    anyWalletAddress,
+    setAnyWalletAddress,
+    setWallet,
+}: any) => {
     switch (currentTab) {
         // case WalletType.YOROI: {
         //     return <YoroiTab />;
@@ -46,8 +52,8 @@ const renderTabContent = ({ currentTab, walletType, address, setWallet }: any) =
                         </label>
                         <input
                             defaultValue={address}
-                            value={address}
-                            onChange={(e) => setWallet(walletType, e.target.value)}
+                            value={anyWalletAddress}
+                            onChange={(e) => setAnyWalletAddress(e.target.value)}
                             className="wallet-modal__input"
                             id="address"
                         />
@@ -78,6 +84,7 @@ const WalletModalContent = ({ open, onClose }: any) => {
     const walletState = useWallet();
     const { address, walletType, setWalletTypeAndAddress: setWallet, setupWallet } = walletState;
     const [currentTab, setCurrentTab] = useState(walletType);
+    const [anyWalletAddress, setAnyWalletAddress] = useState(address);
 
     const changeTab = useCallback(
         async (newTab) => {
@@ -86,6 +93,7 @@ const WalletModalContent = ({ open, onClose }: any) => {
                 case WalletType.ANY: {
                     setupWallet(newTab);
                     setCurrentTab(newTab);
+                    setAnyWalletAddress('');
                     break;
                 }
                 case WalletType.NAUTILUS: {
@@ -132,21 +140,31 @@ const WalletModalContent = ({ open, onClose }: any) => {
                     ))}
                 </div>
                 <div className="wallet-modal__content">
-                    {renderTabContent({ currentTab, walletType, address, setWallet, walletState })}
+                    {renderTabContent({
+                        currentTab,
+                        walletType,
+                        address,
+                        anyWalletAddress,
+                        setAnyWalletAddress,
+                        setWallet,
+                        walletState,
+                    })}
                 </div>
                 <div className="wallet-modal__buttons">
-                    {/* <button
-                        onClick={() => {
-                            setAnyWallet(address);
-                            toast.success(t('successSetWallet'));
-                            onClose();
-                        }}
-                        disabled={!isAddressValid(address)}
-                        type="button"
-                        className="btn-blue mr-lg-20 mr-0"
-                    >
-                        <Trans i18nKey="close" />
-                    </button> */}
+                    {currentTab === WalletType.ANY && (
+                        <button
+                            onClick={() => {
+                                toast.success(t('successSetWallet'));
+                                setWallet(walletType, anyWalletAddress);
+                                onClose();
+                            }}
+                            disabled={!isAddressValid(anyWalletAddress)}
+                            type="button"
+                            className="btn-blue mr-lg-20 mr-0"
+                        >
+                            <Trans i18nKey="Save" />
+                        </button>
+                    )}
                     {/* <button
                         onClick={() => {
                             setupWallet(true, 'Nautilus').then((address) => {
