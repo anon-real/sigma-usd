@@ -1,6 +1,4 @@
-import css from './RefundPage.module.scss'
-
-import cn from 'classnames'
+import cn from 'classnames';
 import Header from 'components/Header/Header';
 import React, { useState } from 'react';
 import { Trans, useTranslation } from 'react-i18next';
@@ -9,24 +7,25 @@ import { getWalletAddress } from 'utils/helpers';
 import { returnFunds } from 'utils/assembler';
 import { toast } from 'react-toastify';
 import Footer from 'components/Footer/Footer';
+import css from './RefundPage.module.scss';
 
 export const RefundPage = () => {
-
     const { t } = useTranslation();
 
-    const [from, setFrom] = useState(getWalletAddress())
-    const [to, setTo] = useState('')
+    const [from, setFrom] = useState(getWalletAddress());
+    const [to, setTo] = useState('');
 
     const handleSubmit = () => {
-        return returnFunds(from, to).then(res => {
-            if (res?.success === false) {
-                toast.error(res?.detail ?? 'unknown error')
-               
-            } else {
-                toast.success(res)
-            }
-        }).catch(e => toast.error(e?.toString() ?? 'unknown error'))
-    }
+        return returnFunds(from, to)
+            .then((res) => {
+                if (res?.success === false) {
+                    toast.error(res?.detail ?? 'unknown error');
+                } else {
+                    toast.success('Transaction submitted');
+                }
+            })
+            .catch((e) => toast.error(e?.toString() ?? 'unknown error'));
+    };
 
     return (
         <>
@@ -61,9 +60,10 @@ export const RefundPage = () => {
                     </p>
                 </div>
 
-
                 <div className={cn('card', css.card)}>
-                    <h3 className="card__title"><Trans i18nKey="refundForm" /></h3>
+                    <h3 className="card__title">
+                        <Trans i18nKey="refundForm" />
+                    </h3>
                     <div className="form">
                         <div className={cn('input', css.input)}>
                             <div className="input-group">
@@ -101,5 +101,5 @@ export const RefundPage = () => {
                 <Footer />
             </main>
         </>
-    )
-}
+    );
+};
