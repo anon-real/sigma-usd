@@ -5,6 +5,7 @@ import { generateUniqueId } from 'utils/utils';
 import { Trans, withTranslation } from 'react-i18next';
 import { WithT } from 'i18next';
 import { WalletContext } from 'providers/WalletContext';
+import ErgoPayButton from 'components/ErgoPayButton/ErgoPayButton';
 import Card from '../../../../components/Card/Card';
 import Switch from '../../../../components/Switch/Switch';
 import { ergCoin, reserveName, usdAcronym, usdName } from '../../../../utils/consts';
@@ -43,11 +44,15 @@ class PurchaseForm extends Component<PurchaseFormProps, any> {
     }
 
     updateParams(amount: any, requestId: string) {
+        this.setState({ loading: true });
+
         if (!amount || !amount.trim()) {
             this.setState({
                 mintErgVal: 0,
                 mintErgFee: 0,
+                loading: false,
             });
+
             return;
         }
         Promise.all([priceToMintSc(amount), feeToMintSc(amount)]).then(([tot, fee]) => {
@@ -55,6 +60,7 @@ class PurchaseForm extends Component<PurchaseFormProps, any> {
                 this.setState({
                     mintErgFee: fee / 1e9,
                     mintErgVal: (tot - fee) / 1e9,
+                    loading: false,
                 });
             }
         });
@@ -95,7 +101,7 @@ class PurchaseForm extends Component<PurchaseFormProps, any> {
             this.updateParams(inp, requestId);
         }, 200);
 
-        this.setState({ amount: inp, inputChangeTimerId: timerId });
+        this.setState({ amount: inp, inputChangeTimerId: timerId, loading: true });
     }
 
     startScMint() {
@@ -178,13 +184,15 @@ class PurchaseForm extends Component<PurchaseFormProps, any> {
                         {(this.state.mintErgVal + this.state.mintErgFee).toFixed(3)} ERG{' '}
                     </p>
                 </div>
-                <button
-                    className="mt-sm-15 mt-xl-40 mt-lg-25 btn btn--white"
-                    onClick={() => this.startScMint()}
-                    disabled={this.state.loading || this.state.errMsg || !this.state.amount}
-                >
-                    {this.state.loading ? <Loader /> : <Trans i18nKey="purchaseButton" />}
-                </button>
+                <div className="btn-group">
+                    <button
+                        className="mt-sm-15 mt-xl-40 mt-lg-25 btn btn--white"
+                        onClick={() => this.startScMint()}
+                        disabled={this.state.loading || this.state.errMsg || !this.state.amount}
+                    >
+                        {this.state.loading ? <Loader /> : <Trans i18nKey="purchaseButton" />}
+                    </button>
+                </div>
                 <InfoModal
                     coin={this.state.coin}
                     address={this.state.address}

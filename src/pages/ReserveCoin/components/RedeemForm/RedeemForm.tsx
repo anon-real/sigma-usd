@@ -51,6 +51,7 @@ class RedeemForm extends Component<RedeemFormProps, any> {
             this.setState({
                 redeemErgVal: 0,
                 redeemErgFee: 0,
+                loading: false,
             });
             return;
         }
@@ -60,6 +61,7 @@ class RedeemForm extends Component<RedeemFormProps, any> {
                     this.setState({
                         redeemErgFee: fee / 1e9,
                         redeemErgVal: (tot + fee) / 1e9,
+                        loading: false,
                     });
                 }
             },
@@ -98,7 +100,7 @@ class RedeemForm extends Component<RedeemFormProps, any> {
             this.updateParams(inp, requestId);
         }, 200);
 
-        this.setState({ amount: inp, inputChangeTimerId: timerId });
+        this.setState({ amount: inp, inputChangeTimerId: timerId, loading: true });
     }
 
     startRcRedeem() {

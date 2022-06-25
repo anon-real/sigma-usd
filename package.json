@@ -80,6 +80,7 @@
     "postcss-loader": "2.0.6",
     "promise": "8.0.1",
     "prop-types": "^15.6.2",
+    "query-string": "^7.1.1",
     "rc-slider": "^8.6.3",
     "rcolor": "^1.0.1",
     "react": "^16.7.0",

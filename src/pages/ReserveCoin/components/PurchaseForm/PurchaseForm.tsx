@@ -80,6 +80,7 @@ class PurchaseForm extends Component<PurchaseFormProps, any> {
             this.setState({
                 mintErgVal: 0,
                 mintErgFee: 0,
+                loading: false,
             });
             return;
         }
@@ -89,6 +90,7 @@ class PurchaseForm extends Component<PurchaseFormProps, any> {
                 this.setState({
                     mintErgFee: fee / 1e9,
                     mintErgVal: (tot - fee) / 1e9,
+                    loading: false,
                 });
             }
         });
@@ -105,7 +107,7 @@ class PurchaseForm extends Component<PurchaseFormProps, any> {
             this.updateParams(inp, requestId);
         }, 200);
 
-        this.setState({ amount: inp, inputChangeTimerId: timerId });
+        this.setState({ amount: inp, inputChangeTimerId: timerId, loading: true });
     }
 
     startRcRedeem() {
