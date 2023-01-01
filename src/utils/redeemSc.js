@@ -11,7 +11,8 @@ import {
     scTokenId
 } from './ageHelper';
 import moment from 'moment';
-import { assemblerNodeAddr, implementor, minErgVal, reserveAcronym, usdAcronym, usdName } from './consts';
+import { assemblerNodeAddr, implementor, minErgVal, reserveAcronym, usdAcronym, usdName, waitHeightThreshold } from './consts';
+import { currentHeight } from './explorer';
 
 const template = `{
   val scTokenId = fromBase64("$scTokenId")
@@ -19,7 +20,7 @@ const template = `{
     val myOut = OUTPUTS(1)
     myOut.propositionBytes == fromBase64("$userAddress") &&
       myOut.value >= $redeemAmountL && HEIGHT < $timestampL &&
-      CONTEXT.dataInputs(0).id == fromBase64("$oracleBoxId")
+      HEIGHT <= $refundHeight // This allows multiple tries before refunding
   }
   val returnFunds = {
     val total = INPUTS.fold(0L, {(x:Long, b:Box) => x + b.value}) - ${returnFee}
@@ -30,7 +31,8 @@ const template = `{
     }})
     val tok = OUTPUTS(0).tokens.getOrElse(0, (scTokenId, 0L))
     OUTPUTS(0).value >= total && OUTPUTS(0).propositionBytes == fromBase64("$userAddress") &&
-      ((tok._1 == scTokenId && tok._2 == totalInSc) || totalInSc == 0) && PK("${assemblerNodeAddr}")
+      ((tok._1 == scTokenId && tok._2 == totalInSc) || totalInSc == 0) &&
+        (PK("${assemblerNodeAddr}") || HEIGHT > $refundHeight)
   }
   val implementorOK = OUTPUTS(2).propositionBytes == fromBase64("$implementor") && OUTPUTS.size == 4
   val properBank = OUTPUTS(0).tokens(2)._1 == fromBase64("$bankNFT")
@@ -42,12 +44,13 @@ export async function redeemSc(amount) {
 
     let ourAddr = getWalletAddress();
     let ergGet = (await amountFromRedeemingSc(amount) / 1e9)
+    let height = await currentHeight()
     let tx = await redeemScTx(amount)
     for (let i = 0; i < tx.requests.length; i++) {
         if (tx.requests[i].value < minErgVal) throw new Error(" The amount you're trying to redeem is too small!")
     }
 
-    let addr = (await getScRedeemP2s(tx.requests[1].value, tx.dataInputs[0])).address
+    let addr = (await getScRedeemP2s(tx.requests[1].value, tx.dataInputs[0], height)).address
     let request = {
         address: addr,
         returnTo: ourAddr,
@@ -82,7 +85,7 @@ export async function redeemSc(amount) {
     })
 }
 
-export async function getScRedeemP2s(amount, oracleBoxId) {
+export async function getScRedeemP2s(amount, oracleBoxId, height) {
     let ourAddr = getWalletAddress();
     let userTreeHex = new Address(ourAddr).ergoTree
     let userTree = Buffer.from(userTreeHex, 'hex').toString('base64');
@@ -101,6 +104,7 @@ export async function getScRedeemP2s(amount, oracleBoxId) {
         .replace('$bankNFT', bankNFT64)
         .replaceAll('$oracleBoxId', oracleBoxId64)
         .replaceAll('$timestamp', moment().valueOf())
+        .replaceAll('$refundHeight', height + waitHeightThreshold)
         .replaceAll('\n', '\\n');
     return p2s(script);
 }

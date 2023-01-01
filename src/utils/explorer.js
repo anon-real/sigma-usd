@@ -11,10 +11,9 @@ async function getRequest(url) {
 }
 
 export async function currentHeight() {
-    // return explorer.getCurrentHeight();
     return getRequest('/blocks?limit=1')
         .then(res => res.data)
-        .then(res => res.items[0].height);
+        .then(res => res.items[0].height)
 }
 
 export function unspentBoxesFor(address) {

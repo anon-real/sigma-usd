@@ -34,6 +34,7 @@ async function resolvePending() {
     let reqs = getForKey(key).filter(req => req.miningStat.includes('pending'));
     for (let i = 0; i < reqs.length; i++) {
         let info = JSON.parse(JSON.stringify(reqs[i]))
+        console.log(reqs[i])
         let confNum = await txConfNum(info.txId);
         let miningStat = confNum ? 'mined' : 'pending';
         if (miningStat === 'mined') {
@@ -53,6 +54,10 @@ async function resolvePending() {
                         toast.error(`Your operation to "${info.type}" has failed. Your assets are being returned to you and is pending mining - follow it in the History table..`);
                     }
                     info.miningStat = `refund mined`;
+                    addReq(info, key, 'id');
+                } else {
+                    info.miningStat = `pending`;
+                    info.txId = boxes[0].spentTransactionId
                     addReq(info, key, 'id');
                 }
             }

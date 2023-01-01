@@ -4,19 +4,23 @@ import { follow, p2s, returnFee } from './assembler';
 import { ergToNano } from './serializer';
 import { bankNFTId, forceUpdateState, mintRcTx, priceToMintRc, rcTokenId } from './ageHelper';
 import moment from 'moment';
-import { assemblerNodeAddr, ergSendPrecision, implementor, minErgVal, reserveAcronym, usdAcronym } from './consts';
+import { assemblerNodeAddr, ergSendPrecision, implementor, minErgVal, reserveAcronym, usdAcronym, waitHeightThreshold } from './consts';
+import { currentHeight } from './explorer';
+import { getScMintP2s } from './mintSc';
+import { getRcRedeemP2s } from './redeemRc';
 
 const template = `{
   val properMinting = {
     val myOut = OUTPUTS(1)
     myOut.propositionBytes == fromBase64("$userAddress") &&
       myOut.tokens(0)._1 == fromBase64("$rcTokenId") &&
-      myOut.tokens(0)._2 == $rcAmountL && HEIGHT < $timestampL &&
-      CONTEXT.dataInputs(0).id == fromBase64("$oracleBoxId")
+      myOut.tokens(0)._2 >= $rcAmountL && HEIGHT < $timestampL &&
+      HEIGHT <= $refundHeight // This allows multiple tries before refunding
   }
   val returnFunds = {
     val total = INPUTS.fold(0L, {(x:Long, b:Box) => x + b.value}) - ${returnFee}
-    OUTPUTS(0).value >= total && OUTPUTS(0).propositionBytes == fromBase64("$userAddress") && PK("${assemblerNodeAddr}")
+    OUTPUTS(0).value >= total && OUTPUTS(0).propositionBytes == fromBase64("$userAddress") &&
+        (PK("${assemblerNodeAddr}") || HEIGHT > $refundHeight)
   }
   val implementorOK = OUTPUTS(2).propositionBytes == fromBase64("$implementor") && OUTPUTS.size == 4
   val properBank = OUTPUTS(0).tokens(2)._1 == fromBase64("$bankNFT")
@@ -28,6 +32,7 @@ export async function mintRc(amount) {
 
     let ourAddr = getWalletAddress();
     let befPrice = await priceToMintRc(amount) + 1000000;
+    let height = await currentHeight()
     let price = (befPrice / 1e9).toFixed(ergSendPrecision);
     price = ergToNano(price);
     if (price < befPrice) price += 10 ** (9 - ergSendPrecision)
@@ -37,7 +42,9 @@ export async function mintRc(amount) {
     }
     tx.requests[1].value += (price - befPrice);
 
-    let addr = (await getRcMintP2s(amount, tx.dataInputs[0])).address;
+    let addr = (await getRcMintP2s(amount, tx.dataInputs[0], height)).address;
+    let addr2 = (await getRcRedeemP2s(amount, tx.dataInputs[0], height)).address;
+    console.log('yo', addr2)
     let request = {
         address: addr,
         returnTo: ourAddr,
@@ -71,7 +78,7 @@ export async function mintRc(amount) {
     });
 }
 
-export async function getRcMintP2s(amount, oracleBoxId) {
+export async function getRcMintP2s(amount, oracleBoxId, height) {
     let ourAddr = getWalletAddress();
     let userTreeHex = new Address(ourAddr).ergoTree;
     let userTree = Buffer.from(userTreeHex, 'hex').toString('base64');
@@ -90,7 +97,7 @@ export async function getRcMintP2s(amount, oracleBoxId) {
         .replace('$bankNFT', bankNFT64)
         .replaceAll('$oracleBoxId', oracleBoxId64)
         .replaceAll('$timestamp', moment().valueOf())
+        .replaceAll('$refundHeight', height + waitHeightThreshold)
         .replaceAll('\n', '\\n');
-    console.log(script)
     return p2s(script);
 }

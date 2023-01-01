@@ -145,7 +145,7 @@
     "animate-sass": "^0.8.2",
     "css-loader": "^1.0.1",
     "css-modules-typescript-loader": "^4.0.1",
-    "node-sass": "^4.10.0",
+    "node-sass": "^4.14.0",
     "prettier": "2.1.2",
     "react-app-rewire-typings-for-css-module": "^4.0.3",
     "react-app-rewired": "^2.1.6",
