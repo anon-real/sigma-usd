@@ -15,4 +15,4 @@ export const assemblerNodeAddr = '9fBVy8si29cP4UDkwnvBEJX4z4cJg9m6U1Z8kxhGLpdeCd
 
 export const NanoErgInErg = 1000000000n;
 
-export const waitHeightThreshold = 8
+export const waitHeightThreshold = 3
