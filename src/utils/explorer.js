@@ -4,8 +4,9 @@ import { get } from './rest';
 const explorer = Explorer.mainnet;
 export const explorerApi = 'https://api.ergoplatform.com/api/v0';
 
-async function getRequest(url) {
-    return get(explorerApi + url).then(res => {
+async function getRequest(url, v1=false) {
+    let explr = v1 ? 'https://api.ergoplatform.com/api/v1' : explorerApi
+    return get(explr + url).then(res => {
         return { data: res };
     });
 }
@@ -59,6 +60,15 @@ export function getUnconfirmedTxsFor(addr) {
         .then((res) => res.data)
         .then((res) => res.items);
 }
+
+export function getTxsFor(addr) {
+    return getRequest(
+        `/addresses/${addr}/transactions`, true
+    )
+        .then((res) => res.data)
+        .then((res) => res.items);
+}
+
 
 export function getBalanceFor(addr) {
     return getRequest(

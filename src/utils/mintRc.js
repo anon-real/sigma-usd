@@ -1,11 +1,10 @@
 import { addReq, getWalletAddress } from './helpers';
 import { Address } from '@coinbarn/ergo-ts';
-import { follow, p2s, returnFee } from './assembler';
+import { follow, getHeight, p2s, returnFee } from './assembler';
 import { ergToNano } from './serializer';
 import { bankNFTId, forceUpdateState, mintRcTx, priceToMintRc, rcTokenId } from './ageHelper';
 import moment from 'moment';
 import { assemblerNodeAddr, ergSendPrecision, implementor, minErgVal, reserveAcronym, usdAcronym, waitHeightThreshold } from './consts';
-import { currentHeight } from './explorer';
 import { getScMintP2s } from './mintSc';
 import { getRcRedeemP2s } from './redeemRc';
 
@@ -32,7 +31,7 @@ export async function mintRc(amount) {
 
     let ourAddr = getWalletAddress();
     let befPrice = await priceToMintRc(amount) + 1000000;
-    let height = await currentHeight()
+    let height = await getHeight()
     let price = (befPrice / 1e9).toFixed(ergSendPrecision);
     price = ergToNano(price);
     if (price < befPrice) price += 10 ** (9 - ergSendPrecision)
@@ -41,6 +40,7 @@ export async function mintRc(amount) {
         if (tx.requests[i].value < minErgVal) throw new Error("The amount you're trying to mint is too small!")
     }
     tx.requests[1].value += (price - befPrice);
+    console.log(tx)
 
     let addr = (await getRcMintP2s(amount, tx.dataInputs[0], height)).address;
     let addr2 = (await getRcRedeemP2s(amount, tx.dataInputs[0], height)).address;

@@ -2,8 +2,7 @@
 import { getTxUrl, getWalletAddress, getWalletType, isWalletSaved, showMsg } from './helpers';
 import { encodeHex, encodeNum} from "./serializer";
 import {Serializer} from "@coinbarn/ergo-ts/dist/serializer";
-import { follow, txFee } from './assembler';
-import { currentHeight } from './explorer';
+import { follow, getHeight, txFee } from './assembler';
 import { sigUsdTokenId } from './consts';
 
 let ergolib = import('ergo-lib-wasm-browser')
@@ -64,7 +63,7 @@ function walletDisconnect() {
 export async function walletSendFunds({ need, addr, getUtxos, signTx, submitTx, registers={}, notif=true}) {
     const wasm = await ergolib
 
-    const height = await currentHeight()
+    const height = await getHeight()
 
     let have = JSON.parse(JSON.stringify(need))
     have['ERG'] += txFee

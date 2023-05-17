@@ -2,9 +2,8 @@
 
 import { get } from './rest';
 import { getWalletAddress, isWalletSaved } from './helpers';
-import { txFee } from './assembler';
+import { getBankBox, getHeight, getOraclekBox, txFee } from './assembler';
 import { dollarToCent } from './serializer';
-import { currentHeight, getBalanceFor, getUnconfirmedTxsFor } from './explorer';
 import { implementor } from './consts';
 
 let ageusd = import('ageusd');
@@ -28,47 +27,12 @@ export async function bankNFTId() {
 
 export async function forceUpdateState() {
     let age = await ageusd;
-
-    let body = await get(age.BankBox.w_explorer_endpoint(explorerEndpoint));
-    if (considerUnconfirmed) {
-        let bankNFT = new age.StableCoinProtocol().bank_nft_id;
-        let box = body.items[0];
-        let addr = box.address;
-        let unc = await getUnconfirmedTxsFor(addr);
-
-        let outBanks = [box];
-        let inIds = [];
-        unc.forEach((tx) => {
-            if (
-                tx.outputs[0].assets
-                    .map((asset) => asset.tokenId)
-                    .includes(bankNFT) &&
-                tx.inputs[0].address === tx.outputs[0].address
-            ) {
-                outBanks = outBanks.concat([tx.outputs[0]]);
-                inIds = inIds.concat([tx.inputs[0].id]);
-            }
-        });
-        let notSpent = outBanks.filter(
-            (bank) => !inIds.includes(bank.boxId) && !inIds.includes(bank.id)
-        );
-        if (notSpent.length === 1) {
-            body = {
-                items: [notSpent[0]]
-            };
-        } else if (notSpent.length > 1) {
-            body = {
-                items: [notSpent[0]]
-            };
-            console.error('bank boxes length is ' + notSpent.length, notSpent);
-        }
-    }
-    bankBox = age.BankBox.w_process_explorer_response(JSON.stringify(body))[0];
-
-    body = JSON.stringify(
-        await get(age.ErgUsdOraclePoolBox.w_explorer_endpoint(explorerEndpoint))
-    );
-    oracleBox = age.ErgUsdOraclePoolBox.w_process_explorer_response(body)[0];
+    let bank = await getBankBox()
+    let oracle = await getOraclekBox()
+    let bankBoxTmp = age.ErgoBox.from_json(JSON.stringify(bank))
+    let oracleBoxTmp = age.ErgoBox.from_json(JSON.stringify(oracle))
+    bankBox = new age.BankBox(bankBoxTmp)
+    oracleBox = new age.ErgUsdOraclePoolBox(oracleBoxTmp)
 }
 
 export async function updateState() {
@@ -183,7 +147,7 @@ export async function mintScTx(amount) {
     await updateState();
 
     let age = await ageusd;
-    let height = await currentHeight();
+    let height = await getHeight();
     let addr = getWalletAddress();
     let pr = new age.StableCoinProtocol();
     let prc = BigInt(await priceToMintSc(amount)) + 1000000n;
@@ -209,7 +173,7 @@ export async function mintRcTx(amount) {
     await updateState();
 
     let age = await ageusd;
-    let height = await currentHeight();
+    let height = await getHeight();
     let addr = getWalletAddress();
     let pr = new age.StableCoinProtocol();
     let prc = BigInt(await priceToMintRc(amount)) + 1000000n;
@@ -235,7 +199,7 @@ export async function redeemScTx(amount) {
     await updateState();
 
     let age = await ageusd;
-    let height = await currentHeight();
+    let height = await getHeight();
     let addr = getWalletAddress();
     let pr = new age.StableCoinProtocol();
     let res = pr.w_assembler_redeem_stablecoin(
@@ -257,7 +221,7 @@ export async function redeemRcTx(amount) {
     await updateState();
 
     let age = await ageusd;
-    let height = await currentHeight();
+    let height = await getHeight();
     let addr = getWalletAddress();
     let pr = new age.StableCoinProtocol();
     let res = pr.w_assembler_redeem_reservecoin(

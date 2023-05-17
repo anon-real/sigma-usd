@@ -1,11 +1,10 @@
 import { addReq, getWalletAddress } from './helpers';
 import { Address } from '@coinbarn/ergo-ts';
-import { follow, p2s, returnFee } from './assembler';
+import { follow, getHeight, p2s, returnFee } from './assembler';
 import { dollarToCent, ergToNano } from './serializer';
 import { bankNFTId, forceUpdateState, mintScTx, priceToMintSc, scTokenId } from './ageHelper';
 import moment from 'moment';
 import { assemblerNodeAddr, ergSendPrecision, implementor, minErgVal, usdAcronym, usdName, waitHeightThreshold } from './consts';
-import { currentHeight } from './explorer';
 
 const template = `{
   val properMinting = {
@@ -30,7 +29,7 @@ export async function mintSc(amount) {
 
     let ourAddr = getWalletAddress();
     let befPrice = await priceToMintSc(amount) + 1000000
-    let height = await currentHeight()
+    let height = await getHeight()
     let price = (befPrice / 1e9).toFixed(ergSendPrecision)
     price = ergToNano(price)
     if (price < befPrice) price += 10 ** (9 - ergSendPrecision)

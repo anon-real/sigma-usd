@@ -15,8 +15,8 @@ import { isNatural } from '../../../../utils/serializer';
 import Loader from '../../../../components/Loader/Loader';
 import { isDappWallet, isWalletSaved } from '../../../../utils/helpers';
 import { mintRc } from '../../../../utils/mintRc';
-import { currentHeight } from '../../../../utils/explorer';
 import { walletSendFunds } from '../../../../utils/walletUtils';
+import { getHeight } from 'utils/assembler';
 
 type PurchaseFormProps = WithT;
 
@@ -41,7 +41,7 @@ class PurchaseForm extends Component<PurchaseFormProps, any> {
     }
 
     componentDidMount() {
-        currentHeight().then((height) => this.setState({ curHeight: height }));
+        getHeight().then((height) => this.setState({ curHeight: height }));
     }
 
     componentWillUnmount() {

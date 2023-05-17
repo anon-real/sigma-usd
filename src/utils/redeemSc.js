@@ -1,6 +1,6 @@
 import { addReq, getWalletAddress } from './helpers';
 import { Address } from '@coinbarn/ergo-ts';
-import { follow, p2s, returnFee } from './assembler';
+import { follow, getHeight, p2s, returnFee } from './assembler';
 import { dollarToCent } from './serializer';
 import {
     amountFromRedeemingRc,
@@ -12,7 +12,6 @@ import {
 } from './ageHelper';
 import moment from 'moment';
 import { assemblerNodeAddr, implementor, minErgVal, reserveAcronym, usdAcronym, usdName, waitHeightThreshold } from './consts';
-import { currentHeight } from './explorer';
 
 const template = `{
   val scTokenId = fromBase64("$scTokenId")
@@ -44,7 +43,7 @@ export async function redeemSc(amount) {
 
     let ourAddr = getWalletAddress();
     let ergGet = (await amountFromRedeemingSc(amount) / 1e9)
-    let height = await currentHeight()
+    let height = await getHeight()
     let tx = await redeemScTx(amount)
     for (let i = 0; i < tx.requests.length; i++) {
         if (tx.requests[i].value < minErgVal) throw new Error(" The amount you're trying to redeem is too small!")

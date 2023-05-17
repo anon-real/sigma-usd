@@ -1,8 +1,8 @@
 import { get, post } from './rest';
 import { addReq, getForKey, getUrl, setForKey, showStickyMsg } from './helpers';
-import { boxesByAddress, txById, txConfNum } from './explorer';
+import { boxesByAddress, getTxsFor, getUnconfirmedTxsFor, txById, txConfNum } from './explorer';
 import { toast } from 'react-toastify';
-import { assemblerUrl } from './consts';
+import { assemblerUrl, bankAddress } from './consts';
 
 export const txFee = 5000000;
 export const returnFee = 1200000;
@@ -18,6 +18,18 @@ export async function follow(request) {
 
 export async function stat(id) {
     return await get(getUrl(assemblerUrl) + '/result/' + id);
+}
+
+export async function getBankBox() {
+    return await get(getUrl(assemblerUrl) + '/getBankBox');
+}
+
+export async function getOraclekBox() {
+    return await get(getUrl(assemblerUrl) + '/getOracleBox');
+}
+
+export async function getHeight() {
+    return (await get(getUrl(assemblerUrl) + '/getHeight')).height
 }
 
 export async function p2s(request) {
@@ -67,7 +79,6 @@ async function resolvePending() {
 
 export async function reqFollower() {
     let reqs = getForKey('reqs');
-    // if (reqs.length > 0) console.log('following ' + reqs.length + ' requests...');
     let newReqs = [];
     for (let i = 0; i < reqs.length; i++) {
         try {
@@ -78,7 +89,19 @@ export async function reqFollower() {
                 let req = reqs.find((cur) => cur.id === out.id);
                 newReqs.push(req);
                 if (out.detail !== 'success' && out.detail !== 'returning') {
-                    continue;
+                    const txs = await getTxsFor(req.address);
+                    const returnTx = txs.filter(tx => tx.outputs[0].address === req.returnTo);
+                    const doneTxs = txs.filter(tx => tx.outputs[0].address === bankAddress);
+                    if (returnTx.length > 0) {
+                        out.tx = returnTx[0];
+                        out.detail = 'returning';
+                    }
+                    else if (doneTxs.length > 0) {
+                        out.tx = doneTxs[0];
+                        out.detail = 'success';
+                    } else {
+                        continue;
+                    }
                 }
 
                 let info = JSON.parse(JSON.stringify(req.info));
