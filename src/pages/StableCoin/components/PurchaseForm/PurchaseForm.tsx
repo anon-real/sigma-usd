@@ -17,6 +17,9 @@ import { mintSc } from '../../../../utils/mintSc';
 import InfoModal from '../../../../components/InfoModal/InfoModal';
 import WalletModal from '../../../../components/WalletModal/WalletModal';
 import { walletSendFunds } from '../../../../utils/walletUtils';
+import Slider from 'rc-slider';
+import 'rc-slider/assets/index.css';
+import { setTxFee, txFee } from 'utils/assembler';
 
 type PurchaseFormProps = WithT;
 
@@ -27,6 +30,7 @@ class PurchaseForm extends Component<PurchaseFormProps, any> {
     constructor(props: PurchaseFormProps) {
         super(props);
         this.state = {
+            txFeeVal: txFee/1e9,
             mintErgVal: 0,
             mintErgFee: 0,
             isModalOpen: false,
@@ -91,6 +95,8 @@ class PurchaseForm extends Component<PurchaseFormProps, any> {
 
     async inputChange(inp: string) {
         clearTimeout(this.state.inputChangeTimerId);
+        const fee = this.state.txFeeVal * 1e9
+        setTxFee(Math.round(fee))
         const parts = inp.split('.');
         if (inp.startsWith('-') || (parts.length > 1 && parts[1].length > 2)) return;
 
@@ -114,36 +120,47 @@ class PurchaseForm extends Component<PurchaseFormProps, any> {
             return;
         }
         this.setState({ loading: true });
-        mintSc(this.state.amount)
-            .then((res) => {
-                if (isDappWallet()) {
-                    walletSendFunds({
-                        need: { ERG: res.price },
-                        addr: res.addr,
-                        getUtxos,
-                        signTx,
-                        submitTx,
-                    }).then((res) => {
-                        this.setState({
-                            loading: false,
-                        });
-                    });
-                } else {
-                    this.setState({
-                        address: res.addr,
-                        coin: 'ERG',
-                        price: res.price / 1e9,
-                        isModalOpen: true,
-                        loading: false,
-                        // mintNanoErgVal: 0,
-                        dueTime: res.dueTime,
-                    });
-                }
-            })
-            .catch((err) => {
+        if (isDappWallet()) {
+            mintSc(this.state.amount, this.context, false).then((res) => {
+                this.setState({
+                    loading: false,
+                })
+            }).catch((err) => {
                 toast.error(t('errorCannotRegisterRequest', { error: err.message }));
                 this.setState({ loading: false });
             });
+        } else {
+            mintSc(this.state.amount, this.context)
+                .then((res) => {
+                    if (isDappWallet()) {
+                        walletSendFunds({
+                            need: { ERG: res.price },
+                            addr: res.addr,
+                            getUtxos,
+                            signTx,
+                            submitTx,
+                        }).then((res) => {
+                            this.setState({
+                                loading: false,
+                            });
+                        });
+                    } else {
+                        this.setState({
+                            address: res.addr,
+                            coin: 'ERG',
+                            price: res.price / 1e9,
+                            isModalOpen: true,
+                            loading: false,
+                            // mintNanoErgVal: 0,
+                            dueTime: res.dueTime,
+                        });
+                    }
+                })
+                .catch((err) => {
+                    toast.error(t('errorCannotRegisterRequest', { error: err.message }));
+                    this.setState({ loading: false });
+                });
+            }
     }
 
     render() {
@@ -173,6 +190,16 @@ class PurchaseForm extends Component<PurchaseFormProps, any> {
                 </div>
                 <div className="delimiter" />
                 <div className="terms">
+                    <Slider min={0.001} 
+                    max={1.0}
+                    defaultValue={this.state.txFeeVal}
+                    onChange={(e) => {
+                        this.setState({txFeeVal: e})
+                        this.inputChange(this.state.amount)
+                    }}
+                    step={0.01}/>
+
+                    <p>Miner fee = {this.state.txFeeVal} ERG</p>
                     <p>
                         {this.state.amount} {usdName} ≈ {this.state.mintErgVal.toFixed(3)} ERG
                     </p>

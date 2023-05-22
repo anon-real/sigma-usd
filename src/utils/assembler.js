@@ -1,14 +1,38 @@
 import { get, post } from './rest';
 import { addReq, getForKey, getUrl, setForKey, showStickyMsg } from './helpers';
-import { boxesByAddress, getTxsFor, getUnconfirmedTxsFor, txById, txConfNum } from './explorer';
+import { boxesByAddress, getSpendingTx, getTxsFor, getUnconfirmedTxsFor, txById, txConfNum } from './explorer';
 import { toast } from 'react-toastify';
 import { assemblerUrl, bankAddress } from './consts';
 
 export const txFee = 5000000;
 export const returnFee = 1200000;
 
+
+export function getTxFee() {
+    const key = 'txFee';
+    let fee = localStorage.getItem(key);
+    if (fee === null) fee = txFee;
+    else fee = parseInt(fee);
+    return fee
+}
+
+export function setTxFee(txFee) {
+    const key = 'txFee';
+    localStorage.setItem(key, txFee);
+}
+
 export async function follow(request) {
     return await post(getUrl(assemblerUrl) + '/follow', request).then((res) =>
+        res.json()
+    ).then(res => {
+        if (res.success === false) throw new Error();
+        return res;
+    });
+}
+
+export async function broadcast(tx) {
+    console.log(tx)
+    return await post(getUrl(assemblerUrl) + '/broadcast', tx).then((res) =>
         res.json()
     ).then(res => {
         if (res.success === false) throw new Error();
@@ -41,9 +65,49 @@ export async function p2s(request) {
     });
 }
 
+export async function resolveNautilus() {
+    let key = 'operation'
+    let reqs = getForKey(key).filter(req => req.miningStat.includes('pending'));
+    reqs = reqs.filter(req => req.isNautilus);
+    for (let i = 0; i < reqs.length; i++) {
+        let info = JSON.parse(JSON.stringify(reqs[i]))
+        let confNum = await txConfNum(info.txId);
+        console.log(info, confNum)
+        let miningStat = confNum ? 'mined' : 'pending';
+        if (miningStat === 'mined') {
+            info.miningStat = 'mined';
+            info.tx = undefined;
+            info.status = 'success';
+            addReq(info, key, 'id');
+            toast.info(`Your operation to "${info.type}" is done!`);
+
+        } else {
+            let tx = info.tx
+            const oracleTx = await getSpendingTx(tx.dataInputs[0].boxId);
+            const bankTx = await getSpendingTx(tx.inputs[0].boxId);
+            console.log('else', oracleTx, bankTx)
+            let failed = bankTx !== null && bankTx !== undefined && bankTx.spentTransactionId !== tx.id
+            failed = failed || (oracleTx !== null && oracleTx !== undefined && bankTx === null)
+            if (failed) {
+                info.status = 'fail';
+                info.txId = tx.id;
+                info.tx = undefined;
+                let prev = getForKey(key).filter(prev => prev.id === info.id);
+                if (prev.length === 0 || prev[0].status !== info.status) {
+                    toast.error(`Your operation to "${info.type}" has failed! Your assets have not left your wallet. You can try increasing the miner to increase the success probability.`);
+                }
+                info.miningStat = `try again`;
+                info.status = 'fail';
+                addReq(info, key, 'id');
+            }
+        }
+    }
+}
+
 async function resolvePending() {
     let key = 'operation'
     let reqs = getForKey(key).filter(req => req.miningStat.includes('pending'));
+    reqs = reqs.filter(req => !req.isNautilus);
     for (let i = 0; i < reqs.length; i++) {
         let info = JSON.parse(JSON.stringify(reqs[i]))
         console.log(reqs[i])
@@ -51,7 +115,7 @@ async function resolvePending() {
         let miningStat = confNum ? 'mined' : 'pending';
         if (miningStat === 'mined') {
             if (info.miningStat.includes('refund')) info.miningStat = 'refund mined';
-            else info.miningStat = 'mined';
+            else info.miningStat = miningStat;
             addReq(info, key, 'id');
 
         } else {

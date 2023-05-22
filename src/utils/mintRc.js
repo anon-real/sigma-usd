@@ -7,6 +7,8 @@ import moment from 'moment';
 import { assemblerNodeAddr, ergSendPrecision, implementor, minErgVal, reserveAcronym, usdAcronym, waitHeightThreshold } from './consts';
 import { getScMintP2s } from './mintSc';
 import { getRcRedeemP2s } from './redeemRc';
+import { walletCreate } from './walletUtils';
+let ergolib = import('ergo-lib-wasm-browser')
 
 const template = `{
   val properMinting = {
@@ -26,8 +28,10 @@ const template = `{
   sigmaProp((properMinting && implementorOK && properBank) || (returnFunds && OUTPUTS.size == 2))
 }`;
 
-export async function mintRc(amount) {
-    // await forceUpdateState();
+export async function mintRc(amount, context, assembler=true) {
+    await forceUpdateState();
+
+    const { signTx, submitTx, getWalletUtxos: getUtxos, isAddressSet } = context;
 
     let ourAddr = getWalletAddress();
     let befPrice = await priceToMintRc(amount) + 1000000;
@@ -40,42 +44,63 @@ export async function mintRc(amount) {
         if (tx.requests[i].value < minErgVal) throw new Error("The amount you're trying to mint is too small!")
     }
     tx.requests[1].value += (price - befPrice);
-    console.log(tx)
 
-    let addr = (await getRcMintP2s(amount, tx.dataInputs[0], height)).address;
-    let addr2 = (await getRcRedeemP2s(amount, tx.dataInputs[0], height)).address;
-    console.log('yo', addr2)
-    let request = {
-        address: addr,
-        returnTo: ourAddr,
-        startWhen: {
-            erg: price
-        },
-        txSpec: tx
-    };
-    return follow(request).then(res => {
-        if (res.id !== undefined) {
-            let toFollow = {
-                id: res.id,
-                info: {
-                    address: addr,
-                    returnTo: ourAddr,
-                    get: `+${amount} ${reserveAcronym}`,
-                    pay: `-${(price / 1e9).toFixed(2)} ERG`,
-                    type: `Purchase ${reserveAcronym}`,
-                    sign: '',
-                    timestamp: moment().valueOf()
-                },
-                key: 'operation',
-                status: 'follow',
-                operation: 'minting reservecoin'
-            };
-            addReq(toFollow, 'reqs');
-            res.price = price;
-            res.addr = addr;
+    if (assembler) {
+        let addr = (await getRcMintP2s(amount, tx.dataInputs[0], height)).address;
+        let addr2 = (await getRcRedeemP2s(amount, tx.dataInputs[0], height)).address;
+        let request = {
+            address: addr,
+            returnTo: ourAddr,
+            startWhen: {
+                erg: price
+            },
+            txSpec: tx
+        };
+        return follow(request).then(res => {
+            if (res.id !== undefined) {
+                let toFollow = {
+                    id: res.id,
+                    info: {
+                        address: addr,
+                        returnTo: ourAddr,
+                        get: `+${amount} ${reserveAcronym}`,
+                        pay: `-${(price / 1e9).toFixed(2)} ERG`,
+                        type: `Purchase ${reserveAcronym}`,
+                        sign: '',
+                        timestamp: moment().valueOf()
+                    },
+                    key: 'operation',
+                    status: 'follow',
+                    operation: 'minting reservecoin'
+                };
+                addReq(toFollow, 'reqs');
+                res.price = price;
+                res.addr = addr;
+            }
+            return res;
+        });
+    } else {
+        let resTx = await walletCreate({
+            need: { ERG: price },
+            req: tx,
+            getUtxos: getUtxos,
+            signTx: signTx,
+            submitTx: submitTx,
+        })
+        const info = {
+            id: resTx.id,
+            get: `+${amount} ${reserveAcronym}`,
+            pay: `-${(price / 1e9).toFixed(2)} ERG`,
+            type: `Purchase ${reserveAcronym}`,
+            sign: '',
+            timestamp: moment().valueOf(),
+            tx: resTx,
+            txId: resTx.id,
+            miningStat: 'pending',
+            isNautilus: true
         }
-        return res;
-    });
+        addReq(info, 'operation', 'id')
+    }
 }
 
 export async function getRcMintP2s(amount, oracleBoxId, height) {

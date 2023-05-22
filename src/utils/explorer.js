@@ -62,6 +62,7 @@ export function getUnconfirmedTxsFor(addr) {
 }
 
 export function getTxsFor(addr) {
+    if (addr === undefined) return []
     return getRequest(
         `/addresses/${addr}/transactions`, true
     )

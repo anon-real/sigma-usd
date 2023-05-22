@@ -4,6 +4,7 @@ import { follow, getHeight, p2s, returnFee } from './assembler';
 import { dollarToCent, ergToNano } from './serializer';
 import { bankNFTId, forceUpdateState, mintScTx, priceToMintSc, scTokenId } from './ageHelper';
 import moment from 'moment';
+import { walletCreate } from './walletUtils';
 import { assemblerNodeAddr, ergSendPrecision, implementor, minErgVal, usdAcronym, usdName, waitHeightThreshold } from './consts';
 
 const template = `{
@@ -24,8 +25,10 @@ const template = `{
   sigmaProp((properMinting && implementorOK && properBank) || (returnFunds && OUTPUTS.size == 2))
 }`;
 
-export async function mintSc(amount) {
-    // await forceUpdateState()
+export async function mintSc(amount, context, assembler=true) {
+    await forceUpdateState()
+
+    const { signTx, submitTx, getWalletUtxos: getUtxos, isAddressSet } = context;
 
     let ourAddr = getWalletAddress();
     let befPrice = await priceToMintSc(amount) + 1000000
@@ -39,38 +42,62 @@ export async function mintSc(amount) {
     }
     tx.requests[1].value += (price - befPrice)
 
-    let addr = (await getScMintP2s(amount, tx.dataInputs[0], height)).address
-    let request = {
-        address: addr,
-        returnTo: ourAddr,
-        startWhen: {
-            erg: price,
-        },
-        txSpec: tx,
-    };
-    return follow(request).then(res => {
-        if (res.id !== undefined) {
-            let toFollow = {
-                id: res.id,
-                address: addr,
-                info: {
+    if (assembler) {
+        let addr = (await getScMintP2s(amount, tx.dataInputs[0], height)).address
+        let request = {
+            address: addr,
+            returnTo: ourAddr,
+            startWhen: {
+                erg: price,
+            },
+            txSpec: tx,
+        };
+        return follow(request).then(res => {
+            if (res.id !== undefined) {
+                let toFollow = {
+                    id: res.id,
                     address: addr,
-                    returnTo: ourAddr,
-                    get: `+${amount} ${usdAcronym}`,
-                    pay: `-${(price / 1e9).toFixed(2)} ERG`,
-                    type: `Purchase ${usdAcronym}`,
-                    timestamp: moment().valueOf()
-                },
-                key: 'operation',
-                status: 'follow',
-                operation: 'minting stablecoin'
-            };
-            addReq(toFollow, 'reqs')
-            res.price = price
-            res.addr = addr
+                    info: {
+                        address: addr,
+                        returnTo: ourAddr,
+                        get: `+${amount} ${usdAcronym}`,
+                        pay: `-${(price / 1e9).toFixed(2)} ERG`,
+                        type: `Purchase ${usdAcronym}`,
+                        timestamp: moment().valueOf()
+                    },
+                    key: 'operation',
+                    status: 'follow',
+                    operation: 'minting stablecoin'
+                };
+                addReq(toFollow, 'reqs')
+                res.price = price
+                res.addr = addr
+            }
+            return res
+        })
+    } else {
+        let resTx = await walletCreate({
+            need: { ERG: price },
+            req: tx,
+            getUtxos: getUtxos,
+            signTx: signTx,
+            submitTx: submitTx,
+        })
+        const info = {
+            id: resTx.id,
+            get: `+${amount} ${usdAcronym}`,
+            pay: `-${(price / 1e9).toFixed(2)} ERG`,
+            type: `Purchase ${usdAcronym}`,
+            sign: '',
+            timestamp: moment().valueOf(),
+            tx: resTx,
+            txId: resTx.id,
+            miningStat: 'pending',
+            isNautilus: true
         }
-        return res
-    })
+        addReq(info, 'operation', 'id')
+
+    }
 }
 
 export async function getScMintP2s(amount, oracleBoxId, height) {

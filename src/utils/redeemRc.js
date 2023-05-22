@@ -10,6 +10,7 @@ import {
 } from './ageHelper';
 import moment from 'moment';
 import { assemblerNodeAddr, implementor, minErgVal, reserveAcronym, usdAcronym, waitHeightThreshold } from './consts';
+import { walletCreate } from './walletUtils';
 
 const template = `{
   val rcTokenId = fromBase64("$rcTokenId")
@@ -36,8 +37,10 @@ const template = `{
   sigmaProp((properRedeeming && implementorOK && properBank) || (returnFunds && OUTPUTS.size == 2))
 }`;
 
-export async function redeemRc(amount) {
-    // await forceUpdateState()
+export async function redeemRc(amount, context, assembler=true) {
+    await forceUpdateState()
+
+    const { signTx, submitTx, getWalletUtxos: getUtxos, isAddressSet } = context;
 
     let ourAddr = getWalletAddress();
     let ergGet = (await amountFromRedeemingRc(amount) / 1e9)
@@ -46,40 +49,64 @@ export async function redeemRc(amount) {
     for (let i = 0; i < tx.requests.length; i++) {
         if (tx.requests[i].value < minErgVal) throw new Error("The amount you're trying to redeem is too small!")
     }
-    let addr = (await getRcRedeemP2s(tx.requests[1].value, tx.dataInputs[0], height)).address
-    let request = {
-        address: addr,
-        returnTo: ourAddr,
-        startWhen: {
-            erg: 10000000
-        },
-        txSpec: tx,
-    };
-    amount = parseInt(amount)
-    request.startWhen[await rcTokenId()] = amount
-    return follow(request).then(res => {
-        if (res.id !== undefined) {
-            let toFollow = {
-                id: res.id,
-                address: addr,
-                info: {
+    const ergNeed = 10000000;
+    if (assembler) {
+        let addr = (await getRcRedeemP2s(tx.requests[1].value, tx.dataInputs[0], height)).address
+        let request = {
+            address: addr,
+            returnTo: ourAddr,
+            startWhen: {
+                erg: ergNeed
+            },
+            txSpec: tx,
+        };
+        amount = parseInt(amount)
+        request.startWhen[await rcTokenId()] = amount
+        return follow(request).then(res => {
+            if (res.id !== undefined) {
+                let toFollow = {
+                    id: res.id,
                     address: addr,
-                    returnTo: ourAddr,
-                    get: `+${ergGet.toFixed(2)} ERG`,
-                    pay: `-${amount} ${reserveAcronym}`,
-                    type: `Redeem ${reserveAcronym}`,
-                    sign: '',
-                    timestamp: moment().valueOf()
-                },
-                key: 'operation',
-                status: 'follow',
-                operation: 'redeeming reservecoin'
-            };
-            addReq(toFollow, 'reqs')
-            res.addr = addr
+                    info: {
+                        address: addr,
+                        returnTo: ourAddr,
+                        get: `+${ergGet.toFixed(2)} ERG`,
+                        pay: `-${amount} ${reserveAcronym}`,
+                        type: `Redeem ${reserveAcronym}`,
+                        sign: '',
+                        timestamp: moment().valueOf()
+                    },
+                    key: 'operation',
+                    status: 'follow',
+                    operation: 'redeeming reservecoin'
+                };
+                addReq(toFollow, 'reqs')
+                res.addr = addr
+            }
+            return res
+        })
+    } else {
+        let resTx = await walletCreate({
+            need: { ERG: ergNeed, [await rcTokenId()]: amount },
+            req: tx,
+            getUtxos: getUtxos,
+            signTx: signTx,
+            submitTx: submitTx,
+        })
+        const info = {
+            id: resTx.id,
+            get: `+${ergGet.toFixed(2)} ERG`,
+            pay: `-${amount} ${reserveAcronym}`,
+            type: `Redeem ${reserveAcronym}`,
+            sign: '$',
+            timestamp: moment().valueOf(),
+            tx: resTx,
+            txId: resTx.id,
+            miningStat: 'pending',
+            isNautilus: true
         }
-        return res
-    })
+        addReq(info, 'operation', 'id')
+    }
 }
 
 export async function getRcRedeemP2s(amount, oracleBoxId, height) {

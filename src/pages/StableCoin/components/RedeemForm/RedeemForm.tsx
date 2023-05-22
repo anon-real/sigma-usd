@@ -16,6 +16,10 @@ import { redeemSc } from '../../../../utils/redeemSc';
 import InfoModal from '../../../../components/InfoModal/InfoModal';
 import Loader from '../../../../components/Loader/Loader';
 import { walletSendFunds } from '../../../../utils/walletUtils';
+import Slider from 'rc-slider';
+import 'rc-slider/assets/index.css';
+import { setTxFee, txFee } from 'utils/assembler';
+
 
 type RedeemFormProps = WithT;
 
@@ -26,6 +30,7 @@ class RedeemForm extends Component<RedeemFormProps, any> {
     constructor(props: RedeemFormProps) {
         super(props);
         this.state = {
+            txFeeVal: txFee/1e9,
             redeemErgVal: 0,
             redeemErgFee: 0,
             isModalOpen: false,
@@ -89,6 +94,9 @@ class RedeemForm extends Component<RedeemFormProps, any> {
 
     inputChange(inp: string) {
         clearTimeout(this.state.inputChangeTimerId);
+        const fee = this.state.txFeeVal * 1e9
+        setTxFee(Math.round(fee))
+
         const parts = inp.split('.');
         if (inp.startsWith('-') || (parts.length > 1 && parts[1].length > 2)) return;
 
@@ -112,45 +120,56 @@ class RedeemForm extends Component<RedeemFormProps, any> {
             return;
         }
         this.setState({ loading: true });
-        redeemSc(this.state.amount)
-            .then((res) => {
-                if (isDappWallet()) {
-                    const need = {
-                        ERG: 10000000,
-                        [sigUsdTokenId]: dollarToCent(this.state.amount),
-                    };
-
-                    walletSendFunds({
-                        need,
-                        addr: res.addr,
-                        getUtxos,
-                        signTx,
-                        submitTx,
-                    }).then((res) => {
-                        this.setState({
-                            loading: false,
-                        });
-                    });
-                } else {
-                    this.setState({
-                        address: res.addr,
-                        coin: usdName,
-                        price: this.state.amount,
-                        isModalOpen: true,
-                        loading: false,
-                        mintNanoErgVal: 0,
-                        dueTime: res.dueTime,
-                    });
-                }
-            })
-            .catch((err) => {
+        if (isDappWallet()) {
+            redeemSc(this.state.amount, this.context, false).then((res) => {
+                this.setState({
+                    loading: false,
+                })
+            }).catch((err) => {
                 toast.error(t('errorCannotRegisterRequest', { error: err.message }));
                 this.setState({ loading: false });
             });
+        } else {
+            redeemSc(this.state.amount)
+                .then((res) => {
+                    if (isDappWallet()) {
+                        const need = {
+                            ERG: 10000000,
+                            [sigUsdTokenId]: dollarToCent(this.state.amount),
+                        };
+
+                        walletSendFunds({
+                            need,
+                            addr: res.addr,
+                            getUtxos,
+                            signTx,
+                            submitTx,
+                        }).then((res) => {
+                            this.setState({
+                                loading: false,
+                            });
+                        });
+                    } else {
+                        this.setState({
+                            address: res.addr,
+                            coin: usdName,
+                            price: this.state.amount,
+                            isModalOpen: true,
+                            loading: false,
+                            mintNanoErgVal: 0,
+                            dueTime: res.dueTime,
+                        });
+                    }
+                })
+                .catch((err) => {
+                    toast.error(t('errorCannotRegisterRequest', { error: err.message }));
+                    this.setState({ loading: false });
+                });
+            }
     }
 
     render() {
-        const { t } = this.props;
+        const { t } = this.props; 
         return (
             <Card title={`${t('redeem')} ${usdName}`}>
                 <Switch rightSide={ergCoin} leftSide={usdAcronym} />
@@ -176,6 +195,17 @@ class RedeemForm extends Component<RedeemFormProps, any> {
                 </div>
                 <div className="delimiter" />
                 <div className="terms">
+                    <Slider min={0.001} 
+                    max={1.0}
+                    defaultValue={this.state.txFeeVal}
+                    onChange={(e) => {
+                        this.setState({txFeeVal: e})
+                        this.inputChange(this.state.amount)
+                    }}
+                    step={0.01}/>
+
+                    <p>Miner fee = {this.state.txFeeVal} ERG</p>
+
                     <p>
                         {this.state.amount} {usdName} ≈ {this.state.redeemErgVal.toFixed(3)} ERG
                     </p>

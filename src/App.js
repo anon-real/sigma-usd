@@ -9,7 +9,7 @@ import ReserveCoin from './pages/ReserveCoin/Reservecoin';
 import configureStore from './config/configureStore';
 import { Provider } from 'react-redux';
 import { forceUpdateState } from './utils/ageHelper';
-import { reqFollower } from './utils/assembler';
+import { reqFollower, resolveNautilus } from './utils/assembler';
 import Stablecoin from './pages/StableCoin/Stablecoin';
 import { RefundPage } from './pages/RefundPage/RefundPage';
 import Home from './pages/Home/Home';
@@ -26,10 +26,11 @@ const App = () => {
 
     setInterval(() => {
         forceUpdateState();
-    }, 5000);
+    }, 10000);
 
     setInterval(() => {
         reqFollower();
+        resolveNautilus();
     }, 10000);
 
     return (
