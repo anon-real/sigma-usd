@@ -22,6 +22,8 @@ const LanguageSelector = (props: Props) => {
             <option value="sv">SV</option>
             <option value="de">DE</option>
             <option value="es">ES</option>
+            <option value="es">ES</option>
+            <option value="id">ID</option>
         </select>
     );
 };
