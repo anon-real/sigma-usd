@@ -1,0 +1,49 @@
+what-is-sigmausd:
+  q: Apa itu SigmaUSD?
+  a: |-
+    SigmaUSD adalah stablecoin berbasis UTxO pertama — sebuah contoh dari
+    [Protokol AgeUSD](https://ergoplatform.org/en/blog/2021-02-05-building-ergo-how-the-ageusd-stablecoin-works/).
+    Fondasi di mana era baru keuangan digital akan dibangun.
+    Model ekonominya yang dirancang dalam kemitraan antara IOHK, Ergo, dan Emurgo mempertahankan pengaturan konservatif
+    untuk cadangan agunan dan menghindari kebutuhan untuk likuidasi.
+    Bersamaan dengan itu, ia mendukung pengaturan emisi stablecoin yang sepenuhnya terdesentralisasi.
+    Dengan demikian, SigmaUSD akan menawarkan stablecoin yang stabil, sederhana, dan terdesentralisasi kepada dunia.
+what-is-ageusd:
+  q: Apa itu AgeUSD?
+  a: |-
+    AgeUSD adalah protokol stablecoin algoritmik baru yang didukung crypto yang telah dibuat dalam kemitraan bersama
+    oleh [Ergo Foundation](https://ergoplatform.org/en/foundation/), [EMURGO](https://emurgo.io/),
+    dan [IOG](https://iohk.io/en/about/) di atas [Ergo Blockchain](https://ergoplatform.org/).
+    SigmaUSD adalah turunan dari Protokol AgeUSD.
+    Untuk informasi selengkapnya, lihat [ikhtisar](https://ergoplatform.org/en/blog/2021-02-05-building-ergo-how-the-ageusd-stablecoin-works/) ini,
+    jelajahi [repositori](https://github.com/Emurgo/age-usd/blob/main/README.md) yang berisi spesifikasi protokol atau
+    tonton [video](https://www.youtube.com/watch?v=O3hPEp3tzoU) buatan komunitas ini.
+bearwhale:
+  q: Apa itu paus beruang saga?
+  a: Baca tentang saga di [blog](https://ergoplatform.org/en/blog/2021-05-13-bearwhale-saga/)
+
+how-to-buy:
+  q: Bagaimana cara membeli SigmaUSD/SigmaRSV?
+  a: |-
+    Lihat panduan buatan komunitas ini untuk mendapatkan ikhtisar mendetail tentang cara membeli:
+      - [Tutorial SigmaUSD](https://youtu.be/FR1NCJbzn7w)
+      - [Menggunakan protokol AgeUSD untuk mengambil posisi short di Ergo Blockchain](https://www.youtube.com/watch?v=cJuKRfRrTG4)
+sigmausd-vs-oracle:
+  q: Mengapa nilai SigmaUSD berbeda dengan bursa/CoinMarketCap/dll?
+  a: |-
+    Nilai USD dari SigmaUSD ditentukan oleh [Oracle Pool ERG-USD](https://explorer.ergoplatform.com/en/oracle-pool-state/ergusd).
+    Oracle memperbarui setiap 12 menit dan hanya dapat menambah/mengurangi hingga persentase tetap sehingga harga akan berfluktuasi
+    jauh lebih sporadis daripada pertukaran yang terus diperbarui.
+
+refunds:
+  q: Apa yang harus saya lakukan jika pengembalian dana saya "macet"?
+  a: |-
+    Transaksi bisa gagal saat selama oracle disegarkan (dan harga berubah).
+    Dalam hal ini, dana akan dikembalikan ke dalam dompet Anda yang terhubung.
+    Gunakan [link](#/refund) ini untuk meminta pengembalian dana kapan saja jika dana Anda "macet" di alamat proxy.
+
+reserve-ratio-bounds:
+  q: Bagaimana rasio cadangan mempengaruhi kemampuan saya untuk membeli/menebus?
+  a: |-
+    Beberapa operasi pembelian/penukaran sangat dilarang ketika rasio cadangan berada di luar kisaran 400% - 800%.
+    ![operasi rasio cadangan](/images/faq/reserve-ratio.png)
