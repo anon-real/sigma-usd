@@ -1,9 +1,9 @@
 /* eslint no-undef: "off"*/
 import { getTxUrl, getWalletAddress, getWalletType, isWalletSaved, showMsg } from './helpers';
-import { encodeHex, encodeNum} from "./serializer";
+import { encodeHex, encodeNum, reducedTxToBase64} from "./serializer";
 import {Serializer} from "@coinbarn/ergo-ts/dist/serializer";
 import { sigUsdTokenId } from './consts';
-import { broadcast, getBankBox, getHeight, getOraclekBox, getTxFee } from './assembler';
+import { broadcast, getBankBox, getHeight, getOraclekBox, getTxFee, getPreHeaders } from './assembler';
 
 let ergolib = import('ergo-lib-wasm-browser')
 
@@ -70,14 +70,46 @@ export function boxToStrVal(box) {
     return newBox
 }
 
+export async function ergoPayBroadcast(unsigned) {
+    return unsigned.id
+}
+
+export async function ergoPaySign(unsigned) {
+    const wasm = await ergolib
+    const un = wasm.UnsignedTransaction.from_json(JSON.stringify(unsigned))
+    const ins = unsigned.inputs
+    const oracle = unsigned.dataInputs[0]
+    let wasmUnsigned = undefined
+
+    try {
+        const eboxes = wasm.ErgoBoxes.from_boxes_json(ins)
+        const oracCont = wasm.ErgoBoxes.empty()
+        oracCont.add(wasm.ErgoBox.from_json(JSON.stringify(oracle)))
+
+
+        const blockContext = await getPreHeaders()
+        const blockHeaders = wasm.BlockHeaders.from_json(blockContext);
+        const preHeader = wasm.PreHeader.from_block_header(blockHeaders.get(0));
+        const stateCtx = new wasm.ErgoStateContext(preHeader, blockHeaders);
+
+        const red = wasm.ReducedTransaction.from_unsigned_tx(un, eboxes, oracCont, stateCtx)
+        wasmUnsigned = red.unsigned_tx()
+
+        const encoded = reducedTxToBase64(red.sigma_serialize_bytes())
+        window.open(`ergopay:${encoded}`, '_blank')
+    } catch(e) {
+        console.log(e)
+    }
+    const js = JSON.parse(wasmUnsigned.to_json())
+    js['id'] = wasmUnsigned.id().to_str()
+    return js
+}
 
 export async function walletCreate({need, req, getUtxos, signTx, submitTx, notif=true}) {
     const wasm = await ergolib
 
     const height = await getHeight()
     let bank = await getBankBox()
-    console.log('bank', bank)
-    bank = boxToStrVal(bank)
     let oracle = await getOraclekBox()
     oracle = boxToStrVal(oracle)
     req.requests = req.requests.map(box => {
@@ -92,23 +124,28 @@ export async function walletCreate({need, req, getUtxos, signTx, submitTx, notif
         if (newBox.additionalRegisters === undefined) newBox.additionalRegisters = {}
         return newBox
     })
-    
+
     let have = JSON.parse(JSON.stringify(need))
     let ins = [bank]
-    const keys = Object.keys(have)
+    let keys = Object.keys(have)
 
     for (let i = 0; i < keys.length; i++) {
         if (have[keys[i]] <= 0) continue
         const curIns = await getUtxos(have[keys[i]].toString(), keys[i]);
+        console.log('ret', curIns)
         if (curIns !== undefined) {
             curIns.forEach(bx => {
-                have['ERG'] -= parseInt(bx.value)
-                bx.assets.forEach(ass => {
-                    if (!Object.keys(have).includes(ass.tokenId)) have[ass.tokenId] = 0
-                    have[ass.tokenId] -= parseInt(ass.amount)
-                })
+                // if bx in ins, contieue
+                if (ins.filter(curIn => curIn.boxId === bx.boxId).length === 0) {
+                    have['ERG'] -= parseInt(bx.value)
+                    bx.assets.forEach(ass => {
+                        if (!Object.keys(have).includes(ass.tokenId)) have[ass.tokenId] = 0
+                        have[ass.tokenId] -= parseInt(ass.amount)
+                    })
+                    ins = ins.concat([bx])
+                }
             })
-            ins = ins.concat(curIns)
+            // ins = ins.concat(curIns)
         }
     }
     if (keys.filter(key => have[key] > 0).length > 0) {
@@ -151,12 +188,11 @@ export async function walletCreate({need, req, getUtxos, signTx, submitTx, notif
         dataInputs: [oracle],
         fee: req.fee
     }
-    console.log('un', unsigned)
+
 
     let tx = null
     try {
         tx = await signTx(unsigned)
-        console.log(tx)
     } catch (e) {
         showMsg(`Error while sending funds from ${getWalletType()}!`, true)
         console.log('error', e)

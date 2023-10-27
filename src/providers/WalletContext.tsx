@@ -1,6 +1,6 @@
 import { ErgoBoxProxy, ErgoTxProxy, Paging, TxId, UnsignedErgoTxProxy } from '@ergolabs/ergo-sdk';
 import React, { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
-import { getWalletAddress, getWalletType, setWallet, showMsg } from 'utils/helpers';
+import { getWalletAddress, getWalletType, isErgoPay, setWallet, showMsg } from 'utils/helpers';
 
 export enum WalletConnectionState {
     NOT_CONNECTED, // initial state
@@ -12,6 +12,7 @@ export enum WalletType {
     YOROI = 'YOROI',
     NAUTILUS = 'NAUTILUS',
     ANY = 'ANY',
+    ERGOPAY = 'ERGOPAY',
 }
 
 export type WalletContextType = {
@@ -117,6 +118,10 @@ export const getDappAddress = async (walletType: WalletType) => {
         case WalletType.YOROI: {
             return window.ergo.get_change_address();
         }
+        case WalletType.ANY:
+            return getWalletAddress();
+        case WalletType.ERGOPAY:
+            return getWalletAddress();
         default: {
             // never
             return '';
@@ -211,6 +216,12 @@ export const WalletContextProvider = ({
             setWalletTypeAndAddress(WalletType.ANY, walletAddress);
             setIsWalletLoading(false);
             setIsWalletInitialized(true);
+        } else if (type === WalletType.ERGOPAY) {
+            setWalletConnectionState(WalletConnectionState.CONNECTED);
+            const walletAddress = getWalletAddress();
+            setWalletTypeAndAddress(WalletType.ERGOPAY, walletAddress);
+            setIsWalletLoading(false);
+            setIsWalletInitialized(true);
         } else {
             const isWalletExists = await checkIsDappWalletExists(type);
 
@@ -295,7 +306,7 @@ export const WalletContextProvider = ({
             setIsWalletLoading(true);
             // eslint-disable-next-line
             switch (newWalletType) {
-                case WalletType.ANY: {
+                case WalletType.ANY || WalletType.ERGOPAY: {
                     setWalletConnectionState(WalletConnectionState.CONNECTED);
                     setWalletTypeAndAddress(WalletType.ANY, '');
                     setIsWalletLoading(false);

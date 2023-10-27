@@ -1,5 +1,5 @@
 import { get, post } from './rest';
-import { addReq, getForKey, getUrl, setForKey, showStickyMsg } from './helpers';
+import { addReq, getForKey, getUrl, getWalletAddress, setForKey, showStickyMsg } from './helpers';
 import { boxesByAddress, getSpendingTx, getTxsFor, getUnconfirmedTxsFor, txById, txConfNum } from './explorer';
 import { toast } from 'react-toastify';
 import { assemblerUrl, bankAddress } from './consts';
@@ -56,6 +56,10 @@ export async function getHeight() {
     return (await get(getUrl(assemblerUrl) + '/getHeight')).height
 }
 
+export async function getPreHeaders() {
+    return (await get(getUrl(assemblerUrl) + '/getPreHeaders'))
+}
+
 export async function p2s(request) {
     return await post(getUrl(assemblerUrl) + '/compile', request).then((res) =>
         res.json()
@@ -65,6 +69,11 @@ export async function p2s(request) {
     });
 }
 
+export async function getAddressFunds(amount, asset) {
+    const address = getWalletAddress();
+    return (await get(getUrl(assemblerUrl) + `/getFunds/${address}/${asset}/${amount}`))
+}
+
 export async function resolveNautilus() {
     let key = 'operation'
     let reqs = getForKey(key).filter(req => req.miningStat.includes('pending'));
@@ -72,7 +81,6 @@ export async function resolveNautilus() {
     for (let i = 0; i < reqs.length; i++) {
         let info = JSON.parse(JSON.stringify(reqs[i]))
         let confNum = await txConfNum(info.txId);
-        console.log(info, confNum)
         let miningStat = confNum ? 'mined' : 'pending';
         if (miningStat === 'mined') {
             info.miningStat = 'mined';
@@ -85,7 +93,6 @@ export async function resolveNautilus() {
             let tx = info.tx
             const oracleTx = await getSpendingTx(tx.dataInputs[0].boxId);
             const bankTx = await getSpendingTx(tx.inputs[0].boxId);
-            console.log('else', oracleTx, bankTx)
             let failed = bankTx !== null && bankTx !== undefined && bankTx.spentTransactionId !== tx.id
             failed = failed || (oracleTx !== null && oracleTx !== undefined && bankTx === null)
             if (failed) {

@@ -75,6 +75,7 @@ export function clearWallet() {
 }
 
 export function setWallet(tp, address) {
+    if (address === "") return
     localStorage.setItem(
         'wallet',
         JSON.stringify({
@@ -98,7 +99,12 @@ export function setNautilusWallet(address) {
 
 export function isDappWallet() {
     const tp = getWalletType()
-    return isWalletSaved() && (tp === 'NAUTILUS' || tp === 'YOROI')
+    return isWalletSaved() && (tp === 'NAUTILUS' || tp === 'YOROI' || tp === 'ERGOPAY')
+}
+
+export function isErgoPay() {
+    const tp = getWalletType()
+    return isWalletSaved() && tp === 'ERGOPAY'
 }
 
 export function getUrl(url) {

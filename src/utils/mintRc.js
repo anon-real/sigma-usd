@@ -1,13 +1,13 @@
 import { addReq, getWalletAddress } from './helpers';
 import { Address } from '@coinbarn/ergo-ts';
-import { follow, getHeight, p2s, returnFee } from './assembler';
+import { follow, getAddressFunds, getHeight, p2s, returnFee } from './assembler';
 import { ergToNano } from './serializer';
 import { bankNFTId, forceUpdateState, mintRcTx, priceToMintRc, rcTokenId } from './ageHelper';
 import moment from 'moment';
 import { assemblerNodeAddr, ergSendPrecision, implementor, minErgVal, reserveAcronym, usdAcronym, waitHeightThreshold } from './consts';
 import { getScMintP2s } from './mintSc';
 import { getRcRedeemP2s } from './redeemRc';
-import { walletCreate } from './walletUtils';
+import { ergoPayBroadcast, ergoPaySign, walletCreate } from './walletUtils';
 let ergolib = import('ergo-lib-wasm-browser')
 
 const template = `{
@@ -28,10 +28,15 @@ const template = `{
   sigmaProp((properMinting && implementorOK && properBank) || (returnFunds && OUTPUTS.size == 2))
 }`;
 
-export async function mintRc(amount, context, assembler=true) {
+export async function mintRc(amount, context, assembler=true, ergopay=false) {
     await forceUpdateState();
 
-    const { signTx, submitTx, getWalletUtxos: getUtxos, isAddressSet } = context;
+    var { signTx, submitTx, getWalletUtxos: getUtxos, isAddressSet } = context;
+    if (ergopay) {
+        signTx = ergoPaySign;
+        getUtxos = getAddressFunds;
+        submitTx = ergoPayBroadcast;
+    }
 
     let ourAddr = getWalletAddress();
     let befPrice = await priceToMintRc(amount) + 1000000;

@@ -1,10 +1,10 @@
 import { addReq, getWalletAddress } from './helpers';
 import { Address } from '@coinbarn/ergo-ts';
-import { follow, getHeight, p2s, returnFee } from './assembler';
+import { follow, getAddressFunds, getHeight, p2s, returnFee } from './assembler';
 import { dollarToCent, ergToNano } from './serializer';
 import { bankNFTId, forceUpdateState, mintScTx, priceToMintSc, scTokenId } from './ageHelper';
 import moment from 'moment';
-import { walletCreate } from './walletUtils';
+import { ergoPayBroadcast, ergoPaySign, walletCreate } from './walletUtils';
 import { assemblerNodeAddr, ergSendPrecision, implementor, minErgVal, usdAcronym, usdName, waitHeightThreshold } from './consts';
 
 const template = `{
@@ -25,10 +25,16 @@ const template = `{
   sigmaProp((properMinting && implementorOK && properBank) || (returnFunds && OUTPUTS.size == 2))
 }`;
 
-export async function mintSc(amount, context, assembler=true) {
+export async function mintSc(amount, context, assembler=true, ergopay=false) {
     await forceUpdateState()
 
-    const { signTx, submitTx, getWalletUtxos: getUtxos, isAddressSet } = context;
+    var { signTx, submitTx, getWalletUtxos: getUtxos, isAddressSet } = context;
+    if (ergopay) {
+        signTx = ergoPaySign;
+        getUtxos = getAddressFunds;
+        submitTx = ergoPayBroadcast;
+    }
+
 
     let ourAddr = getWalletAddress();
     let befPrice = await priceToMintSc(amount) + 1000000

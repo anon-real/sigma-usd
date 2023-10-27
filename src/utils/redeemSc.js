@@ -1,8 +1,8 @@
 import { addReq, getWalletAddress } from './helpers';
 import { Address } from '@coinbarn/ergo-ts';
-import { follow, getHeight, p2s, returnFee } from './assembler';
+import { follow, getAddressFunds, getHeight, p2s, returnFee } from './assembler';
 import { dollarToCent } from './serializer';
-import { walletCreate } from './walletUtils';
+import { ergoPayBroadcast, ergoPaySign, walletCreate } from './walletUtils';
 import {
     amountFromRedeemingRc,
     amountFromRedeemingSc, bankNFTId,
@@ -39,15 +39,21 @@ const template = `{
   sigmaProp((properRedeeming && implementorOK && properBank) || (returnFunds && OUTPUTS.size == 2))
 }`;
 
-export async function redeemSc(amount, context, assembler=true) {
+export async function redeemSc(amount, context, assembler=true, ergopay=false) {
     await forceUpdateState()
 
-    const { signTx, submitTx, getWalletUtxos: getUtxos, isAddressSet } = context;
+    var { signTx, submitTx, getWalletUtxos: getUtxos, isAddressSet } = context;
+    if (ergopay) {
+        signTx = ergoPaySign;
+        getUtxos = getAddressFunds;
+        submitTx = ergoPayBroadcast;
+    }
+
 
     let ourAddr = getWalletAddress();
     let ergGet = (await amountFromRedeemingSc(amount) / 1e9)
     let height = await getHeight()
-    let tx = await redeemScTx(amount)
+        let tx = await redeemScTx(amount)
     for (let i = 0; i < tx.requests.length; i++) {
         if (tx.requests[i].value < minErgVal) throw new Error(" The amount you're trying to redeem is too small!")
     }

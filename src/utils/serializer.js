@@ -64,3 +64,17 @@ export function isNatural(num) {
 export function numberWithCommas(x) {
   return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
+
+
+export function reducedTxToBase64(data) {
+    // Create a Buffer object from the input data
+    const buffer = Buffer.from(data);
+
+    // Encode the buffer using base64url encoding
+    const base64UrlEncodedString = buffer.toString('base64') .replace(/\+/g, '-') // Convert '+' to '-'
+    .replace(/\//g, '_') // Convert '/' to '_'
+    .replace(/=+$/, ''); // Remove ending '='
+    return base64UrlEncodedString + "=".repeat(base64UrlEncodedString.length % 4 ? 4 - base64UrlEncodedString.length % 4 : 0);
+
+    // return base64UrlEncodedString + "=".repeat(base64UrlEncodedString.length % 4 ? 4 - base64UrlEncodedString.length % 4 : 0);
+}

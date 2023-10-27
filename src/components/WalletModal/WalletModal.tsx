@@ -17,6 +17,7 @@ interface Props {
 const TABS = {
     [WalletType.ANY]: 'Any wallet',
     [WalletType.NAUTILUS]: 'Nautilus Wallet',
+    [WalletType.ERGOPAY]: 'ErgoPay',
     // [WalletType.YOROI]: 'Yoroi Wallet',
 };
 
@@ -33,6 +34,27 @@ const renderTabContent = ({
         // }
         case WalletType.NAUTILUS: {
             return <NautilusTab address={address} />;
+        }
+        case WalletType.ERGOPAY: {
+            return (
+                <>
+                    <div className="wallet-modal__input-group">
+                        <label htmlFor="address" className="wallet-modal__input-label">
+                            <Trans i18nKey="address" />
+                        </label>
+                        <input
+                            defaultValue={address}
+                            value={anyWalletAddress}
+                            onChange={(e) => setAnyWalletAddress(e.target.value)}
+                            className="wallet-modal__input"
+                            id="address"
+                        />
+                        <span className="wallet-modal__input-subtext">
+                            <Trans i18nKey="addressNote" />
+                        </span>
+                    </div>
+                </>
+            );
         }
         default: {
             return (
@@ -113,6 +135,12 @@ const WalletModalContent = ({ open, onClose }: any) => {
 
                     break;
                 }
+                case WalletType.ERGOPAY: {
+
+                    setCurrentTab(newTab);
+
+                    break;
+                }
                 default: {
                     break;
                 }
@@ -156,6 +184,20 @@ const WalletModalContent = ({ open, onClose }: any) => {
                             onClick={() => {
                                 toast.success(t('successSetWallet'));
                                 setWallet(walletType, anyWalletAddress);
+                                onClose();
+                            }}
+                            disabled={!isAddressValid(anyWalletAddress)}
+                            type="button"
+                            className="btn-blue mr-lg-20 mr-0"
+                        >
+                            <Trans i18nKey="Save" />
+                        </button>
+                    )}
+                    {currentTab === WalletType.ERGOPAY && (
+                        <button
+                            onClick={() => {
+                                toast.success(t('successSetWallet'));
+                                setWallet(WalletType.ERGOPAY, anyWalletAddress);
                                 onClose();
                             }}
                             disabled={!isAddressValid(anyWalletAddress)}

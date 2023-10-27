@@ -16,7 +16,7 @@ import {
 import { isNatural } from '../../../../utils/serializer';
 import WalletModal from '../../../../components/WalletModal/WalletModal';
 import Loader from '../../../../components/Loader/Loader';
-import { isDappWallet, isWalletSaved } from '../../../../utils/helpers';
+import { isDappWallet, isErgoPay, isWalletSaved } from '../../../../utils/helpers';
 import { redeemRc } from '../../../../utils/redeemRc';
 import InfoModal from '../../../../components/InfoModal/InfoModal';
 import { walletSendFunds } from '../../../../utils/walletUtils';
@@ -121,7 +121,7 @@ class RedeemForm extends Component<RedeemFormProps, any> {
         }
         this.setState({ loading: true });
         if (isDappWallet()) {
-            redeemRc(this.state.amount, this.context, false).then((res) => {
+            redeemRc(this.state.amount, this.context, false, isErgoPay()).then((res) => {
                 this.setState({
                     loading: false,
                 })
@@ -130,7 +130,7 @@ class RedeemForm extends Component<RedeemFormProps, any> {
                 this.setState({ loading: false });
             });
         } else {
-            redeemRc(this.state.amount)
+            redeemRc(this.state.amount, this.context)
                 .then((res) => {
                     if (isDappWallet()) {
                         const need = {
@@ -198,7 +198,7 @@ class RedeemForm extends Component<RedeemFormProps, any> {
                 </div>
                 <div className="delimiter" />
                 <div className="terms">
-                    <Slider min={0.001} 
+                    <Slider min={0.001}
                     max={1.0}
                     defaultValue={this.state.txFeeVal}
                     onChange={(e) => {

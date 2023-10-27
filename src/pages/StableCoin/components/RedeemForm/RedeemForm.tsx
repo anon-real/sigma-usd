@@ -11,7 +11,7 @@ import { ergCoin, sigUsdTokenId, usdAcronym, usdName } from '../../../../utils/c
 import { amountFromRedeemingSc, feeFromRedeemingSc, scNumCirc } from '../../../../utils/ageHelper';
 import { dollarToCent } from '../../../../utils/serializer';
 import WalletModal from '../../../../components/WalletModal/WalletModal';
-import { isDappWallet, isWalletSaved } from '../../../../utils/helpers';
+import { isDappWallet, isErgoPay, isWalletSaved } from '../../../../utils/helpers';
 import { redeemSc } from '../../../../utils/redeemSc';
 import InfoModal from '../../../../components/InfoModal/InfoModal';
 import Loader from '../../../../components/Loader/Loader';
@@ -121,7 +121,7 @@ class RedeemForm extends Component<RedeemFormProps, any> {
         }
         this.setState({ loading: true });
         if (isDappWallet()) {
-            redeemSc(this.state.amount, this.context, false).then((res) => {
+            redeemSc(this.state.amount, this.context, false, isErgoPay()).then((res) => {
                 this.setState({
                     loading: false,
                 })
@@ -130,7 +130,7 @@ class RedeemForm extends Component<RedeemFormProps, any> {
                 this.setState({ loading: false });
             });
         } else {
-            redeemSc(this.state.amount)
+            redeemSc(this.state.amount, this.context, true)
                 .then((res) => {
                     if (isDappWallet()) {
                         const need = {
@@ -169,7 +169,7 @@ class RedeemForm extends Component<RedeemFormProps, any> {
     }
 
     render() {
-        const { t } = this.props; 
+        const { t } = this.props;
         return (
             <Card title={`${t('redeem')} ${usdName}`}>
                 <Switch rightSide={ergCoin} leftSide={usdAcronym} />
@@ -195,7 +195,7 @@ class RedeemForm extends Component<RedeemFormProps, any> {
                 </div>
                 <div className="delimiter" />
                 <div className="terms">
-                    <Slider min={0.001} 
+                    <Slider min={0.001}
                     max={1.0}
                     defaultValue={this.state.txFeeVal}
                     onChange={(e) => {

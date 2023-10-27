@@ -1,6 +1,6 @@
 import { addReq, getWalletAddress } from './helpers';
 import { Address } from '@coinbarn/ergo-ts';
-import { follow, getHeight, p2s, returnFee } from './assembler';
+import { follow, getAddressFunds, getHeight, p2s, returnFee } from './assembler';
 import {
     amountFromRedeemingRc, bankNFTId,
     forceUpdateState,
@@ -10,7 +10,7 @@ import {
 } from './ageHelper';
 import moment from 'moment';
 import { assemblerNodeAddr, implementor, minErgVal, reserveAcronym, usdAcronym, waitHeightThreshold } from './consts';
-import { walletCreate } from './walletUtils';
+import { ergoPayBroadcast, ergoPaySign, walletCreate } from './walletUtils';
 
 const template = `{
   val rcTokenId = fromBase64("$rcTokenId")
@@ -29,7 +29,7 @@ const template = `{
     }})
     val tok = OUTPUTS(0).tokens.getOrElse(0, (rcTokenId, 0L))
     OUTPUTS(0).value >= total && OUTPUTS(0).propositionBytes == fromBase64("$userAddress") &&
-      ((tok._1 == rcTokenId && tok._2 == totalInRc) || totalInRc == 0) && 
+      ((tok._1 == rcTokenId && tok._2 == totalInRc) || totalInRc == 0) &&
         (PK("${assemblerNodeAddr}") || HEIGHT > $refundHeight)
   }
   val implementorOK = OUTPUTS(2).propositionBytes == fromBase64("$implementor") && OUTPUTS.size == 4
@@ -37,10 +37,15 @@ const template = `{
   sigmaProp((properRedeeming && implementorOK && properBank) || (returnFunds && OUTPUTS.size == 2))
 }`;
 
-export async function redeemRc(amount, context, assembler=true) {
+export async function redeemRc(amount, context, assembler=true, ergopay=false) {
     await forceUpdateState()
 
-    const { signTx, submitTx, getWalletUtxos: getUtxos, isAddressSet } = context;
+    var { signTx, submitTx, getWalletUtxos: getUtxos, isAddressSet } = context;
+    if (ergopay) {
+        signTx = ergoPaySign;
+        getUtxos = getAddressFunds;
+        submitTx = ergoPayBroadcast;
+    }
 
     let ourAddr = getWalletAddress();
     let ergGet = (await amountFromRedeemingRc(amount) / 1e9)

@@ -13,7 +13,7 @@ import { ergCoin, reserveAcronym, reserveName } from '../../../../utils/consts';
 import { feeToMintRc, maxRcToMint, priceToMintRc } from '../../../../utils/ageHelper';
 import { isNatural } from '../../../../utils/serializer';
 import Loader from '../../../../components/Loader/Loader';
-import { isDappWallet, isWalletSaved } from '../../../../utils/helpers';
+import { isDappWallet, isErgoPay, isWalletSaved } from '../../../../utils/helpers';
 import { mintRc } from '../../../../utils/mintRc';
 import { walletSendFunds } from '../../../../utils/walletUtils';
 import { getHeight } from 'utils/assembler';
@@ -127,7 +127,7 @@ class PurchaseForm extends Component<PurchaseFormProps, any> {
         }
         this.setState({ loading: true });
         if (isDappWallet()) {
-            mintRc(this.state.amount, this.context, false).then((res) => {
+            mintRc(this.state.amount, this.context, false, isErgoPay()).then((res) => {
                 this.setState({
                     loading: false,
                 })
@@ -197,7 +197,7 @@ class PurchaseForm extends Component<PurchaseFormProps, any> {
                 </div>
                 <div className="delimiter" />
                 <div className="terms">
-                    <Slider min={0.001} 
+                    <Slider min={0.001}
                     max={1.0}
                     defaultValue={this.state.txFeeVal}
                     onChange={(e) => {
