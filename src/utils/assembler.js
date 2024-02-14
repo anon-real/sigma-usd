@@ -4,9 +4,11 @@ import { boxesByAddress, getSpendingTx, getTxsFor, getUnconfirmedTxsFor, txById,
 import { toast } from 'react-toastify';
 import { assemblerUrl, bankAddress } from './consts';
 
+import JSONBigInt from "json-bigint"
+export const JSON = JSONBigInt({useNativeBigInt: true})
+
 export const txFee = 5000000;
 export const returnFee = 1200000;
-
 
 export function getTxFee() {
     const key = 'txFee';

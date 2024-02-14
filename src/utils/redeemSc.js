@@ -13,6 +13,8 @@ import {
 } from './ageHelper';
 import moment from 'moment';
 import { assemblerNodeAddr, implementor, minErgVal, reserveAcronym, usdAcronym, usdName, waitHeightThreshold } from './consts';
+import JSONBigInt from "json-bigint"
+export const JSON = JSONBigInt({useNativeBigInt: true})
 
 const template = `{
   val scTokenId = fromBase64("$scTokenId")

@@ -1,3 +1,6 @@
+import JSONBigInt from "json-bigint"
+export const JSON = JSONBigInt({useNativeBigInt: true})
+
 export async function post(url, body = {}, apiKey = '') {
     return await fetch(url, {
         method: 'POST',
@@ -10,11 +13,13 @@ export async function post(url, body = {}, apiKey = '') {
     });
 }
 export async function get(url, apiKey = '') {
-    return await fetch(url, {
+    const responmse =  await fetch(url, {
         headers: {
             Accept: 'application/json',
             'Content-Type': 'application/json',
             api_key: apiKey,
         },
-    }).then(res => res.json());
+    });
+    const jsbi = JSON.parse(await responmse.text());
+    return jsbi;
 }

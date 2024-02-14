@@ -1,6 +1,6 @@
-import { Serializer } from '@coinbarn/ergo-ts/dist/serializer';
-import { Address } from '@coinbarn/ergo-ts/dist/models/address';
 
+import JSONBigInt from "json-bigint"
+export const JSON = JSONBigInt({useNativeBigInt: true})
 let ergolib = import('ergo-lib-wasm-browser')
 
 const floatRe = new RegExp('^([0-9]*[.])?[0-9]*$')

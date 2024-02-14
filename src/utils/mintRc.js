@@ -8,6 +8,8 @@ import { assemblerNodeAddr, ergSendPrecision, implementor, minErgVal, reserveAcr
 import { getScMintP2s } from './mintSc';
 import { getRcRedeemP2s } from './redeemRc';
 import { ergoPayBroadcast, ergoPaySign, walletCreate } from './walletUtils';
+import JSONBigInt from "json-bigint"
+export const JSON = JSONBigInt({useNativeBigInt: true})
 let ergolib = import('ergo-lib-wasm-browser')
 
 const template = `{

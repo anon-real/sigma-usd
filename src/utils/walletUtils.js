@@ -4,6 +4,8 @@ import { encodeHex, encodeNum, reducedTxToBase64} from "./serializer";
 import {Serializer} from "@coinbarn/ergo-ts/dist/serializer";
 import { sigUsdTokenId } from './consts';
 import { broadcast, getBankBox, getHeight, getOraclekBox, getTxFee, getPreHeaders } from './assembler';
+import JSONBigInt from "json-bigint"
+export const JSON = JSONBigInt({useNativeBigInt: true})
 
 let ergolib = import('ergo-lib-wasm-browser')
 
@@ -77,12 +79,14 @@ export async function ergoPayBroadcast(unsigned) {
 export async function ergoPaySign(unsigned) {
     const wasm = await ergolib
     const un = wasm.UnsignedTransaction.from_json(JSON.stringify(unsigned))
-    const ins = unsigned.inputs
+    let ins = unsigned.inputs
     const oracle = unsigned.dataInputs[0]
     let wasmUnsigned = undefined
 
     try {
-        const eboxes = wasm.ErgoBoxes.from_boxes_json(ins)
+        const eboxes = wasm.ErgoBoxes.empty()
+        ins.forEach(bx => {eboxes.add(wasm.ErgoBox.from_json(JSON.stringify(bx)))})
+        
         const oracCont = wasm.ErgoBoxes.empty()
         oracCont.add(wasm.ErgoBox.from_json(JSON.stringify(oracle)))
 
@@ -110,6 +114,7 @@ export async function walletCreate({need, req, getUtxos, signTx, submitTx, notif
 
     const height = await getHeight()
     let bank = await getBankBox()
+    bank = boxToStrVal(bank)
     let oracle = await getOraclekBox()
     oracle = boxToStrVal(oracle)
     req.requests = req.requests.map(box => {
@@ -132,15 +137,15 @@ export async function walletCreate({need, req, getUtxos, signTx, submitTx, notif
     for (let i = 0; i < keys.length; i++) {
         if (have[keys[i]] <= 0) continue
         const curIns = await getUtxos(have[keys[i]].toString(), keys[i]);
-        console.log('ret', curIns)
         if (curIns !== undefined) {
             curIns.forEach(bx => {
                 // if bx in ins, contieue
                 if (ins.filter(curIn => curIn.boxId === bx.boxId).length === 0) {
-                    have['ERG'] -= parseInt(bx.value)
+                    have['ERG'] -= JSON.parse(bx.value)
                     bx.assets.forEach(ass => {
                         if (!Object.keys(have).includes(ass.tokenId)) have[ass.tokenId] = 0
-                        have[ass.tokenId] -= parseInt(ass.amount)
+                        // change to ass.amount to bigint if needed using jsonbi
+                        have[ass.tokenId] -= JSON.parse(ass.amount)
                     })
                     ins = ins.concat([bx])
                 }
@@ -175,6 +180,7 @@ export async function walletCreate({need, req, getUtxos, signTx, submitTx, notif
         additionalRegisters: {},
         creationHeight: height
     }
+    // convert curIn values to string
 
     const eins = ins.map(curIn => {
         return {
@@ -191,7 +197,9 @@ export async function walletCreate({need, req, getUtxos, signTx, submitTx, notif
 
 
     let tx = null
+    console.log(unsigned)
     try {
+        // tx = await signTx(unsigned)
         tx = await signTx(unsigned)
     } catch (e) {
         showMsg(`Error while sending funds from ${getWalletType()}!`, true)

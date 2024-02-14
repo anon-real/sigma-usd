@@ -22,7 +22,7 @@ export const ReserveInfo = () => {
     const ratio = useIntervalState(currentReserveRatio, updateDelay);
 
     const supply = useIntervalState(() => {
-        return getCirculatingSupply().then((s: number) => s / Number(NanoErgInErg));
+        return getCirculatingSupply().then((s: number) => Number(s) / Number(NanoErgInErg));
     }, updateDelay);
 
     const [percent, setPercent] = useState<number | undefined>();

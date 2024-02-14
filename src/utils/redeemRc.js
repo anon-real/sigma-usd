@@ -11,6 +11,8 @@ import {
 import moment from 'moment';
 import { assemblerNodeAddr, implementor, minErgVal, reserveAcronym, usdAcronym, waitHeightThreshold } from './consts';
 import { ergoPayBroadcast, ergoPaySign, walletCreate } from './walletUtils';
+import JSONBigInt from "json-bigint"
+export const JSON = JSONBigInt({useNativeBigInt: true})
 
 const template = `{
   val rcTokenId = fromBase64("$rcTokenId")

@@ -1,5 +1,7 @@
 import { Address, Explorer } from '@coinbarn/ergo-ts';
 import { get } from './rest';
+import JSONBigInt from "json-bigint";
+export const JSON = JSONBigInt({useNativeBigInt: true})
 
 const explorer = Explorer.mainnet;
 export const explorerApi = 'https://api.ergoplatform.com/api/v0';

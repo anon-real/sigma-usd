@@ -6,6 +6,8 @@ import { getBankBox, getHeight, getOraclekBox, getTxFee } from './assembler';
 import { dollarToCent } from './serializer';
 import { implementor } from './consts';
 import { getUnconfirmedTxsFor } from './explorer';
+import JSONBigInt from "json-bigint"
+export const JSON = JSONBigInt({useNativeBigInt: true})
 
 let ageusd = import('ageusd');
 

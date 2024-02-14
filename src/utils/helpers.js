@@ -2,7 +2,10 @@ import React from 'react';
 import { Flip, Slide, toast } from 'react-toastify';
 import { Address } from '@coinbarn/ergo-ts';
 
+import JSONBigInt from "json-bigint"
+
 const explorerUrl = 'https://explorer.ergoplatform.com/en/';
+export const JSON = JSONBigInt({useNativeBigInt: true})
 
 export function friendlyToken(token, quantity = true, length = 13) {
     if (!token) return ''

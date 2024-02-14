@@ -6,6 +6,8 @@ import { bankNFTId, forceUpdateState, mintScTx, priceToMintSc, scTokenId } from 
 import moment from 'moment';
 import { ergoPayBroadcast, ergoPaySign, walletCreate } from './walletUtils';
 import { assemblerNodeAddr, ergSendPrecision, implementor, minErgVal, usdAcronym, usdName, waitHeightThreshold } from './consts';
+import JSONBigInt from "json-bigint"
+export const JSON = JSONBigInt({useNativeBigInt: true})
 
 const template = `{
   val properMinting = {
