@@ -130,7 +130,7 @@ export async function walletCreate({need, req, getUtxos, signTx, submitTx, notif
         return newBox
     })
 
-    let have = JSON.parse(JSON.stringify(need))
+    let have = need
     let ins = [bank]
     let keys = Object.keys(have)
 
@@ -141,11 +141,11 @@ export async function walletCreate({need, req, getUtxos, signTx, submitTx, notif
             curIns.forEach(bx => {
                 // if bx in ins, contieue
                 if (ins.filter(curIn => curIn.boxId === bx.boxId).length === 0) {
-                    have['ERG'] -= JSON.parse(bx.value)
+                    have['ERG'] -= bx.value
                     bx.assets.forEach(ass => {
                         if (!Object.keys(have).includes(ass.tokenId)) have[ass.tokenId] = 0
                         // change to ass.amount to bigint if needed using jsonbi
-                        have[ass.tokenId] -= JSON.parse(ass.amount)
+                        have[ass.tokenId] -= Number(ass.amount)
                     })
                     ins = ins.concat([bx])
                 }
@@ -197,7 +197,6 @@ export async function walletCreate({need, req, getUtxos, signTx, submitTx, notif
 
 
     let tx = null
-    console.log(unsigned)
     try {
         // tx = await signTx(unsigned)
         tx = await signTx(unsigned)
@@ -303,7 +302,6 @@ export async function walletSendFunds({ need, addr, getUtxos, signTx, submitTx, 
         dataInputs: [],
         fee: getTxFee()
     }
-    console.log(unsigned)
 
     let tx = null
     try {
