@@ -35,6 +35,18 @@ function addHeapObject(obj) {
 
 function getObject(idx) { return heap[idx]; }
 
+function dropObject(idx) {
+    if (idx < 36) return;
+    heap[idx] = heap_next;
+    heap_next = idx;
+}
+
+function takeObject(idx) {
+    const ret = getObject(idx);
+    dropObject(idx);
+    return ret;
+}
+
 let WASM_VECTOR_LEN = 0;
 
 const lTextEncoder = typeof TextEncoder === 'undefined' ? (0, module.require)('util').TextEncoder : TextEncoder;
@@ -98,18 +110,6 @@ function getInt32Memory0() {
         cachegetInt32Memory0 = new Int32Array(wasm.memory.buffer);
     }
     return cachegetInt32Memory0;
-}
-
-function dropObject(idx) {
-    if (idx < 36) return;
-    heap[idx] = heap_next;
-    heap_next = idx;
-}
-
-function takeObject(idx) {
-    const ret = getObject(idx);
-    dropObject(idx);
-    return ret;
 }
 
 function isLikeNone(x) {
@@ -210,15 +210,15 @@ function getArrayJsValueFromWasm0(ptr, len) {
     return result;
 }
 
+function getArrayU8FromWasm0(ptr, len) {
+    return getUint8Memory0().subarray(ptr / 1, ptr / 1 + len);
+}
+
 function passArray8ToWasm0(arg, malloc) {
     const ptr = malloc(arg.length * 1);
     getUint8Memory0().set(arg, ptr / 1);
     WASM_VECTOR_LEN = arg.length;
     return ptr;
-}
-
-function getArrayU8FromWasm0(ptr, len) {
-    return getUint8Memory0().subarray(ptr / 1, ptr / 1 + len);
 }
 
 function passArrayJsValueToWasm0(array, malloc) {
@@ -2254,7 +2254,7 @@ export class ErgoBoxAssetsData {
     * @returns {BoxValue}
     */
     value() {
-        var ret = wasm.ergobox_value(this.ptr);
+        var ret = wasm.ergoboxassetsdata_value(this.ptr);
         return BoxValue.__wrap(ret);
     }
     /**
@@ -2359,7 +2359,7 @@ export class ErgoBoxCandidate {
     * @returns {number}
     */
     creation_height() {
-        var ret = wasm.ergoboxcandidate_creation_height(this.ptr);
+        var ret = wasm.ergobox_creation_height(this.ptr);
         return ret >>> 0;
     }
     /**
@@ -4652,7 +4652,7 @@ export class UnsignedInput {
     * @returns {ContextExtension}
     */
     extension() {
-        var ret = wasm.unsignedinput_extension(this.ptr);
+        var ret = wasm.proverresult_extension(this.ptr);
         return ContextExtension.__wrap(ret);
     }
 }
@@ -4926,13 +4926,8 @@ export class Wallet {
     }
 }
 
-export const __wbg_bankbox_new = function(arg0) {
-    var ret = BankBox.__wrap(arg0);
-    return addHeapObject(ret);
-};
-
-export const __wbg_reservecoinbox_new = function(arg0) {
-    var ret = ReserveCoinBox.__wrap(arg0);
+export const __wbindgen_string_new = function(arg0, arg1) {
+    var ret = getStringFromWasm0(arg0, arg1);
     return addHeapObject(ret);
 };
 
@@ -4941,23 +4936,28 @@ export const __wbg_stablecoinbox_new = function(arg0) {
     return addHeapObject(ret);
 };
 
-export const __wbg_ballotbox_new = function(arg0) {
-    var ret = BallotBox.__wrap(arg0);
-    return addHeapObject(ret);
-};
-
 export const __wbg_updatebox_new = function(arg0) {
     var ret = UpdateBox.__wrap(arg0);
     return addHeapObject(ret);
 };
 
-export const __wbindgen_string_new = function(arg0, arg1) {
-    var ret = getStringFromWasm0(arg0, arg1);
+export const __wbg_reservecoinbox_new = function(arg0) {
+    var ret = ReserveCoinBox.__wrap(arg0);
     return addHeapObject(ret);
 };
 
-export const __wbg_ergsbox_new = function(arg0) {
-    var ret = ErgsBox.__wrap(arg0);
+export const __wbg_ballotbox_new = function(arg0) {
+    var ret = BallotBox.__wrap(arg0);
+    return addHeapObject(ret);
+};
+
+export const __wbg_bankbox_new = function(arg0) {
+    var ret = BankBox.__wrap(arg0);
+    return addHeapObject(ret);
+};
+
+export const __wbg_adausdoraclepoolbox_new = function(arg0) {
+    var ret = AdaUsdOraclePoolBox.__wrap(arg0);
     return addHeapObject(ret);
 };
 
@@ -4966,9 +4966,13 @@ export const __wbg_ergusdoraclepoolbox_new = function(arg0) {
     return addHeapObject(ret);
 };
 
-export const __wbg_adausdoraclepoolbox_new = function(arg0) {
-    var ret = AdaUsdOraclePoolBox.__wrap(arg0);
+export const __wbg_ergsbox_new = function(arg0) {
+    var ret = ErgsBox.__wrap(arg0);
     return addHeapObject(ret);
+};
+
+export const __wbindgen_object_drop_ref = function(arg0) {
+    takeObject(arg0);
 };
 
 export const __wbindgen_json_parse = function(arg0, arg1) {
@@ -4990,24 +4994,10 @@ export const __wbindgen_number_new = function(arg0) {
     return addHeapObject(ret);
 };
 
-export const __wbindgen_object_drop_ref = function(arg0) {
-    takeObject(arg0);
-};
-
 export const __wbg_self_86b4b13392c7af56 = handleError(function() {
     var ret = self.self;
     return addHeapObject(ret);
 });
-
-export const __wbg_static_accessor_MODULE_452b4680e8614c81 = function() {
-    var ret = module;
-    return addHeapObject(ret);
-};
-
-export const __wbg_require_f5521a5b85ad2542 = function(arg0, arg1, arg2) {
-    var ret = getObject(arg0).require(getStringFromWasm0(arg1, arg2));
-    return addHeapObject(ret);
-};
 
 export const __wbg_crypto_b8c92eaac23d0d80 = function(arg0) {
     var ret = getObject(arg0).crypto;
@@ -5022,6 +5012,16 @@ export const __wbg_msCrypto_9ad6677321a08dd8 = function(arg0) {
 export const __wbindgen_is_undefined = function(arg0) {
     var ret = getObject(arg0) === undefined;
     return ret;
+};
+
+export const __wbg_static_accessor_MODULE_452b4680e8614c81 = function() {
+    var ret = module;
+    return addHeapObject(ret);
+};
+
+export const __wbg_require_f5521a5b85ad2542 = function(arg0, arg1, arg2) {
+    var ret = getObject(arg0).require(getStringFromWasm0(arg1, arg2));
+    return addHeapObject(ret);
 };
 
 export const __wbg_getRandomValues_dd27e6b0652b3236 = function(arg0) {

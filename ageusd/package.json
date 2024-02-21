@@ -3,7 +3,7 @@
   "collaborators": [
     "Robert Kornacki <11645932+robkorn@users.noreply.github.com>"
   ],
-  "version": "0.1.0",
+  "version": "0.1.1",
   "files": [
     "ageusd_headless_bg.wasm",
     "ageusd_headless.js",

@@ -137,20 +137,21 @@ export async function walletCreate({need, req, getUtxos, signTx, submitTx, notif
     for (let i = 0; i < keys.length; i++) {
         if (have[keys[i]] <= 0) continue
         const curIns = await getUtxos(have[keys[i]].toString(), keys[i]);
+        console.log('in', curIns)
         if (curIns !== undefined) {
             curIns.forEach(bx => {
                 // if bx in ins, contieue
                 if (ins.filter(curIn => curIn.boxId === bx.boxId).length === 0) {
                     have['ERG'] -= bx.value
                     bx.assets.forEach(ass => {
-                        if (!Object.keys(have).includes(ass.tokenId)) have[ass.tokenId] = 0
+                        if (!Object.keys(have).includes(ass.tokenId)) have[ass.tokenId] = 0n
                         // change to ass.amount to bigint if needed using jsonbi
-                        have[ass.tokenId] -= Number(ass.amount)
+                          have[ass.tokenId] -= BigInt(ass.amount)
+                        
                     })
                     ins = ins.concat([bx])
                 }
             })
-            // ins = ins.concat(curIns)
         }
     }
     if (keys.filter(key => have[key] > 0).length > 0) {
@@ -180,11 +181,12 @@ export async function walletCreate({need, req, getUtxos, signTx, submitTx, notif
         additionalRegisters: {},
         creationHeight: height
     }
+    // changeBox = boxToStrVal(changeBox)
     // convert curIn values to string
 
     const eins = ins.map(curIn => {
         return {
-            ...curIn,
+            ...boxToStrVal(curIn),
             extension: {}
         }
     })
@@ -198,7 +200,6 @@ export async function walletCreate({need, req, getUtxos, signTx, submitTx, notif
 
     let tx = null
     try {
-        // tx = await signTx(unsigned)
         tx = await signTx(unsigned)
     } catch (e) {
         showMsg(`Error while sending funds from ${getWalletType()}!`, true)
