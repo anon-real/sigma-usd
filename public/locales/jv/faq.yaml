@@ -1,0 +1,42 @@
+what-is-sigmausd:
+  q: Apa kuwi SigmaUSD?
+  a: SigmaUSD minangka koin stabil adhedhasar UTxO pisanan - instan saka [protokol
+    AgeUSD](https://ergoplatform.org/en/blog/2021-02-05-building-ergo-how-the-ageusd-stablecoin-works
+    /). Yayasan sing bakal dibangun jaman anyar keuangan digital. Model ekonomi sing
+    dirancang kanthi kemitraan antarane IOHK, Ergo, lan Emurgo njaga setelan konservatif
+    kanggo cadangan agunan lan ngindhari kabutuhan likuidasi. Bebarengan karo iku,
+    ndhukung persiyapan emisi stablecoin kanthi desentralisasi. Mangkono, SigmaUSD
+    bakal menehi donya stablecoin sing stabil, prasaja, lan desentralisasi.
+what-is-ageusd:
+  q: Apa kuwi AgeUSD?
+  a: 'AgeUSD minangka protokol stablecoin algoritmik sing didhukung crypto anyar sing
+    wis digawe kanthi kemitraan bareng dening [Ergo Foundation](https://ergoplatform.org/en/foundation/),
+    [EMURGO](https://emurgo.io/ ), lan [IOG](https://iohk.io/en/about/) ing ndhuwur
+    [Ergo Blockchain](https://ergoplatform.org/). SigmaUSD minangka conto saka AgeUSD
+    Protocol. Kanggo informasi luwih lengkap, deleng [ringkesan] iki (https://ergoplatform.org/en/blog/2021-02-05-building-ergo-how-the-ageusd-stablecoin-works/),
+    jelajahi [repositori]( https://github.com/Emurgo/age-usd/blob/main/README.md)
+    sing ngemot spesifikasi protokol utawa nonton [video] komunitas iki (https://www.youtube.com/watch?v=O3hPEp3tzoU
+    ). '
+bearwhale:
+  q: Apa sing diarani bearwhale saga?
+  a: Waca babagan saga ing [blog](https://ergoplatform.org/en/blog/2021-05-13-bearwhale-saga/)
+how-to-buy:
+  q: Kepiye carane tuku SigmaUSD/SigmaRSV?
+  a: 'Priksa pandhuan sing digawe komunitas iki kanggo entuk ringkesan rinci babagan
+    cara tuku: - [Tutorial SigmaUSD nang kene](https://youtu.be/FR1NCJbzn7w) - [Nggunakake protokol
+    AgeUSD kanggo njupuk posisi cendhak ing Ergo Blockchain](https: //www.youtube.com/watch?v=cJuKRfRrTG4)'
+sigmausd-vs-oracle:
+  q: Napa regane SigmaUSD beda karo ijol-ijolan/CoinMarketCap/etc?
+  a: Nilai USD saka SigmaUSD ditemtokake dening [ERG-USD Oracle Pool](https://explorer.ergoplatform.com/en/oracle-pool-state/ergusd).
+    Oracle nganyari saben 12 menit lan mung bisa nambah / nyuda nganti persentasi
+    tetep supaya rega bakal fluxuate akeh sporatically saka ijol-ijolan sing nganyari
+    terus.
+refunds:
+  q: Apa sing kudu dilakoni yen transaksine kula "macet"?
+  a: Transaksi bisa gagal nalika oracle nyegerake sajrone (lan owah-owahan rega).
+    Ing acara iki, dana bakal bali menyang dompet sing disambungake. Gunakake [link](#/refund)
+    iki kanggo njaluk mbalekaken kapan wae yen dana sampeyan "macet" ing alamat proxy.
+reserve-ratio-bounds:
+  q: Kepiye rasio cadangan mengaruhi kemampuan kanggo tuku/nebus?
+  a: Sawetara operasi tuku/nebus dilarang nalika rasio cadangan tiba ing njaba kisaran
+    400% - 800%. ![operasi rasio cadangan](/images/faq/reserve-ratio.png)
