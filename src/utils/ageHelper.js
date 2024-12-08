@@ -12,7 +12,8 @@ export const JSON = JSONBigInt({useNativeBigInt: true})
 let ageusd = import('ageusd');
 
 const considerUnconfirmed = true;
-let explorerEndpoint = 'https://api.ergoplatform.com/api';
+// let explorerEndpoint = 'https://api.ergoplatform.com/api';
+let explorerEndpoint = 'https://api-testnet.ergoplatform.com';
 let bankBox = undefined;
 let oracleBox = undefined;
 
