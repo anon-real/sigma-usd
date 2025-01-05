@@ -1,13 +1,13 @@
 import { Address, Explorer } from '@coinbarn/ergo-ts';
 import { get } from './rest';
 import JSONBigInt from "json-bigint";
+import { explorerEndpoint, explorerEndpointV0 } from './consts';
 export const JSON = JSONBigInt({useNativeBigInt: true})
 
 const explorer = Explorer.mainnet;
-export const explorerApi = 'https://api.ergoplatform.com/api/v0';
 
 async function getRequest(url, v1=false) {
-    let explr = v1 ? 'https://api.ergoplatform.com/api/v1' : explorerApi
+    let explr = v1 ? `${explorerEndpoint}` : `${explorerEndpointV0}`
     return get(explr + url).then(res => {
         return { data: res };
     });

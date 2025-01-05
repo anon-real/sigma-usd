@@ -1,38 +1,39 @@
 /* global BigInt */
-
 import { get } from './rest';
-import { getWalletAddress, isWalletSaved } from './helpers';
-import { getBankBox, getHeight, getOraclekBox, getTxFee } from './assembler';
+import { getWalletAddress } from './helpers';
+import { getHeight, getOraclekBox, getTxFee } from './assembler';
 import { dollarToCent } from './serializer';
 import { implementor } from './consts';
 import { getUnconfirmedTxsFor } from './explorer';
-import JSONBigInt from "json-bigint"
-export const JSON = JSONBigInt({useNativeBigInt: true})
+import { explorerEndpoint, oracleNftId } from './consts';
+import { BankService } from './bankService';
+import JSONBigInt from 'json-bigint';
+import { sigUsdTokenId, sigRsvTokenId, bankNftId } from './consts';
+import { transformBankBox } from './helpers';
 
+export const JSON = JSONBigInt({ useNativeBigInt: true });
+let ergolib = import('ergo-lib-wasm-browser')
 let ageusd = import('ageusd');
 
 const considerUnconfirmed = true;
-let explorerEndpoint = 'https://api.ergoplatform.com/api';
-let bankBox = undefined;
-let oracleBox = undefined;
+let bankService = null;
 
 export async function scTokenId() {
-    return new (await ageusd).StableCoinProtocol().stablecoin_token_id;
+    return sigUsdTokenId;
 }
 
 export async function rcTokenId() {
-    return new (await ageusd).StableCoinProtocol().reservecoin_token_id;
+    return sigRsvTokenId;
 }
 
 export async function bankNFTId() {
-    return new (await ageusd).StableCoinProtocol().bank_nft_id;
+    return bankNftId;
 }
 
 export async function forceUpdateExp() {
-    let age = await ageusd;
-    let body = await get(age.BankBox.w_explorer_endpoint(explorerEndpoint));
+    let body = await get(`${explorerEndpoint}/boxes/unspent/byTokenId/${bankNftId}`);
+
     if (considerUnconfirmed) {
-        let bankNFT = new age.StableCoinProtocol().bank_nft_id;
         let box = body.items[0];
         let addr = box.address;
         let unc = await getUnconfirmedTxsFor(addr);
@@ -43,7 +44,7 @@ export async function forceUpdateExp() {
             if (
                 tx.outputs[0].assets
                     .map((asset) => asset.tokenId)
-                    .includes(bankNFT) &&
+                    .includes(bankNftId) &&
                 tx.inputs[0].address === tx.outputs[0].address
             ) {
                 outBanks = outBanks.concat([tx.outputs[0]]);
@@ -64,286 +65,195 @@ export async function forceUpdateExp() {
             console.error('bank boxes length is ' + notSpent.length, notSpent);
         }
     }
-    bankBox = age.BankBox.w_process_explorer_response(JSON.stringify(body))[0];
 
-    body = JSON.stringify(
-        await get(age.ErgUsdOraclePoolBox.w_explorer_endpoint(explorerEndpoint))
-    );
-    oracleBox = age.ErgUsdOraclePoolBox.w_process_explorer_response(body)[0];
+    let bankBox = body.items[0];
+    bankBox = transformBankBox(bankBox);
+
+    let oracleBox = await get(`${explorerEndpoint}/boxes/unspent/byTokenId/${oracleNftId}`);
+    oracleBox = transformBankBox(oracleBox.items[0]);
+    bankService = new BankService(bankBox, oracleBox);
 }
 
 export async function forceUpdateState() {
-    let age = await ageusd;
-    try {
-        let bank = await getBankBox()
-        let oracle = await getOraclekBox()
-        let bankBoxTmp = age.ErgoBox.from_json(JSON.stringify(bank))
-        let oracleBoxTmp = age.ErgoBox.from_json(JSON.stringify(oracle))
-        bankBox = new age.BankBox(bankBoxTmp)
-        oracleBox = new age.ErgUsdOraclePoolBox(oracleBoxTmp)
-    } catch (e) {
-        await forceUpdateExp();
-    }
+    await forceUpdateExp();
 }
 
 export async function updateState() {
-    if (!bankBox || !oracleBox) await forceUpdateState();
+    if (!bankService) await forceUpdateState();
 }
 
 export async function priceToMintSc(amount) {
     if (dollarToCent(amount) === 0) return 0;
-
     await updateState();
-    return Number(
-        bankBox.total_cost_to_mint_stablecoin(
-            BigInt(dollarToCent(amount)),
-            oracleBox,
-            BigInt(getTxFee())
-        )
-    );
+    return bankService.totalCostToMintStablecoin(dollarToCent(amount), getTxFee());
 }
 
 export async function priceToMintRc(amount) {
     if (parseInt(amount) === 0) return 0;
-
     await updateState();
-    return Number(
-        bankBox.total_cost_to_mint_reservecoin(
-            BigInt(parseInt(amount)),
-            oracleBox,
-            BigInt(getTxFee())
-        )
-    );
+    return bankService.totalCostToMintReservecoin(parseInt(amount), getTxFee());
 }
 
 export async function amountFromRedeemingSc(amount) {
     if (dollarToCent(amount) === 0) return 0;
-
     await updateState();
-    return Number(
-        bankBox.total_amount_from_redeeming_stablecoin(
-            BigInt(dollarToCent(amount)),
-            oracleBox,
-            BigInt(getTxFee())
-        )
-    );
+    return bankService.amountFromRedeemingStablecoin(dollarToCent(amount), getTxFee());
 }
 
 export async function amountFromRedeemingRc(amount) {
     if (parseInt(amount) === 0) return 0;
-
     await updateState();
-    return Number(
-        bankBox.total_amount_from_redeeming_reservecoin(
-            BigInt(parseInt(amount)),
-            oracleBox,
-            BigInt(getTxFee())
-        )
-    );
+    return bankService.amountFromRedeemingReservecoin(parseInt(amount), getTxFee());
 }
 
 export async function feeToMintSc(amount) {
     if (dollarToCent(amount) === 0) return 0;
-
     await updateState();
-    return Number(
-        bankBox.fees_from_minting_stablecoin(
-            BigInt(dollarToCent(amount)),
-            oracleBox,
-            BigInt(getTxFee())
-        )
-    );
+    const total = await bankService.totalCostToMintStablecoin(dollarToCent(amount), getTxFee());
+    const base = await bankService.getSigPrice(dollarToCent(amount));
+    return Number(total - base);
 }
 
 export async function feeToMintRc(amount) {
     if (parseInt(amount) === 0) return 0;
-
     await updateState();
-    return Number(
-        bankBox.fees_from_minting_reservecoin(
-            BigInt(parseInt(amount)),
-            oracleBox,
-            BigInt(getTxFee())
-        )
-    );
+    const total = await bankService.totalCostToMintReservecoin(parseInt(amount), getTxFee());
+    const base = await bankService.getRsvPrice(parseInt(amount));
+    return Number(total - base);
 }
 
 export async function feeFromRedeemingSc(amount) {
     if (dollarToCent(amount) === 0) return 0;
-
     await updateState();
-    return Number(
-        bankBox.fees_from_redeeming_stablecoin(
-            BigInt(dollarToCent(amount)),
-            oracleBox,
-            BigInt(getTxFee())
-        )
-    );
+    const total = await bankService.amountFromRedeemingStablecoin(dollarToCent(amount), getTxFee());
+    const base = await bankService.getSigPrice(dollarToCent(amount));
+    return Number(base - total);
 }
 
 export async function feeFromRedeemingRc(amount) {
     if (parseInt(amount) === 0) return 0;
-
     await updateState();
-    return Number(
-        bankBox.fees_from_redeeming_reservecoin(
-            BigInt(parseInt(amount)),
-            oracleBox,
-            BigInt(getTxFee())
-        )
-    );
+    const total = await bankService.amountFromRedeemingReservecoin(parseInt(amount), getTxFee());
+    const base = await bankService.getRsvPrice(parseInt(amount));
+    return Number(base - total);
 }
 
 export async function mintScTx(amount) {
     await updateState();
-
-    let age = await ageusd;
-    let height = await getHeight();
-    let addr = getWalletAddress();
-    let pr = new age.StableCoinProtocol();
-    let prc = BigInt(await priceToMintSc(amount)) + 1000000n;
-    let res = pr.w_assembler_mint_stablecoin(
-        BigInt(dollarToCent(amount)),
-        addr,
-        BigInt(getTxFee()),
-        BigInt(height),
-        oracleBox,
-        bankBox,
-        prc,
-        implementor
-    );
-    res = JSON.parse(res);
-    res.requests.splice(3, 1);
-    res.requests[1].value += res.requests[2].value
-    res.requests.splice(2, 1);
-    res.inputs[1] = '$userIns';
-    return res;
+    const height = await getHeight();
+    const addr = getWalletAddress();
+    return await bankService.mintStablecoinTx(amount, addr, height, getTxFee());
 }
 
 export async function mintRcTx(amount) {
     await updateState();
-
-    let age = await ageusd;
-    let height = await getHeight();
-    let addr = getWalletAddress();
-    let pr = new age.StableCoinProtocol();
-    let prc = BigInt(await priceToMintRc(amount)) + 1000000n;
-    let res = pr.w_assembler_mint_reservecoin(
-        BigInt(Math.floor(amount)),
-        addr,
-        BigInt(getTxFee()),
-        BigInt(height),
-        oracleBox,
-        bankBox,
-        prc,
-        implementor
-    );
-    res = JSON.parse(res);
-    res.requests.splice(3, 1);
-    res.requests[1].value += res.requests[2].value
-    res.requests.splice(2, 1);
-    res.inputs[1] = '$userIns';
-    return res;
+    const height = await getHeight();
+    const addr = getWalletAddress();
+    return await bankService.mintReservecoinTx(amount, addr, height, getTxFee());
 }
 
 export async function redeemScTx(amount) {
     await updateState();
+    const height = await getHeight();
+    const addr = getWalletAddress();
+    const tx = await bankService.redeemStablecoinTx(amount, addr, height, getTxFee());
+    if (!tx) return null;
 
-    let age = await ageusd;
-    let height = await getHeight();
-    let addr = getWalletAddress();
-    let pr = new age.StableCoinProtocol();
-    let res = pr.w_assembler_redeem_stablecoin(
-        BigInt(dollarToCent(amount)),
-        addr,
-        BigInt(getTxFee()),
-        BigInt(height),
-        oracleBox,
-        bankBox,
-        implementor
-    );
-    res = JSON.parse(res);
-    res.requests.splice(2, 1);
-    res.inputs[1] = '$userIns';
-    return res;
+    // Format tx to match WASM output
+    tx.requests.splice(2, 1);
+    tx.inputs[1] = '$userIns';
+    return tx;
 }
 
 export async function redeemRcTx(amount) {
     await updateState();
+    const height = await getHeight();
+    const addr = getWalletAddress();
+    const tx = await bankService.redeemReservecoinTx(Math.floor(amount), addr, height, getTxFee());
+    if (!tx) return null;
 
-    let age = await ageusd;
-    let height = await getHeight();
-    let addr = getWalletAddress();
-    let pr = new age.StableCoinProtocol();
-    let res = pr.w_assembler_redeem_reservecoin(
-        BigInt(Math.floor(amount)),
-        addr,
-        BigInt(getTxFee()),
-        BigInt(height),
-        oracleBox,
-        bankBox,
-        implementor
-    );
-    res = JSON.parse(res);
-    res.requests.splice(2, 1);
-    res.inputs[1] = '$userIns';
-    return res;
+    // Format tx to match WASM output
+    tx.requests.splice(2, 1);
+    tx.inputs[1] = '$userIns';
+    return tx;
 }
 
 export async function maxRcToRedeem() {
-    if (!bankBox || !oracleBox) await forceUpdateState();
-    if (bankBox.current_reserve_ratio(oracleBox) <= 400n) return 0
-    return Number(bankBox.num_able_to_redeem_reservecoin(oracleBox));
+    await updateState();
+    const reserveRatio = await bankService.getReserveRatio();
+    if (reserveRatio <= 400) return 0;
+    const equity = await bankService.getEquity();
+    const rsvNominal = await bankService.getRsvNominal();
+    return equity / rsvNominal;
 }
 
 export async function maxScToMint() {
-    if (!bankBox || !oracleBox) await forceUpdateState();
-    if (bankBox.current_reserve_ratio(oracleBox) <= 400n) return 0
-    return Number(bankBox.num_able_to_mint_stablecoin(oracleBox));
+    await updateState();
+    const reserveRatio = await bankService.getReserveRatio();
+    if (reserveRatio <= 400) return 0;
+    const equity = await bankService.getEquity();
+    const sigNominal = await bankService.getSigNominal();
+    return equity / sigNominal;
 }
 
-export async function maxRcToMint(height) {
-    if (!bankBox || !oracleBox) await forceUpdateState();
-    if (bankBox.current_reserve_ratio(oracleBox) >= 800n) return 0
-    let circ = await rcNumCirc()
-    let rr = Number(bankBox.current_reserve_ratio(oracleBox))
-    let rcForReserve = parseInt(circ / rr)
-    return rcForReserve * (800 - rr)
+export async function maxRcToMint() {
+    await updateState();
+    const reserveRatio = await bankService.getReserveRatio();
+    if (reserveRatio >= 800) return 0;
+    const circ = await rcNumCirc();
+    const rcForReserve = Math.floor(circ / reserveRatio);
+    return rcForReserve * (800 - reserveRatio);
 }
 
 export async function ableRcToRedeem(amount) {
-    if (!bankBox || !oracleBox) await forceUpdateState();
-    return Number(bankBox.able_to_redeem_reservecoin_amount(oracleBox, BigInt(amount)));
+    await updateState();
+    const equity = await bankService.getEquity();
+    const rsvNominal = await bankService.getRsvNominal();
+    return Number(equity) >= Number(rsvNominal) * amount;
 }
 
 export async function ableScToMint(amount) {
-    if (!bankBox || !oracleBox) await forceUpdateState();
-    return Number(bankBox.able_to_mint_stablecoin_amount(oracleBox, BigInt(amount)));
+    await updateState();
+    return await bankService.ableToMintStablecoin(amount);
 }
 
 export async function ableRcToMint(height, amount) {
-    if (!bankBox || !oracleBox) await forceUpdateState();
-    return Number(bankBox.able_to_mint_reservecoin_amount(oracleBox, BigInt(amount), BigInt(height)));
+    await updateState();
+    return await bankService.ableToMintReservecoin(amount);
 }
 
 export async function scPrice() {
-    if (!bankBox || !oracleBox) await forceUpdateState();
-    return Number(bankBox.stablecoin_nominal_price(oracleBox));
+    await updateState();
+    return await bankService.getSigNominal();
 }
 
-export function rcPrice() {
-    if (!bankBox || !oracleBox) return NaN;
-    return Number(bankBox.reservecoin_nominal_price(oracleBox));
+export async function rcPrice() {
+    if (!bankService) return NaN;
+    return Number(await bankService.getRsvNominal());
 }
 
 export async function scNumCirc() {
-    if (!bankBox || !oracleBox) await forceUpdateState();
-    return Number(bankBox.num_circulating_stablecoins());
+    await updateState();
+    return Number(await bankService.getCircSig());
 }
 
 export async function rcNumCirc() {
-    if (!bankBox || !oracleBox) await forceUpdateState();
-    return Number(bankBox.num_circulating_reservecoins());
+    await updateState();
+    return Number(await bankService.getCircRsv());
+}
+
+export async function currentReserveRatio() {
+    await updateState();
+    return Number(await bankService.getReserveRatio());
+}
+
+export async function baseReserves() {
+    await updateState();
+    return await bankService.getEquity();
+}
+
+export async function ergBalance(bal) {
+    return bal['erg'] || 0;
 }
 
 export async function scBalance(bal) {
@@ -352,18 +262,4 @@ export async function scBalance(bal) {
 
 export async function rcBalance(bal) {
     return bal[await rcTokenId()] || 0;
-}
-
-export async function ergBalance(bal) {
-    return bal['erg'] || 0;
-}
-
-export async function currentReserveRatio() {
-    if (!bankBox || !oracleBox) await forceUpdateState();
-    return Number(bankBox.current_reserve_ratio(oracleBox));
-}
-
-export async function baseReserves() {
-    if (!bankBox || !oracleBox) await forceUpdateState();
-    return bankBox.base_reserves();
 }

@@ -112,7 +112,7 @@ export class CoinsInfo extends Component<CoinsInfoProps, CoinsInfoState> {
                         <div className="coin-prop__title"><Trans i18nKey='circulatingSupply' /></div>
 
                         <div className="coin-prop__value">
-                            {this.state.rcCirc && numberWithCommas(this.state.rcCirc) || <Skeleton width={256} />}
+                            {this.state.rcCirc !== undefined && numberWithCommas(this.state.rcCirc) || <Skeleton width={256} />}
                         </div>
                     </div>
 

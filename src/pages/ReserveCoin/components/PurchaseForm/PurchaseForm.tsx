@@ -44,10 +44,6 @@ class PurchaseForm extends Component<PurchaseFormProps, any> {
         };
     }
 
-    componentDidMount() {
-        getHeight().then((height) => this.setState({ curHeight: height }));
-    }
-
     componentWillUnmount() {
         clearTimeout(this.state.inputChangeTimerId);
     }
@@ -60,7 +56,7 @@ class PurchaseForm extends Component<PurchaseFormProps, any> {
             return;
         }
 
-        maxRcToMint(this.state.curHeight).then((maxAllowed) => {
+        maxRcToMint().then((maxAllowed) => {
             const { t } = this.props;
             if (this.state.requestId !== requestId) {
                 return;

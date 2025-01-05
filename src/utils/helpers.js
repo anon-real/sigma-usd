@@ -144,3 +144,27 @@ export function addReq(req, key, uniqueBy = 'nothing!') {
     reqs = reqs.concat([req])
     setForKey(reqs, key)
 }
+
+export function transformBankBox(box) {
+    const registers = {}
+    if (box.additionalRegisters) {
+        Object.keys(box.additionalRegisters)
+            .forEach(key => {
+                registers[key] = box.additionalRegisters[key]?.serializedValue
+            })
+    }
+
+    return {
+        boxId: box.boxId,
+        value: box.value,
+        ergoTree: box.ergoTree,
+        assets: box.assets.map(asset => ({
+            tokenId: asset.tokenId,
+            amount: asset.amount
+        })),
+        creationHeight: box.creationHeight,
+        additionalRegisters: registers,
+        transactionId: box.transactionId,
+        index: box.index
+    }
+}
