@@ -111,7 +111,7 @@ export async function feeToMintSc(amount) {
     await updateState();
     const total = await bankService.totalCostToMintStablecoin(dollarToCent(amount), getTxFee());
     const base = await bankService.getSigPrice(dollarToCent(amount));
-    return Number(total - base);
+    return total - base;
 }
 
 export async function feeToMintRc(amount) {
@@ -119,7 +119,7 @@ export async function feeToMintRc(amount) {
     await updateState();
     const total = await bankService.totalCostToMintReservecoin(parseInt(amount), getTxFee());
     const base = await bankService.getRsvPrice(parseInt(amount));
-    return Number(total - base);
+    return total - base;
 }
 
 export async function feeFromRedeemingSc(amount) {
@@ -127,7 +127,7 @@ export async function feeFromRedeemingSc(amount) {
     await updateState();
     const total = await bankService.amountFromRedeemingStablecoin(dollarToCent(amount), getTxFee());
     const base = await bankService.getSigPrice(dollarToCent(amount));
-    return Number(base - total);
+    return base - total;
 }
 
 export async function feeFromRedeemingRc(amount) {
@@ -135,7 +135,7 @@ export async function feeFromRedeemingRc(amount) {
     await updateState();
     const total = await bankService.amountFromRedeemingReservecoin(parseInt(amount), getTxFee());
     const base = await bankService.getRsvPrice(parseInt(amount));
-    return Number(base - total);
+    return base - total;
 }
 
 export async function mintScTx(amount) {
@@ -182,8 +182,8 @@ export async function maxRcToRedeem() {
     await updateState();
     const reserveRatio = await bankService.getReserveRatio();
     if (reserveRatio <= 400) return 0;
-    const equity = await bankService.getEquity();
-    const rsvNominal = await bankService.getRsvNominal();
+    const equity = Number(await bankService.getEquity());
+    const rsvNominal = Number(await bankService.getRsvNominal());
     return equity / rsvNominal;
 }
 
@@ -191,8 +191,8 @@ export async function maxScToMint() {
     await updateState();
     const reserveRatio = await bankService.getReserveRatio();
     if (reserveRatio <= 400) return 0;
-    const equity = await bankService.getEquity();
-    const sigNominal = await bankService.getSigNominal();
+    const equity = Number(await bankService.getEquity());
+    const sigNominal = Number(await bankService.getSigNominal());
     return equity / sigNominal;
 }
 
@@ -207,24 +207,24 @@ export async function maxRcToMint() {
 
 export async function ableRcToRedeem(amount) {
     await updateState();
-    const equity = await bankService.getEquity();
-    const rsvNominal = await bankService.getRsvNominal();
-    return Number(equity) >= Number(rsvNominal) * amount;
+    const equity = Number(await bankService.getEquity());
+    const rsvNominal = Number(await bankService.getRsvNominal());
+    return equity >= rsvNominal * amount;
 }
 
 export async function ableScToMint(amount) {
     await updateState();
-    return await bankService.ableToMintStablecoin(amount);
+    return bankService.ableToMintStablecoin(amount);
 }
 
 export async function ableRcToMint(height, amount) {
     await updateState();
-    return await bankService.ableToMintReservecoin(amount);
+    return bankService.ableToMintReservecoin(amount);
 }
 
 export async function scPrice() {
     await updateState();
-    return await bankService.getSigNominal();
+    return Number(await bankService.getSigNominal());
 }
 
 export async function rcPrice() {

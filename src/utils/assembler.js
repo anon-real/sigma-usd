@@ -55,7 +55,9 @@ export async function getOraclekBox() {
 }
 
 export async function getHeight() {
-    return (await get(getUrl(assemblerUrl) + '/getHeight')).height
+    // return (await get(getUrl(assemblerUrl) + '/getHeight')).height
+    // TODO: remove this
+    return 1567247
 }
 
 export async function getPreHeaders() {
