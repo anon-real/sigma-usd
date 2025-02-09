@@ -1,8 +1,9 @@
 /* global BigInt */
 // export const assemblerUrl = 'https://assembler.ergoutils.org/'
 // export const assemblerUrl = 'http://192.168.1.68:9000/'
-export const assemblerUrl = ''
+export const assemblerUrl = 'http://95.217.180.19:8080/'
 export const minErgVal = 33000
+export const isTestnet = true
 
 export const bankAddress = 'ENeStaP9FnFDnestQCPAQjBrJjtNYynVcfonFqikkX83iAqtaGBbqNLn2LgYwSoA8CZzP9kPryXqFAzpGSUXdEvMRJdJYkJD89yVdNQMiJnqH27idEwK3oTHojVtBJ6LgWGA2m9QFFM3ZodDAWf4eiFxczs1C4FuAYkd5jTyaevNfRWpVZVmuXrQqbn6jjamVpeNauYzHHtJo3sRpVdkm5VEkKQb4NodxmU1FarzJWRKSg4qR7nrgno1hWWw6kmXbMAvggaaV871LpyGwrKYeREeKfakt2EydG68pDhX14sWqPJHJ5FbhWCwQTyqKwY8AJsxVbwHDamhK3aV6Mfh7vAvrFAxcMshw1aAeamGbcX3qBj6khACuqArvLK54tmdHrvcY3XV2WdKemsJMaFof5Ga17vFNNHFaXf8TfbdKsYB8iVe7TaqUSDECbLpMA3fcmDU7rZgQ3ZJjHKHtWJeEHq8pL1Mbu3pZg3JLSczojqy4uocYHEGaxqhqDrdehWVxmByoMviin8TEa2jRnGAd7cwcCAjq2LGif75u329HvX7moQTvFdhu4phjAssS3zcd16xR5K4df5pqnAC9oME5vHGNNR4zprhGYtVWgJ8QWv8xt2LUJG8oYNr6vmMSEkbZLYqSe8Q6kRtyJN6cKmL9rX9YyNXjqmwHKGNy8MSZBctz2RuWzXe7fUWG9Zc3pVCdoSeyn7mtDeazwSK6mWVB6B7nfCCK5Vj8pYKquNSVPiczVCroRS5yMsQG3TqmgeVXbEYADj6NkDm4EWzXqdZroJZXPsr9Ww2MsE75RmBBUqLk3TvXRCz7x8dtEPWyBH8HTNeRFmhU12pWSSq8b1HW3idus4SvNbhNsGPBVCTHdJJw5e7JNMGbJykLtH7JeMPqB4BA4hAH17zi4CELp7UJ3SC3MttwaAjjUi2JYK6CNJHsYKQ371yrdJcAeGYqcqM3bfdtCpcYcThLSqd8ZuWgb2jeZf9hxjooU78qVbLnZzAjrG8yGUG1iaroERrjNi3bixvKaShtKYXUzgRB2YAgnCuwj8w39atNpJpFvCt4qv1WsZteG96tqBCYsQaqXC7SvCHXHQKocfXkJLZtJCkw1dq9uo42v5JeaU9yUJRy28PQdvVacbaBpBgqYHp9LaCKeE7N62FucoDqPzt1oP8tPCYzLLguQZdDw66gGtQ383SAghPHZx3mTa1qrakyFYSPGduS1bjQRZFgTJYd9MK9Zjx2tasBg1AzeyNrs9EZSRvy7UfQv5nngTxgd1Dukga6iFtwWzzfbdd5'
 export const reserveName = 'SigmaRSV'
@@ -33,3 +34,5 @@ export const MIN_BOX_VALUE = BigInt(10000000);
 // export const explorerEndpoint = 'https://api.ergoplatform.com/api/v0';
 export const explorerEndpoint = 'https://api-testnet.ergoplatform.com/api/v1';
 export const explorerEndpointV0 = 'https://api-testnet.ergoplatform.com/api/v0';
+
+export const LIMIT_FACTOR = 200;

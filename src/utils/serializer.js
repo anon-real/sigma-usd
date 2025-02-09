@@ -7,8 +7,9 @@ const floatRe = new RegExp('^([0-9]*[.])?[0-9]*$')
 const naturalRe = new RegExp('^[0-9]+$')
 
 export async function encodeNum(n, isInt = false) {
+    const nStr = n.toString()
     if (isInt) return (await ergolib).Constant.from_i32(n).encode_to_base16()
-    else return (await ergolib).Constant.from_i64((await ergolib).I64.from_str(n)).encode_to_base16()
+    else return (await ergolib).Constant.from_i64((await ergolib).I64.from_str(nStr)).encode_to_base16()
 }
 
 export async function decodeNum(n, isInt = false) {
@@ -16,6 +17,17 @@ export async function decodeNum(n, isInt = false) {
     else return (await ergolib).Constant.decode_from_base16(n).to_i64().to_str()
 
 }
+
+export async function decodeTuple(n) {
+    const lib = await ergolib
+    return lib.Constant.decode_from_base16(n).to_tuple_i64()
+}
+
+export async function encodeTuple(n) {
+    const lib = await ergolib
+    return lib.Constant.from_tuple_i64(lib.I64.from_str(n[0]), lib.I64.from_str(n[1])).encode_to_base16()
+}
+
 
 export async function encodeHex(reg) {
     return (await ergolib).Constant.from_byte_array(Buffer.from(reg, 'hex')).encode_to_base16()

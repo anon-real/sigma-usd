@@ -1,6 +1,6 @@
 /* global BigInt */
-import { dollarToCent, encodeNum, decodeNum } from './serializer';
-import { implementor, MIN_RESERVE_RATIO, MAX_RESERVE_RATIO, FEE_PERCENT, IMPLEMENTOR_FEE_PERCENT, MIN_BOX_VALUE } from './consts';
+import { dollarToCent, encodeNum, decodeNum, decodeTuple, encodeTuple } from './serializer';
+import { implementor, MIN_RESERVE_RATIO, MAX_RESERVE_RATIO, FEE_PERCENT, IMPLEMENTOR_FEE_PERCENT, MIN_BOX_VALUE, LIMIT_FACTOR, sigUsdTokenId } from './consts';
 import JSONBigInt from 'json-bigint';
 
 export const JSON = JSONBigInt({ useNativeBigInt: true });
@@ -87,6 +87,7 @@ export class BankService {
 
     // Calculate amount received from redeeming SigUSD
     async amountFromRedeemingStablecoin(amount, txFee) {
+
         const baseAmount = await this.getSigPrice(amount);
         const implementorFee = Math.floor(baseAmount * IMPLEMENTOR_FEE_PERCENT);
         const fees = txFee + implementorFee;
@@ -134,6 +135,7 @@ export class BankService {
     // Create transaction for minting SigUSD
     async mintStablecoinTx(amount, address, height, txFee) {
         const amountInCents = dollarToCent(amount);
+        const lib = await ergolib
         if (amountInCents === 0) return null;
         if (!this.ableToMintStablecoin(amountInCents)) return null;
 
@@ -142,22 +144,31 @@ export class BankService {
 
         // Create output bank box candidate
         const newBank = await this.deltaBank(amountInCents, 0);
+        const bcReserveDelta = newBank.value - this.bank.value
 
         // Create implementor fee box
-        const i64 = (await ergolib).I64.from_str(implementorFee.toString())
-        const boxValue = (await ergolib).BoxValue.from_i64(i64)
-        const addr = (await ergolib).Address.from_base58(implementor)
-        const contract = (await ergolib).Contract.pay_to_address(addr)
-        const implementorBox = new (await ergolib).ErgoBoxCandidateBuilder(
-            boxValue,
-            contract,
-            height
-        ).build();
+        const tree = lib.Address.from_base58(implementor).to_ergo_tree()
+        const treeHex = Buffer.from(tree.to_base16_bytes()).toString('hex')
+        const implementorBox = {
+            ergoTree: treeHex,
+            value: implementorFee
+        }
+        const userTree = lib.Address.from_base58(address).to_ergo_tree()
+        const userTreeHex = Buffer.from(userTree.to_base16_bytes()).toString('hex')
+        const userOut = {
+            ergoTree: userTreeHex,
+            value: 0,
+            additionalRegisters: {
+                R4: await encodeNum(amountInCents),
+                R5: await encodeNum(bcReserveDelta)
+            }
+        }
+        
 
         return {
             inputs: ['$bankBox', '$userIns'],
             dataInputs: ['$oracleBox'],
-            outputs: [newBank, implementorBox],
+            requests: [newBank, userOut, implementorBox],
             fee: txFee
         };
     }
@@ -197,9 +208,28 @@ export class BankService {
         const newBank = JSON.parse(JSON.stringify(this.bank));
         const sigPrice = await this.getSigPrice(sigAmount);
         const rsvPrice = await this.getRsvPrice(rsvAmount);
+        newBank.value = Number(BigInt(this.bank.value) + BigInt(sigPrice + rsvPrice));
+
+        const bcReserveDelta = newBank.value - this.bank.value
 
         newBank.additionalRegisters.R4 = await encodeNum(Number(await this.getCircSig()) + sigAmount);
         newBank.additionalRegisters.R5 = await encodeNum(Number(await this.getCircRsv()) + rsvAmount);
+        newBank.additionalRegisters.R6 = this.oracle.additionalRegisters.R5
+
+        var limitN = Number(BigInt(this.bank.value) / BigInt(LIMIT_FACTOR))
+        var limit = [limitN, limitN]
+        if (this.bank.additionalRegisters.R6 == newBank.additionalRegisters.R6) {
+            limit = await decodeTuple(this.bank.additionalRegisters.R7)
+        }
+
+        if (sigAmount > 0) {
+            limit[0] -= bcReserveDelta
+        } else {
+            limit[1] -= bcReserveDelta
+        }
+
+        newBank.additionalRegisters.R7 = await encodeTuple([limit[0].toString(), limit[1].toString()])
+
 
         if (newBank.assets[0]) {
             newBank.assets[0].amount -= sigAmount;
@@ -207,7 +237,6 @@ export class BankService {
         if (newBank.assets[1]) {
             newBank.assets[1].amount -= rsvAmount;
         }
-        newBank.value = Number(BigInt(this.bank.value) + BigInt(sigPrice + rsvPrice));
 
         return newBank;
     }

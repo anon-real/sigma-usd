@@ -2,7 +2,7 @@ import { addReq, getWalletAddress } from './helpers';
 import { Address } from '@coinbarn/ergo-ts';
 import { follow, getAddressFunds, getHeight, p2s, returnFee } from './assembler';
 import { dollarToCent, ergToNano } from './serializer';
-import { bankNFTId, forceUpdateState, mintScTx, priceToMintSc, scTokenId } from './ageHelper';
+import { bankNFTId, forceUpdateState, mintScTx, priceToMintSc, scTokenId, bankService } from './ageHelper';
 import moment from 'moment';
 import { ergoPayBroadcast, ergoPaySign, walletCreate } from './walletUtils';
 import { assemblerNodeAddr, ergSendPrecision, implementor, minErgVal, usdAcronym, usdName, waitHeightThreshold } from './consts';
@@ -32,11 +32,13 @@ export async function mintSc(amount, context, assembler=true, ergopay=false) {
 
     var { signTx, submitTx, getWalletUtxos: getUtxos, isAddressSet } = context;
     if (ergopay) {
+        console.log('ergopay')
         signTx = ergoPaySign;
         getUtxos = getAddressFunds;
         submitTx = ergoPayBroadcast;
     }
 
+    // getUtxos = getAddressFunds; // TODO: remove this
 
     let ourAddr = getWalletAddress();
     let befPrice = await priceToMintSc(amount) + 1000000
@@ -45,10 +47,11 @@ export async function mintSc(amount, context, assembler=true, ergopay=false) {
     price = ergToNano(price)
     if (price < befPrice) price += 10 ** (9 - ergSendPrecision)
     let tx = await mintScTx(amount)
-    for (let i = 0; i < tx.requests.length; i++) {
-        if (tx.requests[i].value < minErgVal) throw new Error("The amount you're trying to mint is too small!")
-    }
+    // for (let i = 0; i < tx.requests.length; i++) {
+    //     if (tx.requests[i].value < minErgVal) throw new Error("The amount you're trying to mint is too small!")
+    // }
     tx.requests[1].value += (price - befPrice)
+    console.log('tx', tx)
 
     if (assembler) {
         let addr = (await getScMintP2s(amount, tx.dataInputs[0], height)).address
@@ -90,6 +93,7 @@ export async function mintSc(amount, context, assembler=true, ergopay=false) {
             getUtxos: getUtxos,
             signTx: signTx,
             submitTx: submitTx,
+            bankService: bankService
         })
         const info = {
             id: resTx.id,

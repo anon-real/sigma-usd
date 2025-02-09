@@ -126,6 +126,7 @@ class PurchaseForm extends Component<PurchaseFormProps, any> {
                     loading: false,
                 })
             }).catch((err) => {
+                console.log(err)
                 toast.error(t('errorCannotRegisterRequest', { error: err.message }));
                 this.setState({ loading: false });
             });
@@ -157,6 +158,7 @@ class PurchaseForm extends Component<PurchaseFormProps, any> {
                     }
                 })
                 .catch((err) => {
+                    console.log(err)
                     toast.error(t('errorCannotRegisterRequest', { error: err.message }));
                     this.setState({ loading: false });
                 });

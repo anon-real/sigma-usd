@@ -16,7 +16,7 @@ let ergolib = import('ergo-lib-wasm-browser')
 let ageusd = import('ageusd');
 
 const considerUnconfirmed = true;
-let bankService = null;
+export let bankService = null;
 
 export async function scTokenId() {
     return sigUsdTokenId;
